@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class WorldMenuManager : MonoBehaviour
 {
+    private GameObject clickedButtonObject;
+
+    // -------------------------------------------
+
+    public bool isOpened;
 
     // Objeto seleccionado a generar
     public GameObject selectedObject;
@@ -37,15 +42,15 @@ public class WorldMenuManager : MonoBehaviour
     // Sin terminar, igual hay que hacerlo con tags o algo
     public void SelectObjectFromMenu(int index)
     {
-        if (index >= 0 && index < modelsList.Count)
-        {
-            // Deseleccionar todos los objetos
-            DeselectAllObjects();
+        // Deseleccionar todos los objetos
+        DeselectAllObjects();
 
-            // Seleccionar el objeto actual
-            selectedObject = modelsList[index - 1];
-            //selectedObject.SetActive(true);
-        }
+        // Seleccionar el objeto actual
+        selectedObject = modelsList[index];
+        buildingManager.InstantiateObject(selectedObject);
+
+        // Mientras el objeto este seleccionado, el menu estara cerrado
+        hideWorldMenu();
     }
 
     private void DeselectAllObjects()
@@ -61,11 +66,13 @@ public class WorldMenuManager : MonoBehaviour
     public void showWorldMenu()
     {
         gameObject.SetActive(true);
+        isOpened = true;
     }
 
     // Cerrar el menu
     public void hideWorldMenu()
     {
         gameObject.SetActive(false);
+        isOpened = false;
     }
 }

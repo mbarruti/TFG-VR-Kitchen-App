@@ -17,6 +17,8 @@ public class BuildingManager : MonoBehaviour
 
     [SerializeField] private Material[] collisionMaterials;
 
+    [SerializeField] private WorldMenuManager worldMenuManager;
+
     // -------------------------------------
 
     // Componente BuildingObject del objeto instanciado a colocar
@@ -62,16 +64,6 @@ public class BuildingManager : MonoBehaviour
 
             // Actualizar materiales de colision
             UpdateMaterials();
-
-            // Con el boton trigger colocamos el objeto
-            //if (_pendingBuildingObject.canPlace)
-            //{
-            //    _inputManager.placeObject.action.performed += PlaceObject;
-            //}
-            //if (Input.GetKeyUp(KeyCode.R))
-            //{
-            //    _pendingBuildingObject.RotateObject(rotateAmount);
-            //}
         }
     }
 
@@ -106,7 +98,7 @@ public class BuildingManager : MonoBehaviour
 
     public void InstantiateObject(GameObject selectedObject)
     {
-        // Instancia para el objeto indicador
+        // Instancia para el objeto indicador que se proyecta en el mundo
         _pendingObject = Instantiate(selectedObject, _hitPos, transform.rotation);
         pendingBuildingObject = _pendingObject.GetComponent<BuildingObject>();
 
@@ -127,12 +119,36 @@ public class BuildingManager : MonoBehaviour
         return pos;
     }
 
+    // FUNCIONES LLAMADAS EN PlayerActions
+
+    // Colocar el objeto pendiente en la posicion indicada
     public void PlaceObject()
     {
         // Volvemos a asignarle su material original
         pendingBuildingObject.assignMaterial(collisionMaterials[2]);
 
+        // Instanciamos el objeto pendiente de colocacion
+        Instantiate(_pendingObject, _hitPos, transform.rotation);
+
         // "Soltamos" el objeto
+        //_pendingObject = null;
+        //pendingBuildingObject = null;
+    }
+
+    // Cancelar la colocacion del objeto seleccionado
+    public void CancelObjectPlacement()
+    {
+        Destroy(_pendingObject);
+        _pendingObject = null;
+        pendingBuildingObject = null;
+
+        worldMenuManager.selectedObject = null;
+    }
+
+    // Parar la colocacion del objeto pendiente
+    public void StopObjectPlacement()
+    {
+        Destroy(_pendingObject);
         _pendingObject = null;
         pendingBuildingObject = null;
     }
