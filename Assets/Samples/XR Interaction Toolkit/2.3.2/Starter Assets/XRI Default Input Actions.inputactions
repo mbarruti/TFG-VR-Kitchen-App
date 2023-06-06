@@ -2144,6 +2144,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Y Action",
+                    "type": "Button",
+                    "id": "f5c13415-5237-4711-a78c-329fb9180b63",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2188,6 +2197,17 @@
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "Left Trigger Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d7a58dbe-3748-44f9-8a83-6e21e855a7b5",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Y Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

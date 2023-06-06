@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class WorldMenuManager : MonoBehaviour
 {
-    private GameObject clickedButtonObject;
 
     // -------------------------------------------
 
     public bool isOpened;
 
     // Objeto seleccionado a generar
-    public GameObject selectedObject;
+    public GameObject selectedModel;
 
     // Lista de todos los modelos que se pueden utilizar
     public List<GameObject> modelsList = new List<GameObject>();
@@ -25,20 +24,6 @@ public class WorldMenuManager : MonoBehaviour
         DeselectAllObjects();
     }
 
-    // de prueba
-    public void SelectCube()
-    {
-        selectedObject = modelsList[0];
-
-        buildingManager.InstantiateObject(selectedObject);
-        //crear un buildingobject -> bar
-        //instantiate el game object -> foo
-        //foo-> add component(bar)
-
-        // Mientras el objeto este seleccionado, el menu estara cerrado
-        hideWorldMenu();
-    }
-
     // Sin terminar, igual hay que hacerlo con tags o algo
     public void SelectObjectFromMenu(int index)
     {
@@ -46,8 +31,8 @@ public class WorldMenuManager : MonoBehaviour
         DeselectAllObjects();
 
         // Seleccionar el objeto actual
-        selectedObject = modelsList[index];
-        buildingManager.InstantiateObject(selectedObject);
+        selectedModel = modelsList[index];
+        buildingManager.InstantiateModel(selectedModel);
 
         // Mientras el objeto este seleccionado, el menu estara cerrado
         hideWorldMenu();
@@ -59,7 +44,7 @@ public class WorldMenuManager : MonoBehaviour
         //{
         //    obj.SetActive(false);
         //}
-        selectedObject = null;
+        selectedModel = null;
     }
 
     // Funciones de input que dependen del usuario (llamadas en PlayerActions)

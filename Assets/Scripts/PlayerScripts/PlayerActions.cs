@@ -8,7 +8,6 @@ public class PlayerActions : MonoBehaviour
     [SerializeField] WorldMenuManager _worldMenuManager;
     [SerializeField] BuildingManager _buildingManager;
 
-
     // Referencias a botones del mando izquierdo
     [SerializeField] InputActionReference _startAction;
     [SerializeField] InputActionReference _leftTriggerAction;
@@ -37,10 +36,10 @@ public class PlayerActions : MonoBehaviour
         _rightTriggerAction.action.performed -= OnRightTriggerAction;
     }
 
-    // Funciones de BuildingManager y BuildingObject
+    // Funciones de cada boton
     void OnRightTriggerAction(InputAction.CallbackContext context)
     {
-        if (_buildingManager.pendingBuildingObject != null && _buildingManager.pendingBuildingObject.canPlace == true)
+        if (_buildingManager.selectedBuildingObject != null && _buildingManager.selectedBuildingObject.canPlace == true)
         {
             _buildingManager.PlaceObject();
         }
@@ -48,9 +47,9 @@ public class PlayerActions : MonoBehaviour
 
     void OnLeftTriggerAction(InputAction.CallbackContext context)
     {
-        if (_buildingManager.pendingBuildingObject != null)
+        if (_buildingManager.selectedBuildingObject != null)
         {
-            _buildingManager.pendingBuildingObject.RotateObject();
+            _buildingManager.selectedBuildingObject.RotateObject();
         }
     }
 
@@ -59,7 +58,7 @@ public class PlayerActions : MonoBehaviour
         if (_worldMenuManager.isOpened == false)
         {
             // Si hay un objeto pendiente de colocar y abrimos el menu, se controla que ese proceso sigue pendiente
-            if (_buildingManager.pendingBuildingObject != null)
+            if (_buildingManager.selectedBuildingObject != null)
             {
                 _buildingManager.StopObjectPlacement();
             }
@@ -79,16 +78,16 @@ public class PlayerActions : MonoBehaviour
         if (_worldMenuManager.isOpened)
         {
             // Si hay un objeto pendiente de colocar, continua ese proceso al cerrar el menu
-            if (_worldMenuManager.selectedObject != null && _buildingManager.pendingBuildingObject == null)
+            if (_worldMenuManager.selectedModel != null && _buildingManager.selectedBuildingObject == null)
             {
-                _buildingManager.InstantiateObject(_worldMenuManager.selectedObject);
+                _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
             }
 
             _worldMenuManager.hideWorldMenu();
         }
 
         // Cancelar la colocacion del objeto
-        else if (_worldMenuManager.isOpened == false && _buildingManager.pendingBuildingObject != null)
+        else if (_worldMenuManager.isOpened == false && _buildingManager.selectedBuildingObject != null)
         {
             _buildingManager.CancelObjectPlacement();
         }
