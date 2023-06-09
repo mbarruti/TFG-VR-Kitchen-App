@@ -150,3 +150,5 @@ MonoBehaviour:
   outline: {fileID: 4212214152288071408}
   canPlace: 1
   meshRenderer: {fileID: 375431031995641209}
+  boxCollider: {fileID: -6835333536088672025}
+  lastTransform: {fileID: 0}

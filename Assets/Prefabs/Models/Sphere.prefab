@@ -121,6 +121,8 @@ MonoBehaviour:
   outline: {fileID: 4537490476641284104}
   canPlace: 1
   meshRenderer: {fileID: 5301576208806791989}
+  boxCollider: {fileID: 559760171093370003}
+  lastTransform: {fileID: 0}
 --- !u!65 &559760171093370003
 BoxCollider:
   m_ObjectHideFlags: 0

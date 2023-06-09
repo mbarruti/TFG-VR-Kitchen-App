@@ -119,7 +119,7 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isInMenu)
         {
             // Si hay un objeto pendiente de colocar, continua ese proceso al cerrar el menu
-            if (_worldMenuManager.selectedModel != null && _buildingManager.selectedBuildingObject == null)
+            if (_buildingManager.selectedBuildingObject == null)
             {
                 _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
             }
@@ -127,10 +127,15 @@ public class PlayerManager : MonoBehaviour
             _worldMenuManager.hideWorldMenu();
         }
 
-        // Cancelar la colocacion del objeto
+        // Cancelar la transformacion del objeto
         else if (state == PlayerState.isBuilding)
         {
-            _buildingManager.CancelObjectPlacement();
+            if (_buildingManager.pendingObject != null) _buildingManager.CancelObjectPlacement();
+            else
+            {
+                Debug.Log("hola");
+                _buildingManager.CancelObjectTransform();
+            }
         }
     }
 

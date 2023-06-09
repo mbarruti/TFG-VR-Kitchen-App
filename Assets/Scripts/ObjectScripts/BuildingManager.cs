@@ -8,10 +8,6 @@ public class BuildingManager : MonoBehaviour
     // Posicion donde ray colisiona con un objeto de la escena
     private Vector3 _hitPos;
 
-    // Objeto instanciado que indica donde se colocara el modelo seleccionado
-    private GameObject _pendingObject;
-    //private BuildingObject _selectedBuildingObject;
-
     [SerializeField] PlayerManager playerManager;
 
     [SerializeField] private Material[] collisionMaterials;
@@ -20,6 +16,8 @@ public class BuildingManager : MonoBehaviour
 
     // -------------------------------------
 
+    // Objeto instanciado que indica donde se colocara el modelo seleccionado
+    public GameObject pendingObject;
     // Componente BuildingObject del objeto pendiente o del objeto del mundo seleccionado
     public BuildingObject selectedBuildingObject;
 
@@ -39,18 +37,18 @@ public class BuildingManager : MonoBehaviour
     void Update()
     {
         // Si hay un objeto pendiente de colocar en la escena, lo posicionamos donde apunta el usuario
-        //if (_pendingObject != null)
+        //if (pendingObject != null)
         if (selectedBuildingObject != null)
         {
             //if (gridOn)
             //{
-            //    _pendingObject.transform.position = new Vector3(RoundToNearestGrid(_hitPos.x),
+            //    pendingObject.transform.position = new Vector3(RoundToNearestGrid(_hitPos.x),
             //                                                    RoundToNearestGrid(_hitPos.y),
             //                                                    RoundToNearestGrid(_hitPos.z));
             //}
             //else
             //{
-            //    _pendingObject.transform.position = _hitPos; // Sin grid
+            //    pendingObject.transform.position = _hitPos; // Sin grid
             //}
 
             selectedBuildingObject.gameObject.transform.position = _hitPos;
@@ -80,9 +78,9 @@ public class BuildingManager : MonoBehaviour
                 if (hitObject != auxObj)
                 {
                     //Debug.Log("Apunta a obj");
-                    if (hitObject != null) { hitObject.disableOutline(); }
+                    if (hitObject != null) hitObject.switchOutline(false);
                     hitObject = auxObj;
-                    hitObject.enableOutline();
+                    hitObject.switchOutline(true);
                 }
             }
             else
@@ -91,7 +89,7 @@ public class BuildingManager : MonoBehaviour
                 if (hitObject != null)
                 {
                     //Debug.Log("Outline desactivada");
-                    hitObject.disableOutline();
+                    hitObject.switchOutline(false);
                     hitObject = null;
                 }
             }
@@ -114,8 +112,8 @@ public class BuildingManager : MonoBehaviour
     public void InstantiateModel(GameObject selectedModel)
     {
         // Instancia para el objeto indicador que se proyecta en el mundo
-        _pendingObject = Instantiate(selectedModel, _hitPos, transform.rotation);
-        selectedBuildingObject = _pendingObject.GetComponent<BuildingObject>();
+        pendingObject = Instantiate(selectedModel, _hitPos, transform.rotation);
+        selectedBuildingObject = pendingObject.GetComponent<BuildingObject>();
 
         // Guardamos su material en la lista de materiales de colision
         collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
@@ -143,20 +141,26 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject.assignMaterial(collisionMaterials[2]);
 
         // Instanciamos el objeto pendiente de colocacion
-        if (_pendingObject != null)
+        if (pendingObject != null)
         {
-            GameObject obj = Instantiate(_pendingObject, _hitPos, transform.rotation);
+            GameObject obj = Instantiate(pendingObject, _hitPos, transform.rotation);
 
             obj.GetComponent<BoxCollider>().isTrigger = false;
         }
-        else selectedBuildingObject = null; // "Soltamos" el objeto seleccionado
+        else 
+        {
+            selectedBuildingObject.boxCollider.isTrigger = false;
+
+            // "Soltamos" el objeto seleccionado
+            selectedBuildingObject = null;
+        }
     }
 
     // Cancelar la colocacion del objeto pendiente
     public void CancelObjectPlacement()
     {
-        Destroy(_pendingObject);
-        _pendingObject = null;
+        Destroy(pendingObject);
+        pendingObject = null;
         selectedBuildingObject = null;
 
         worldMenuManager.selectedModel = null;
@@ -165,18 +169,44 @@ public class BuildingManager : MonoBehaviour
     // Parar la colocacion del objeto pendiente
     public void StopObjectPlacement()
     {
-        Destroy(_pendingObject);
-        _pendingObject = null;
+        Destroy(pendingObject);
+        pendingObject = null;
         selectedBuildingObject = null;
     }
 
-    // TODO
+    // Seleccion de objeto en el mundo
     public void SelectObject()
     {
         if (hitObject != null)
         {
+            //var auxTransform = hitObject.gameObject.transform;
+            hitObject.SavePreviousTransform();
+
             selectedBuildingObject = hitObject;
-            selectedBuildingObject.GetComponent<BoxCollider>().isTrigger = true;
+            // Guardamos su material en la lista de materiales de colision
+            collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
+            // Activamos isTrigger para que no haya conflicto con el Raycast
+            selectedBuildingObject.boxCollider.isTrigger = true;
         }
+    }
+
+    //Cancelar la transformacion del objeto del mundo seleccionado
+    public void CancelObjectTransform()
+    {
+        //var auxBObj = selectedBuildingObject;
+        //selectedBuildingObject = null;
+        //auxBObj.SetPreviousTransform();
+        //auxBObj.boxCollider.isTrigger = false;
+        //selectedBuildingObject = null;
+
+        var auxObj = selectedBuildingObject;
+
+        selectedBuildingObject = null;
+
+        auxObj.SetPreviousTransform();
+        // Volvemos a asignarle su material original
+        auxObj.assignMaterial(collisionMaterials[2]);
+        // Desactivamos isTrigger para que no haya conflicto con el Raycast
+        auxObj.boxCollider.isTrigger = false;
     }
 }

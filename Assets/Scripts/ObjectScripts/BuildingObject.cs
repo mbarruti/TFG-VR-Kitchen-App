@@ -5,18 +5,30 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class BuildingObject : MonoBehaviour
 {
-
     [SerializeField] BuildingManager _buildingManager;
 
     [SerializeField] Outline outline;
 
+    // Aqui se guarda la transformacion previa a la edicion del objeto seleccionado
+    //private Transform lastTransform;
+    private Vector3 _lastPos;
+
+    // Material original del objeto
+    //private Material material;
+
     // ---------------------
 
+    //private void OnEnable()
+    //{
+    //    material = meshRenderer.material;
+    //}
+
+    // Indica si se puede colocar el objeto o no
     public bool canPlace;
 
     public MeshRenderer meshRenderer;
 
-
+    public BoxCollider boxCollider;
 
     // Si el objeto colisiona con otros objetos, no se puede colocar
     private void OnTriggerStay(Collider other)
@@ -47,14 +59,22 @@ public class BuildingObject : MonoBehaviour
         meshRenderer.material = material;
     }
 
-
-
-    public void enableOutline()
+    public void switchOutline(bool enabled)
     {
-        outline.enabled = true;
+        outline.enabled = enabled;
     }
-    public void disableOutline()
+
+    public void SavePreviousTransform()
     {
-        outline.enabled = false;
+        _lastPos = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z);
+    }
+
+    public void SetPreviousTransform()
+    {
+        gameObject.transform.position = new Vector3(_lastPos.x, _lastPos.y, _lastPos.z);
+        //gameObject.transform.rotation = lastTransform.rotation;
+        //gameObject.transform.localScale = lastTransform.localScale;
+
+        //lastTransform = null;
     }
 }
