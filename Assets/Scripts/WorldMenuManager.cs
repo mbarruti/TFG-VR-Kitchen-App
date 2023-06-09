@@ -5,8 +5,12 @@ using UnityEngine;
 public class WorldMenuManager : MonoBehaviour
 {
 
+    // -------------------------------------------
+
+    public bool isOpened;
+
     // Objeto seleccionado a generar
-    public GameObject selectedObject;
+    public GameObject selectedModel;
 
     // Lista de todos los modelos que se pueden utilizar
     public List<GameObject> modelsList = new List<GameObject>();
@@ -20,32 +24,18 @@ public class WorldMenuManager : MonoBehaviour
         DeselectAllObjects();
     }
 
-    // de prueba
-    public void SelectCube()
-    {
-        selectedObject = modelsList[0];
-
-        buildingManager.InstantiateObject(selectedObject);
-        //crear un buildingobject -> bar
-        //instantiate el game object -> foo
-        //foo-> add component(bar)
-
-        // Mientras el objeto este seleccionado, el menu estara cerrado
-        hideWorldMenu();
-    }
-
     // Sin terminar, igual hay que hacerlo con tags o algo
     public void SelectObjectFromMenu(int index)
     {
-        if (index >= 0 && index < modelsList.Count)
-        {
-            // Deseleccionar todos los objetos
-            DeselectAllObjects();
+        // Deseleccionar todos los objetos
+        DeselectAllObjects();
 
-            // Seleccionar el objeto actual
-            selectedObject = modelsList[index - 1];
-            //selectedObject.SetActive(true);
-        }
+        // Seleccionar el objeto actual
+        selectedModel = modelsList[index];
+        buildingManager.InstantiateModel(selectedModel);
+
+        // Mientras el objeto este seleccionado, el menu estara cerrado
+        hideWorldMenu();
     }
 
     private void DeselectAllObjects()
@@ -54,18 +44,20 @@ public class WorldMenuManager : MonoBehaviour
         //{
         //    obj.SetActive(false);
         //}
-        selectedObject = null;
+        selectedModel = null;
     }
 
     // Funciones de input que dependen del usuario (llamadas en PlayerActions)
     public void showWorldMenu()
     {
         gameObject.SetActive(true);
+        isOpened = true;
     }
 
     // Cerrar el menu
     public void hideWorldMenu()
     {
         gameObject.SetActive(false);
+        isOpened = false;
     }
 }

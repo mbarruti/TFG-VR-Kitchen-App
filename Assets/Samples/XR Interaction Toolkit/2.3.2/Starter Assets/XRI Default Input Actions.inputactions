@@ -2110,7 +2110,7 @@
             "id": "17955132-47eb-4ca4-a536-09b8e9632067",
             "actions": [
                 {
-                    "name": "OpenMenu",
+                    "name": "Start Action",
                     "type": "Button",
                     "id": "7d5d8afc-08c0-457a-9744-ce6856ebd24f",
                     "expectedControlType": "Button",
@@ -2119,7 +2119,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "CloseMenu",
+                    "name": "B Action",
                     "type": "Button",
                     "id": "77df3ef4-706f-4040-bbc2-42805a935d5a",
                     "expectedControlType": "Button",
@@ -2128,7 +2128,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PlaceObject",
+                    "name": "Right Trigger Action",
                     "type": "Button",
                     "id": "08dfc487-59ed-4138-bf12-636f27c57fd1",
                     "expectedControlType": "Button",
@@ -2137,9 +2137,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RotateObject",
+                    "name": "Left Trigger Action",
                     "type": "Button",
                     "id": "c3e0dafb-4d4a-41e4-b2cb-2b6fcb85ddc2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Y Action",
+                    "type": "Button",
+                    "id": "f5c13415-5237-4711-a78c-329fb9180b63",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -2154,7 +2163,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
-                    "action": "CloseMenu",
+                    "action": "B Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -2165,7 +2174,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
-                    "action": "OpenMenu",
+                    "action": "Start Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -2176,18 +2185,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
-                    "action": "PlaceObject",
+                    "action": "Right Trigger Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "563d1180-bb12-4eb7-8beb-277fec6558ce",
-                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "path": "<XRController>{LeftHand}/triggerPressed",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
-                    "action": "RotateObject",
+                    "action": "Left Trigger Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d7a58dbe-3748-44f9-8a83-6e21e855a7b5",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Y Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
