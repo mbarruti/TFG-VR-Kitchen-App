@@ -118,8 +118,8 @@ public class PlayerManager : MonoBehaviour
         // Cerrar el menu
         if (state == PlayerState.isInMenu)
         {
-            // Si hay un objeto pendiente de colocar, continua ese proceso al cerrar el menu
-            if (_buildingManager.selectedBuildingObject == null)
+            // Si hay un modelo del menu seleccionado, continua ese proceso al cerrarlo
+            if (_worldMenuManager.selectedModel != null)
             {
                 _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
             }
