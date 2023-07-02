@@ -45,6 +45,12 @@ public class BuildingObject : MonoBehaviour
     {
         gameObject.transform.Rotate(Vector3.up, 30);
     }
+    public void ScaleObject()
+    {
+        var vec3 = new Vector3(0.1f, 0.1f, 0.1f);
+        gameObject.transform.localScale += vec3;
+    }
+
 
     public void assignMaterial(Material material)
     {

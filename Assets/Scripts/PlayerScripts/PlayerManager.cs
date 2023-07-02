@@ -17,6 +17,7 @@ public class PlayerManager : MonoBehaviour
     // Referencias a botones del mando derecho
     [SerializeField] InputActionReference _rightTriggerAction;
     [SerializeField] InputActionReference _bAction;
+    [SerializeField] InputActionReference _rightTouchpadAction;
 
     private PlayerState previousState;
 
@@ -29,11 +30,12 @@ public class PlayerManager : MonoBehaviour
         state = PlayerState.isFree;
 
         _startAction.action.performed += OnStartAction;
-        _bAction.action.performed += OnBAction;
         _leftTriggerAction.action.performed += OnLeftTriggerAction;
         _yAction.action.performed += OnYAction;
 
         _rightTriggerAction.action.performed += OnRightTriggerAction;
+        _bAction.action.performed += OnBAction;
+        _rightTouchpadAction.action.performed += OnRightTouchpadAction;
     }
 
     private void Update()
@@ -44,11 +46,12 @@ public class PlayerManager : MonoBehaviour
     private void OnDestroy()
     {
         _startAction.action.performed -= OnStartAction;
-        _bAction.action.performed -= OnBAction;
         _leftTriggerAction.action.performed -= OnLeftTriggerAction;
         _yAction.action.performed -= OnYAction;
 
         _rightTriggerAction.action.performed -= OnRightTriggerAction;
+        _bAction.action.performed -= OnBAction;
+        _rightTouchpadAction.action.performed -= OnRightTouchpadAction;
     }
 
     // Actualiza el estado del jugador, dependiendo de la situacion
@@ -144,6 +147,18 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isFree)
         {
             _buildingManager.SelectObject();
+        }
+    }
+
+    void OnRightTouchpadAction(InputAction.CallbackContext context)
+    {
+        if (_buildingManager.selectedBuildingObject != null)
+        {
+            _buildingManager.selectedBuildingObject.ScaleObject();
+        }
+        else
+        {
+            Debug.Log("No hay objeto seleccionado para escalar");
         }
     }
 }
