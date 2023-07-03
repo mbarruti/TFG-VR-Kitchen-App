@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -20,6 +21,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] InputActionReference _rightTouchpadAction;
 
     private PlayerState previousState;
+
+    // Mandos de realidad virtual
+    //[SerializeField] private GameObject rightController;
+    //[SerializeField] private GameObject leftController;
 
     // -----------------------------------------------------
 
@@ -100,12 +105,11 @@ public class PlayerManager : MonoBehaviour
             //// Si hay un objeto pendiente de colocar y abrimos el menu, se controla que ese proceso sigue pendiente
             //if (_buildingManager.selectedBuildingObject != null)
             //{
-                _buildingManager.StopObjectPlacement();
+            _buildingManager.StopObjectPlacement();
             //}
 
             _worldMenuManager.showWorldMenu();
         }
-        // provisional
         else if (state == PlayerState.isFree)
         {
             _worldMenuManager.showWorldMenu();
@@ -136,7 +140,6 @@ public class PlayerManager : MonoBehaviour
             if (_buildingManager.pendingObject != null) _buildingManager.CancelObjectPlacement();
             else
             {
-                Debug.Log("hola");
                 _buildingManager.CancelObjectTransform();
             }
         }
@@ -154,7 +157,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (_buildingManager.selectedBuildingObject != null)
         {
-            _buildingManager.selectedBuildingObject.ScaleObject();
+            _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
         }
         else
         {

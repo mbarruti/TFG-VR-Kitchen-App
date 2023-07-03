@@ -2092,7 +2092,9 @@ MonoBehaviour:
   _yAction: {fileID: -4812716223392962645, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _rightTriggerAction: {fileID: -7311183585213682401, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _bAction: {fileID: -17521217019696666, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  _rightTouchpadAction: {fileID: 3426227851525858465, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  _rightTouchpadAction: {fileID: 9128630439557688778, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  rightController: {fileID: 1758346702}
+  leftController: {fileID: 1264172314}
   state: 0
 --- !u!1 &839937542
 GameObject:

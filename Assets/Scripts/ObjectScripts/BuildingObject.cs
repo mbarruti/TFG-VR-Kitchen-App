@@ -40,17 +40,18 @@ public class BuildingObject : MonoBehaviour
         }
     }
 
-    //Con la X se rota el objeto (30 grados)
+    //Con el trigger izquierdo se rota el objeto (30 grados)
     public void RotateObject()
     {
         gameObject.transform.Rotate(Vector3.up, 30);
     }
-    public void ScaleObject()
-    {
-        var vec3 = new Vector3(0.1f, 0.1f, 0.1f);
-        gameObject.transform.localScale += vec3;
-    }
 
+    // Escala según el valor del eje Y del mando derecho
+    public void ScaleObject(float value)
+    {
+        float scaleAmount = value * Time.deltaTime;
+        transform.localScale += Vector3.one * scaleAmount;
+    }
 
     public void assignMaterial(Material material)
     {

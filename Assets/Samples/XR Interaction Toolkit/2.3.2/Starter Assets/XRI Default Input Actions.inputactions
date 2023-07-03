@@ -2156,12 +2156,12 @@
                 },
                 {
                     "name": "Right Touchpad Action",
-                    "type": "Button",
-                    "id": "c0f0dda0-7223-4005-8e73-4282115d3720",
-                    "expectedControlType": "Button",
+                    "type": "Value",
+                    "id": "fe3a7e52-ea18-4660-9615-54d125637ce7",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -2222,8 +2222,8 @@
                 },
                 {
                     "name": "",
-                    "id": "f61955db-fe82-4248-9a44-c5e8a62d5a42",
-                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "id": "557cd2b3-6fa5-4f22-9016-99d0e2eb7a30",
+                    "path": "<XRController>{RightHand}/primary2DAxis",
                     "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
