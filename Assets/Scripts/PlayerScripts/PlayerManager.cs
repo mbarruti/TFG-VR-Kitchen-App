@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -17,8 +18,13 @@ public class PlayerManager : MonoBehaviour
     // Referencias a botones del mando derecho
     [SerializeField] InputActionReference _rightTriggerAction;
     [SerializeField] InputActionReference _bAction;
+    [SerializeField] InputActionReference _rightTouchpadAction;
 
     private PlayerState previousState;
+
+    // Mandos de realidad virtual
+    //[SerializeField] private GameObject rightController;
+    //[SerializeField] private GameObject leftController;
 
     // -----------------------------------------------------
 
@@ -29,11 +35,12 @@ public class PlayerManager : MonoBehaviour
         state = PlayerState.isFree;
 
         _startAction.action.performed += OnStartAction;
-        _bAction.action.performed += OnBAction;
         _leftTriggerAction.action.performed += OnLeftTriggerAction;
         _yAction.action.performed += OnYAction;
 
         _rightTriggerAction.action.performed += OnRightTriggerAction;
+        _bAction.action.performed += OnBAction;
+        _rightTouchpadAction.action.performed += OnRightTouchpadAction;
     }
 
     private void Update()
@@ -44,11 +51,12 @@ public class PlayerManager : MonoBehaviour
     private void OnDestroy()
     {
         _startAction.action.performed -= OnStartAction;
-        _bAction.action.performed -= OnBAction;
         _leftTriggerAction.action.performed -= OnLeftTriggerAction;
         _yAction.action.performed -= OnYAction;
 
         _rightTriggerAction.action.performed -= OnRightTriggerAction;
+        _bAction.action.performed -= OnBAction;
+        _rightTouchpadAction.action.performed -= OnRightTouchpadAction;
     }
 
     // Actualiza el estado del jugador, dependiendo de la situacion
@@ -97,12 +105,11 @@ public class PlayerManager : MonoBehaviour
             //// Si hay un objeto pendiente de colocar y abrimos el menu, se controla que ese proceso sigue pendiente
             //if (_buildingManager.selectedBuildingObject != null)
             //{
-                _buildingManager.StopObjectPlacement();
+            _buildingManager.StopObjectPlacement();
             //}
 
             _worldMenuManager.showWorldMenu();
         }
-        // provisional
         else if (state == PlayerState.isFree)
         {
             _worldMenuManager.showWorldMenu();
@@ -118,8 +125,8 @@ public class PlayerManager : MonoBehaviour
         // Cerrar el menu
         if (state == PlayerState.isInMenu)
         {
-            // Si hay un objeto pendiente de colocar, continua ese proceso al cerrar el menu
-            if (_buildingManager.selectedBuildingObject == null)
+            // Si hay un modelo del menu seleccionado, continua ese proceso al cerrarlo
+            if (_worldMenuManager.selectedModel != null)
             {
                 _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
             }
@@ -133,7 +140,6 @@ public class PlayerManager : MonoBehaviour
             if (_buildingManager.pendingObject != null) _buildingManager.CancelObjectPlacement();
             else
             {
-                Debug.Log("hola");
                 _buildingManager.CancelObjectTransform();
             }
         }
@@ -144,6 +150,18 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isFree)
         {
             _buildingManager.SelectObject();
+        }
+    }
+
+    void OnRightTouchpadAction(InputAction.CallbackContext context)
+    {
+        if (_buildingManager.selectedBuildingObject != null)
+        {
+            _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
+        }
+        else
+        {
+            Debug.Log("No hay objeto seleccionado para escalar");
         }
     }
 }

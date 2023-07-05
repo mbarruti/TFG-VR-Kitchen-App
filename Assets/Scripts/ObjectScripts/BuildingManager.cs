@@ -27,10 +27,6 @@ public class BuildingManager : MonoBehaviour
     public GameObject rightController;
     public GameObject leftController;
 
-    public bool gridOn; // Por ahora siempre va a ser true
-
-    public float gridSize;
-
     public float rotateAmount;
 
     // Update is called once per frame
@@ -40,27 +36,11 @@ public class BuildingManager : MonoBehaviour
         //if (pendingObject != null)
         if (selectedBuildingObject != null)
         {
-            //if (gridOn)
-            //{
-            //    pendingObject.transform.position = new Vector3(RoundToNearestGrid(_hitPos.x),
-            //                                                    RoundToNearestGrid(_hitPos.y),
-            //                                                    RoundToNearestGrid(_hitPos.z));
-            //}
-            //else
-            //{
-            //    pendingObject.transform.position = _hitPos; // Sin grid
-            //}
-
             selectedBuildingObject.gameObject.transform.position = _hitPos;
 
             // Actualizar materiales de colision
             UpdateMaterials();
         }
-        //else if (selectedObject != null)
-        //{
-        //    selectedObject.transform.position = _hitPos;
-        //    UpdateMaterials();
-        //}
     }
 
     private void FixedUpdate()
@@ -96,7 +76,9 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    // Si el objeto colisiona se le asigna un material rojo, si no se le asigna uno verde
+    /// <summary>
+    /// Si el objeto colisiona se le asigna un material rojo, si no se le asigna uno verde
+    /// </summary>
     void UpdateMaterials()
     {
         if (selectedBuildingObject.canPlace)
