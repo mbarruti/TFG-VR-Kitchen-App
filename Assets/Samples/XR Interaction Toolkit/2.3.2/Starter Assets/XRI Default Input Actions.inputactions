@@ -2153,6 +2153,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Right Touchpad Action",
+                    "type": "Value",
+                    "id": "fe3a7e52-ea18-4660-9615-54d125637ce7",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -2208,6 +2217,17 @@
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "Y Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "557cd2b3-6fa5-4f22-9016-99d0e2eb7a30",
+                    "path": "<XRController>{RightHand}/primary2DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Right Touchpad Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
