@@ -93,8 +93,11 @@ public class BuildingManager : MonoBehaviour
 
     public void InstantiateModel(GameObject selectedModel)
     {
+        if (pendingObject != null) Destroy(pendingObject);
+
         // Instancia para el objeto indicador que se proyecta en el mundo
         pendingObject = Instantiate(selectedModel, _hitPos, transform.rotation);
+        
         selectedBuildingObject = pendingObject.GetComponent<BuildingObject>();
 
         // Guardamos su material en la lista de materiales de colision
@@ -122,20 +125,22 @@ public class BuildingManager : MonoBehaviour
         // Volvemos a asignarle su material original
         selectedBuildingObject.assignMaterial(collisionMaterials[2]);
 
-        // Instanciamos el objeto pendiente de colocacion
-        if (pendingObject != null)
-        {
-            GameObject obj = Instantiate(pendingObject, _hitPos, transform.rotation);
+        //// Instanciamos el objeto pendiente de colocacion
+        //if (pendingObject != null)
+        //{
+        //    GameObject obj = Instantiate(pendingObject, _hitPos, transform.rotation);
 
-            obj.GetComponent<BoxCollider>().isTrigger = false;
-        }
-        else 
-        {
+        //    obj.GetComponent<BoxCollider>().isTrigger = false;
+        //}
+        //else 
+        //{
             selectedBuildingObject.boxCollider.isTrigger = false;
 
             // "Soltamos" el objeto seleccionado
             selectedBuildingObject = null;
-        }
+        //}
+
+        pendingObject = null;
     }
 
     // Cancelar la colocacion del objeto pendiente
@@ -145,16 +150,17 @@ public class BuildingManager : MonoBehaviour
         pendingObject = null;
         selectedBuildingObject = null;
 
-        worldMenuManager.selectedModel = null;
+        //worldMenuManager.selectedModel = null;
     }
 
     // Parar la colocacion del objeto pendiente
-    public void StopObjectPlacement()
-    {
-        Destroy(pendingObject);
-        pendingObject = null;
-        selectedBuildingObject = null;
-    }
+    //public void StopObjectPlacement()
+    //{
+    //    Destroy(pendingObject);
+    //    Debug.Log(pendingObject);
+    //    //pendingObject = null;
+    //    selectedBuildingObject = null;
+    //}
 
     // Seleccion de objeto en el mundo
     public void SelectObject()
@@ -175,12 +181,6 @@ public class BuildingManager : MonoBehaviour
     //Cancelar la transformacion del objeto del mundo seleccionado
     public void CancelObjectTransform()
     {
-        //var auxBObj = selectedBuildingObject;
-        //selectedBuildingObject = null;
-        //auxBObj.SetPreviousTransform();
-        //auxBObj.boxCollider.isTrigger = false;
-        //selectedBuildingObject = null;
-
         var auxObj = selectedBuildingObject;
 
         selectedBuildingObject = null;

@@ -2162,6 +2162,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "A action",
+                    "type": "Button",
+                    "id": "b7a8880f-300b-4876-825d-2bfdb1b54039",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2228,6 +2237,17 @@
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "Right Touchpad Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0887e2d2-cb74-4a5c-9322-930dc15a08a5",
+                    "path": "<XRController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "A action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

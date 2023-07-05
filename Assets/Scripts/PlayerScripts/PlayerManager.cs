@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     // Referencias a botones del mando derecho
     [SerializeField] InputActionReference _rightTriggerAction;
     [SerializeField] InputActionReference _bAction;
+    [SerializeField] InputActionReference _aAction;
     [SerializeField] InputActionReference _rightTouchpadAction;
 
     private PlayerState previousState;
@@ -40,6 +41,7 @@ public class PlayerManager : MonoBehaviour
 
         _rightTriggerAction.action.performed += OnRightTriggerAction;
         _bAction.action.performed += OnBAction;
+        _aAction.action.performed += OnAAction;
         _rightTouchpadAction.action.performed += OnRightTouchpadAction;
     }
 
@@ -56,6 +58,7 @@ public class PlayerManager : MonoBehaviour
 
         _rightTriggerAction.action.performed -= OnRightTriggerAction;
         _bAction.action.performed -= OnBAction;
+        _aAction.action.performed -= OnAAction;
         _rightTouchpadAction.action.performed -= OnRightTouchpadAction;
     }
 
@@ -105,7 +108,8 @@ public class PlayerManager : MonoBehaviour
             //// Si hay un objeto pendiente de colocar y abrimos el menu, se controla que ese proceso sigue pendiente
             //if (_buildingManager.selectedBuildingObject != null)
             //{
-            _buildingManager.StopObjectPlacement();
+            _buildingManager.selectedBuildingObject = null;
+            _buildingManager.pendingObject.SetActive(false);
             //}
 
             _worldMenuManager.showWorldMenu();
@@ -126,8 +130,10 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isInMenu)
         {
             // Si hay un modelo del menu seleccionado, continua ese proceso al cerrarlo
-            if (_worldMenuManager.selectedModel != null)
+            if (_buildingManager.pendingObject != null)
             {
+                //_buildingManager.pendingObject.SetActive(true);
+                //_buildingManager.CancelObjectPlacement();
                 _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
             }
 
@@ -155,13 +161,25 @@ public class PlayerManager : MonoBehaviour
 
     void OnRightTouchpadAction(InputAction.CallbackContext context)
     {
-        if (_buildingManager.selectedBuildingObject != null)
+        //if (_buildingManager.selectedBuildingObject != null)
+        if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject != null)
         {
             _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
         }
         else
         {
             Debug.Log("No hay objeto seleccionado para escalar");
+        }
+    }
+
+    void OnAAction(InputAction.CallbackContext context)
+    {
+        if (state == PlayerState.isFree)
+        {
+            if (_worldMenuManager.selectedModel != null)
+            {
+                _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
+            }
         }
     }
 }
