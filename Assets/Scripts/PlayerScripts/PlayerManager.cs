@@ -82,7 +82,13 @@ public class PlayerManager : MonoBehaviour
             state = PlayerState.isInMenu;
 
             // Remove actions from other player states
+            _rightTriggerAction.action.performed -= PlaceObjectAction;
+            _leftTriggerAction.action.performed -= RotateObjectAction;
             _bAction.action.performed -= CancelObjectAction;
+            _rightTouchpadAction.action.performed -= ScaleObjectAction;
+            _yAction.action.performed -= SelectObjectAction;
+            _aAction.action.performed -= InstantiateModelAction;
+            _startAction.action.performed -= OpenWorldMenuAction;
 
             // Add actions from this player state
             _bAction.action.performed += CloseWorldMenuAction;
@@ -93,24 +99,34 @@ public class PlayerManager : MonoBehaviour
 
             // Remove actions from other player states
             _bAction.action.performed -= CloseWorldMenuAction;
+            _yAction.action.performed -= SelectObjectAction;
+            _aAction.action.performed -= InstantiateModelAction;
+            _startAction.action.performed -= OpenWorldMenuAction;
 
             // Add actions from this player state
             _rightTriggerAction.action.performed += PlaceObjectAction;
             _leftTriggerAction.action.performed += RotateObjectAction;
-            _startAction.action.performed += OpenWorldMenuAction;
             _bAction.action.performed += CancelObjectAction;
             _rightTouchpadAction.action.performed += ScaleObjectAction;
+            _startAction.action.performed += OpenWorldMenuAction;
         }
         else
         {
             state = PlayerState.isFree;
 
             // Remove actions from other player states
+            _leftTriggerAction.action.performed -= RotateObjectAction;
+            _rightTriggerAction.action.performed -= PlaceObjectAction;
+            _bAction.action.performed -= CancelObjectAction;
+            _rightTouchpadAction.action.performed -= ScaleObjectAction;
+            _bAction.action.performed -= CancelObjectAction;
+            _bAction.action.performed -= CloseWorldMenuAction;
+            _startAction.action.performed -= OpenWorldMenuAction;
 
             // Add actions from this player state
-            _startAction.action.performed += OpenWorldMenuAction;
             _yAction.action.performed += SelectObjectAction;
             _aAction.action.performed += InstantiateModelAction;
+            _startAction.action.performed += OpenWorldMenuAction;
         }
     }
 
@@ -149,11 +165,15 @@ public class PlayerManager : MonoBehaviour
             //// Si hay un objeto pendiente de colocar y abrimos el menu, se controla que ese proceso sigue pendiente
             //if (_buildingManager.selectedBuildingObject != null)
             //{
-            _buildingManager.selectedBuildingObject = null;
-            _buildingManager.pendingObject.SetActive(false);
-            //}
+            if (_buildingManager.pendingObject != null)
+            {
+                _buildingManager.selectedBuildingObject = null;
+                _buildingManager.pendingObject.SetActive(false);
+                //}
 
-            _worldMenuManager.showWorldMenu();
+                _worldMenuManager.showWorldMenu();
+            }
+            else Debug.Log("No se puede abrir si estas editando");
         }
         else if (state == PlayerState.isFree)
         {
