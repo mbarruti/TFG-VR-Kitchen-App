@@ -108,11 +108,15 @@ public class PlayerManager : MonoBehaviour
             //// Si hay un objeto pendiente de colocar y abrimos el menu, se controla que ese proceso sigue pendiente
             //if (_buildingManager.selectedBuildingObject != null)
             //{
-            _buildingManager.selectedBuildingObject = null;
-            _buildingManager.pendingObject.SetActive(false);
-            //}
+            if (_buildingManager.pendingObject != null)
+            {
+                _buildingManager.selectedBuildingObject = null;
+                _buildingManager.pendingObject.SetActive(false);
+                //}
 
-            _worldMenuManager.showWorldMenu();
+                _worldMenuManager.showWorldMenu();
+            }
+            else Debug.Log("No se puede abrir si estas editando");
         }
         else if (state == PlayerState.isFree)
         {
