@@ -35,14 +35,14 @@ public class PlayerManager : MonoBehaviour
     {
         state = PlayerState.isFree;
 
-        _startAction.action.performed += OnStartAction;
-        _leftTriggerAction.action.performed += OnLeftTriggerAction;
-        _yAction.action.performed += OnYAction;
+        //_startAction.action.performed += OnStartAction;
+        //_leftTriggerAction.action.performed += OnLeftTriggerAction;
+        //_yAction.action.performed += OnYAction;
 
-        _rightTriggerAction.action.performed += OnRightTriggerAction;
-        _bAction.action.performed += OnBAction;
-        _aAction.action.performed += OnAAction;
-        _rightTouchpadAction.action.performed += OnRightTouchpadAction;
+        //_rightTriggerAction.action.performed += OnRightTriggerAction;
+        //_bAction.action.performed += OnBAction;
+        //_aAction.action.performed += OnAAction;
+        //_rightTouchpadAction.action.performed += OnRightTouchpadAction;
     }
 
     private void Update()
@@ -52,18 +52,25 @@ public class PlayerManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        _startAction.action.performed -= OnStartAction;
-        _leftTriggerAction.action.performed -= OnLeftTriggerAction;
-        _yAction.action.performed -= OnYAction;
+        _startAction.action.performed -= OpenWorldMenuAction;
 
-        _rightTriggerAction.action.performed -= OnRightTriggerAction;
-        _bAction.action.performed -= OnBAction;
-        _aAction.action.performed -= OnAAction;
-        _rightTouchpadAction.action.performed -= OnRightTouchpadAction;
+        _leftTriggerAction.action.performed -= RotateObjectAction;
+
+        _yAction.action.performed -= SelectObjectAction;
+
+        _rightTriggerAction.action.performed -= PlaceObjectAction;
+
+        _bAction.action.performed -= CancelObjectAction;
+        _bAction.action.performed -= CloseWorldMenuAction;
+
+        _aAction.action.performed -= InstantiateModelAction;
+
+        _rightTouchpadAction.action.performed -= ScaleObjectAction;
+
     }
 
     // Actualiza el estado del jugador, dependiendo de la situacion
-    public void updateStates()
+    private void updateStates()
     {
 
         //if (_worldMenuManager.isOpened && _buildingManager.selectedBuildingObject != null)
@@ -73,35 +80,69 @@ public class PlayerManager : MonoBehaviour
         if (_worldMenuManager.isOpened)
         {
             state = PlayerState.isInMenu;
+
+            // Remove actions from other player states
+            _bAction.action.performed -= CancelObjectAction;
+
+            // Add actions from this player state
+            _bAction.action.performed += CloseWorldMenuAction;
         }
         else if (_buildingManager.selectedBuildingObject != null)
         {
             state = PlayerState.isBuilding;
+
+            // Remove actions from other player states
+            _bAction.action.performed -= CloseWorldMenuAction;
+
+            // Add actions from this player state
+            _rightTriggerAction.action.performed += PlaceObjectAction;
+            _leftTriggerAction.action.performed += RotateObjectAction;
+            _startAction.action.performed += OpenWorldMenuAction;
+            _bAction.action.performed += CancelObjectAction;
+            _rightTouchpadAction.action.performed += ScaleObjectAction;
         }
         else
         {
             state = PlayerState.isFree;
+
+            // Remove actions from other player states
+
+            // Add actions from this player state
+            _startAction.action.performed += OpenWorldMenuAction;
+            _yAction.action.performed += SelectObjectAction;
+            _aAction.action.performed += InstantiateModelAction;
         }
     }
 
-    // Funciones de cada boton
-    void OnRightTriggerAction(InputAction.CallbackContext context)
+    // Right trigger actions
+
+    /// <summary>
+    /// Place the selected object in the world with the right trigger input
+    /// </summary>
+    void PlaceObjectAction(InputAction.CallbackContext context)
     {
-        if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject.canPlace == true)
+        if (_buildingManager.selectedBuildingObject.canPlace == true)
         {
             _buildingManager.PlaceObject();
         }
     }
 
-    void OnLeftTriggerAction(InputAction.CallbackContext context)
+    // Left trigger actions
+
+    /// <summary>
+    /// Rotate the selected object with the left trigger input
+    /// </summary>
+    void RotateObjectAction(InputAction.CallbackContext context)
     {
-        if (state == PlayerState.isBuilding)
-        {
-            _buildingManager.selectedBuildingObject.RotateObject();
-        }
+        _buildingManager.selectedBuildingObject.RotateObject();
     }
 
-    void OnStartAction(InputAction.CallbackContext context)
+    // Start input actions
+
+    /// <summary>
+    /// Open the world menu from start input
+    /// </summary>
+    void OpenWorldMenuAction(InputAction.CallbackContext context)
     {
         if (state == PlayerState.isBuilding)
         {
@@ -124,45 +165,46 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    void OnBAction(InputAction.CallbackContext context)
-    {
-        // Cerrar el menu
-        if (state == PlayerState.isInMenu)
-        {
-            // Si hay un modelo del menu seleccionado, continua ese proceso al cerrarlo
-            if (_buildingManager.pendingObject != null)
-            {
-                //_buildingManager.pendingObject.SetActive(true);
-                //_buildingManager.CancelObjectPlacement();
-                _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
-            }
+    // B input actions
 
-            _worldMenuManager.hideWorldMenu();
+    /// <summary>
+    /// Close world menu with B input
+    /// </summary>
+    void CloseWorldMenuAction(InputAction.CallbackContext context)
+    {
+        // Si hay un modelo del menu seleccionado, continua ese proceso al cerrarlo
+        if (_buildingManager.pendingObject != null)
+        {
+            //_buildingManager.pendingObject.SetActive(true);
+            //_buildingManager.CancelObjectPlacement();
+            _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
         }
 
-        // Cancelar la transformacion del objeto
-        else if (state == PlayerState.isBuilding)
+        _worldMenuManager.hideWorldMenu();
+    }
+
+    /// <summary>
+    /// Cancel object transform with B input
+    /// </summary>
+    void CancelObjectAction(InputAction.CallbackContext context)
+    {
+        if (_buildingManager.pendingObject != null) _buildingManager.CancelObjectPlacement();
+        else
         {
-            if (_buildingManager.pendingObject != null) _buildingManager.CancelObjectPlacement();
-            else
-            {
-                _buildingManager.CancelObjectTransform();
-            }
+            _buildingManager.CancelObjectTransform();
         }
     }
 
-    void OnYAction(InputAction.CallbackContext context)
+    // Y input actions
+    void SelectObjectAction(InputAction.CallbackContext context)
     {
-        if (state == PlayerState.isFree)
-        {
-            _buildingManager.SelectObject();
-        }
+        _buildingManager.SelectObject();
     }
 
-    void OnRightTouchpadAction(InputAction.CallbackContext context)
+    // Right touchpad actions
+    void ScaleObjectAction(InputAction.CallbackContext context)
     {
-        //if (_buildingManager.selectedBuildingObject != null)
-        if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject != null)
+        if (_buildingManager.selectedBuildingObject != null)
         {
             _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
         }
@@ -172,14 +214,12 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    void OnAAction(InputAction.CallbackContext context)
+    // A input actions
+    void InstantiateModelAction(InputAction.CallbackContext context)
     {
-        if (state == PlayerState.isFree)
+        if (_worldMenuManager.selectedModel != null)
         {
-            if (_worldMenuManager.selectedModel != null)
-            {
-                _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
-            }
+            _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
         }
     }
 }
