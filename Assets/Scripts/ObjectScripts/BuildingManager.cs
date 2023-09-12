@@ -48,9 +48,16 @@ public class BuildingManager : MonoBehaviour
         XRRayInteractor ray = rightController.GetComponent<XRRayInteractor>();
         RaycastHit hit;
 
-        if(ray.TryGetCurrent3DRaycastHit(out hit))
+        if (ray.TryGetCurrent3DRaycastHit(out hit))
         {
             _hitPos = hit.point;
+
+            // // Ajustar la posicion para que el centro del objeto este en el punto de colision
+            if (playerManager.state == PlayerState.isBuilding) 
+            {
+                _hitPos = hit.point + FindMaxAxis(hit.normal);
+                //_hitPos += hit.normal.normalized * selectedBuildingObject.boxCollider.bounds.extents.y;
+            }
 
             // Activar el outline del objeto si está siendo apuntado con el mando
             if (playerManager.state == PlayerState.isFree && hit.collider.gameObject.TryGetComponent<BuildingObject>(out var auxObj))
@@ -91,6 +98,30 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
+    Vector3 FindMaxAxis(Vector3 normal)
+    {
+        // Encontrar el eje dominante de la normal
+        float maxAxis = Mathf.Max(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
+
+        // Calcular el desplazamiento necesario para que el centro del objeto este alineado con la superficie
+        Vector3 offset = Vector3.zero;
+        if (Mathf.Abs(normal.x) == maxAxis)
+        {
+            offset = normal * selectedBuildingObject.boxCollider.bounds.extents.x;
+        }
+        else if (Mathf.Abs(normal.y) == maxAxis)
+        {
+            offset = normal * selectedBuildingObject.boxCollider.bounds.extents.y;
+        }
+        else if (Mathf.Abs(normal.z) == maxAxis)
+        {
+            offset = normal * selectedBuildingObject.boxCollider.bounds.extents.z;
+        }
+
+        return offset;
+
+    }
+
     public void InstantiateModel(GameObject selectedModel)
     {
         if (pendingObject != null) Destroy(pendingObject);
@@ -103,6 +134,7 @@ public class BuildingManager : MonoBehaviour
         // Guardamos su material en la lista de materiales de colision
         collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
     }
+
 
     // Provisional, falta implementar el sistema grid de verdad
     //float RoundToNearestGrid(float pos)

@@ -40,7 +40,7 @@ public class BuildingObject : MonoBehaviour
         }
     }
 
-    //Con el trigger izquierdo se rota el objeto (30 grados)
+    //Con el trigger izquierdo se rota el objeto en el eje Y (30 grados)
     public void RotateObject()
     {
         gameObject.transform.Rotate(Vector3.up, 30);
