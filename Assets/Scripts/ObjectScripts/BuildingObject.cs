@@ -9,11 +9,13 @@ public class BuildingObject : MonoBehaviour
 
     [SerializeField] Outline outline;
 
-    // TODO: Aqui se guardan las transformaciones previas a la edicion del objeto seleccionado
+    // Aqui se guardan las transformaciones previas a la edicion del objeto seleccionado
     //private Transform lastTransform;
     private Vector3 _lastPos;
     private Vector3 _lastRot;
     private Vector3 _lastScale;
+
+    // ------------------------------------------------
 
     // Indica si se puede colocar el objeto o no
     public bool canPlace;
@@ -23,22 +25,22 @@ public class BuildingObject : MonoBehaviour
     public BoxCollider boxCollider;
 
     // Si el objeto colisiona con otros objetos, no se puede colocar
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Object"))
-        {
-            //Debug.Log("No se puede");
-            canPlace = false;
-        }
-    }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Object"))
+    //    {
+    //        //Debug.Log("No se puede");
+    //        canPlace = false;
+    //    }
+    //}
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.CompareTag("Object"))
-        {
-            canPlace = true;
-        }
-    }
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.gameObject.CompareTag("Object"))
+    //    {
+    //        canPlace = true;
+    //    }
+    //}
 
     //Con el trigger izquierdo se rota el objeto en el eje Y (30 grados)
     public void RotateObject()

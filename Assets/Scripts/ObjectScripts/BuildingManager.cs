@@ -8,6 +8,12 @@ public class BuildingManager : MonoBehaviour
     // Posicion donde ray colisiona con un objeto de la escena
     private Vector3 _hitPos;
 
+    // Raycast from right controller
+    private XRRayInteractor ray;
+    
+    // Hit object from raycast
+    // private RaycastHit hit;
+
     [SerializeField] PlayerManager playerManager;
 
     [SerializeField] private Material[] collisionMaterials;
@@ -29,6 +35,11 @@ public class BuildingManager : MonoBehaviour
 
     public float rotateAmount;
 
+    private void Start()
+    {
+       ray = rightController.GetComponent<XRRayInteractor>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -36,7 +47,14 @@ public class BuildingManager : MonoBehaviour
         //if (pendingObject != null)
         if (selectedBuildingObject != null)
         {
-            selectedBuildingObject.gameObject.transform.position = _hitPos;
+            selectedBuildingObject.transform.position = _hitPos;
+            //selectedBuildingObject.boxCollider.transform.position = _hitPos;
+
+            // Prueba de ComputePenetration
+            //if (Physics.ComputePenetration(selectedBuildingObject.boxCollider, selectedBuildingObject.boxCollider.transform.position, selectedBuildingObject.boxCollider.transform.rotation, hit.collider, hit.transform.position, hit.transform.rotation, out var direction, out var distance))
+            //{
+            //    selectedBuildingObject.boxCollider.transform.position += direction * distance;
+            //}
 
             // Actualizar materiales de colision
             UpdateMaterials();
@@ -45,9 +63,8 @@ public class BuildingManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        XRRayInteractor ray = rightController.GetComponent<XRRayInteractor>();
         RaycastHit hit;
-
+        
         if (ray.TryGetCurrent3DRaycastHit(out hit))
         {
             _hitPos = hit.point;
@@ -56,7 +73,6 @@ public class BuildingManager : MonoBehaviour
             if (playerManager.state == PlayerState.isBuilding) 
             {
                 _hitPos = hit.point + FindMaxAxis(hit.normal);
-                //_hitPos += hit.normal.normalized * selectedBuildingObject.boxCollider.bounds.extents.y;
             }
 
             // Activar el outline del objeto si está siendo apuntado con el mando
@@ -166,10 +182,13 @@ public class BuildingManager : MonoBehaviour
         //}
         //else 
         //{
-            selectedBuildingObject.boxCollider.isTrigger = false;
+        //selectedBuildingObject.boxCollider.isTrigger = false;
 
-            // "Soltamos" el objeto seleccionado
-            selectedBuildingObject = null;
+        // Change the layer to Default so the Raycast can interact with the object
+        selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Default");
+
+        // "Soltamos" el objeto seleccionado
+        selectedBuildingObject = null;
         //}
 
         pendingObject = null;
@@ -206,7 +225,8 @@ public class BuildingManager : MonoBehaviour
             // Guardamos su material en la lista de materiales de colision
             collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
             // Activamos isTrigger para que no haya conflicto con el Raycast
-            selectedBuildingObject.boxCollider.isTrigger = true;
+            //selectedBuildingObject.boxCollider.isTrigger = true;
+            selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
         }
     }
 
@@ -221,6 +241,6 @@ public class BuildingManager : MonoBehaviour
         // Volvemos a asignarle su material original
         auxObj.assignMaterial(collisionMaterials[2]);
         // Desactivamos isTrigger para que no haya conflicto con el Raycast
-        auxObj.boxCollider.isTrigger = false;
+        //auxObj.boxCollider.isTrigger = false;
     }
 }

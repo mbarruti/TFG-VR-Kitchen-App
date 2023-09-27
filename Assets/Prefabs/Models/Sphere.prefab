@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5301576208806791989}
   - component: {fileID: 4537490476641284104}
   - component: {fileID: 2101435752531112238}
-  - component: {fileID: 559760171093370003}
   - component: {fileID: 1381000276489102917}
-  m_Layer: 0
+  - component: {fileID: 559760171093370003}
+  m_Layer: 2
   m_Name: Sphere
   m_TagString: Object
   m_Icon: {fileID: 0}
@@ -119,23 +119,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingManager: {fileID: 8375075432082508608, guid: 4c6ae0418e3d3ca42b7f514855d1fbdd, type: 3}
   outline: {fileID: 4537490476641284104}
+  objectPos: {x: 0, y: 0, z: 0}
   canPlace: 1
   meshRenderer: {fileID: 5301576208806791989}
   boxCollider: {fileID: 559760171093370003}
-  lastTransform: {fileID: 0}
---- !u!65 &559760171093370003
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2570844246776298401}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &1381000276489102917
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -152,3 +139,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &559760171093370003
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2570844246776298401}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
