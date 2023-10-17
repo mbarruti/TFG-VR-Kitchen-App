@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class BuildingObject : MonoBehaviour
 {
-    [SerializeField] BuildingManager _buildingManager;
+    //[SerializeField] BuildingManager _buildingManager;
 
     [SerializeField] Outline outline;
 
@@ -15,7 +15,13 @@ public class BuildingObject : MonoBehaviour
     private Vector3 _lastRot;
     private Vector3 _lastScale;
 
+    //private Collider hitCollider;
+
+    private Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
+
     // ------------------------------------------------
+
+    public BuildingManager _buildingManager;
 
     // Indica si se puede colocar el objeto o no
     public bool canPlace;
@@ -23,6 +29,45 @@ public class BuildingObject : MonoBehaviour
     public MeshRenderer meshRenderer;
 
     public BoxCollider boxCollider;
+
+    public Rigidbody objectRigidbody;
+
+    public bool isPlaced;
+
+    public bool isInLimit;
+
+    //public Vector3 offset;
+
+    public List<Collider> detectedColliders;
+
+    private void Start()
+    {
+        //Debug.Log("hitPos del Update:" + offset);
+        //transform.position = _buildingManager._hitPos;
+        //transform.position = new Vector3(0, 0, 0);
+
+        GetBoxVertices(); // No lo uso
+    }
+
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    Collider collider = collision.collider;
+    //    if (/*collision.collider != _buildingManager.hit.collider && */!detectedColliders.Contains(collider))
+    //    {
+    //        detectedColliders.Add(collider);
+    //    }
+        
+    //}
+
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    Collider collider = collision.collider;
+    //    Debug.Log("sale");
+    //    if (detectedColliders.Contains(collider))
+    //    {
+    //        detectedColliders.Remove(collider);
+    //    }
+    //}
 
     // Si el objeto colisiona con otros objetos, no se puede colocar
     //private void OnTriggerStay(Collider other)
@@ -41,6 +86,51 @@ public class BuildingObject : MonoBehaviour
     //        canPlace = true;
     //    }
     //}
+
+    public bool IsInLimit(Collider collider)
+    {
+        //bool allSameSide = false;
+        float distance;
+
+        Vector3[] directions = { Vector3.up };
+
+        //Vector3[] vertices = GetBoxVertices();
+
+        foreach (Vector3 vertex in vertices)
+        {
+            //foreach (Vector3 direction in directions)
+            //{
+                distance = Vector3.Dot(vertex - new Vector3 (0, 0, 0), Vector3.up);
+                if (distance < 0)
+                {
+                    Debug.Log(distance);
+                    return false;
+                }
+            //}
+        }
+
+        return true;
+    }
+
+    // Get the collider vertices
+    Vector3[] GetBoxVertices()
+    {
+        Vector3 center = boxCollider.center;
+        Vector3 size = boxCollider.size * 0.5f; // Divide to get half of the collider
+
+        //Vector3[] vertices = new Vector3[8];
+        for (int i = 0; i < 8; i++)
+        {
+            float x = ((i & 1) == 0) ? size.x : -size.x;
+            float y = ((i & 2) == 0) ? size.y : -size.y;
+            float z = ((i & 4) == 0) ? size.z : -size.z;
+
+            vertices[i] = center + new Vector3(x, y, z);
+            //Debug.Log(vertices[i]);
+        }
+
+        return vertices;
+    }
 
     //Con el trigger izquierdo se rota el objeto en el eje Y (30 grados)
     public void RotateObject()
