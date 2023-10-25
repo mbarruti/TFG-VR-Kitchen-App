@@ -87,30 +87,30 @@ public class BuildingObject : MonoBehaviour
     //    }
     //}
 
-    public bool IsInLimit(Collider collider)
-    {
-        //bool allSameSide = false;
-        float distance;
+    //public bool IsInLimit(Collider collider)
+    //{
+    //    //bool allSameSide = false;
+    //    float distance;
 
-        Vector3[] directions = { Vector3.up };
+    //    Vector3[] directions = { Vector3.up };
 
-        //Vector3[] vertices = GetBoxVertices();
+    //    //Vector3[] vertices = GetBoxVertices();
 
-        foreach (Vector3 vertex in vertices)
-        {
-            //foreach (Vector3 direction in directions)
-            //{
-                distance = Vector3.Dot(vertex - new Vector3 (0, 0, 0), Vector3.up);
-                if (distance < 0)
-                {
-                    Debug.Log(distance);
-                    return false;
-                }
-            //}
-        }
+    //    foreach (Vector3 vertex in vertices)
+    //    {
+    //        //foreach (Vector3 direction in directions)
+    //        //{
+    //            distance = Vector3.Dot(vertex - new Vector3 (0, 0, 0), Vector3.up);
+    //            if (distance < 0)
+    //            {
+    //                Debug.Log(distance);
+    //                return false;
+    //            }
+    //        //}
+    //    }
 
-        return true;
-    }
+    //    return true;
+    //}
 
     // Get the collider vertices
     Vector3[] GetBoxVertices()

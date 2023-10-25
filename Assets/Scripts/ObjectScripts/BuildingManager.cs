@@ -53,6 +53,7 @@ public class BuildingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(hit.collider.bounds.size);
         //offset = Vector3.zero;
         // Si hay un objeto pendiente de colocar en la escena, lo posicionamos donde apunta el usuario
         //if (pendingObject != null)
@@ -109,17 +110,16 @@ public class BuildingManager : MonoBehaviour
                     hitObject.switchOutline(true);
                 }
             }
-        }
-        else
-        {
-            //Debug.Log("No apunta a obj");
-            if (hitObject != null)
+            else
             {
-                //Debug.Log("Outline desactivada");
-                hitObject.switchOutline(false);
-                hitObject = null;
+                //Debug.Log("No apunta a obj");
+                if (hitObject != null)
+                {
+                    //Debug.Log("Outline desactivada");
+                    hitObject.switchOutline(false);
+                    hitObject = null;
+                }
             }
-        }
             // Prueba de movimiento de objeto en FixedUpdate
             //if (selectedBuildingObject != null)
             //{
@@ -129,6 +129,7 @@ public class BuildingManager : MonoBehaviour
             //    // Actualizar materiales de colision
             //    UpdateMaterials();
             //}
+        }
     }
 
     /// <summary>
@@ -243,6 +244,9 @@ public class BuildingManager : MonoBehaviour
 
         // Guardamos su material en la lista de materiales de colision
         collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
+
+        // Match the scale of the colliders
+        //parentObject.SetScale(selectedBuildingObject);
     }
 
 
@@ -291,6 +295,9 @@ public class BuildingManager : MonoBehaviour
 
         pendingObject = null;
         //offset = new Vector3(0, 0, 0);
+
+        // Reset the transform of the collision manager
+        //parentObject.ResetTransform();
     }
 
     // Cancelar la colocacion del objeto pendiente
@@ -301,6 +308,9 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject = null;
 
         //worldMenuManager.selectedModel = null;
+
+        // Reset the transform of the collision manager
+        //parentObject.ResetTransform();
     }
 
     // Parar la colocacion del objeto pendiente
@@ -332,10 +342,13 @@ public class BuildingManager : MonoBehaviour
             // Change to non-kinematic rigidbody so OnCollisionStay is called
             selectedBuildingObject.objectRigidbody.isKinematic = false;
             selectedBuildingObject.isPlaced = false;
+
+            // Match the scale of the colliders
+            //parentObject.SetScale(selectedBuildingObject);
         }
     }
 
-    //Cancelar la transformacion del objeto del mundo seleccionado
+    // Cancelar la transformacion del objeto del mundo seleccionado
     public void CancelObjectTransform()
     {
         var auxObj = selectedBuildingObject;
@@ -354,5 +367,8 @@ public class BuildingManager : MonoBehaviour
         auxObj.assignMaterial(collisionMaterials[2]);
         // Desactivamos isTrigger para que no haya conflicto con el Raycast
         //auxObj.boxCollider.isTrigger = false;
+
+        // Reset the transform of the collision manager
+        //parentObject.ResetTransform();
     }
 }
