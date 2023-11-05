@@ -246,22 +246,10 @@ public class BuildingManager : MonoBehaviour
         collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
 
         // Match the scale of the colliders
-        //parentObject.SetScale(selectedBuildingObject);
+        parentObject.SetScale(selectedBuildingObject);
+
+        Debug.Log(parentObject.detectedColliders.Count);
     }
-
-
-    // Provisional, falta implementar el sistema grid de verdad
-    //float RoundToNearestGrid(float pos)
-    //{
-    //    float xDiff = pos % gridSize;
-    //    pos -= xDiff;
-
-    //    if (xDiff > (gridSize / 2))
-    //    {
-    //        pos += gridSize;
-    //    }
-    //    return pos;
-    //}
 
     // FUNCIONES LLAMADAS EN PlayerActions
 
@@ -297,7 +285,7 @@ public class BuildingManager : MonoBehaviour
         //offset = new Vector3(0, 0, 0);
 
         // Reset the transform of the collision manager
-        //parentObject.ResetTransform();
+        parentObject.Reset();
     }
 
     // Cancelar la colocacion del objeto pendiente
@@ -310,7 +298,7 @@ public class BuildingManager : MonoBehaviour
         //worldMenuManager.selectedModel = null;
 
         // Reset the transform of the collision manager
-        //parentObject.ResetTransform();
+        parentObject.Reset();
     }
 
     // Parar la colocacion del objeto pendiente
@@ -344,7 +332,7 @@ public class BuildingManager : MonoBehaviour
             selectedBuildingObject.isPlaced = false;
 
             // Match the scale of the colliders
-            //parentObject.SetScale(selectedBuildingObject);
+            parentObject.SetScale(selectedBuildingObject);
         }
     }
 
@@ -369,6 +357,6 @@ public class BuildingManager : MonoBehaviour
         //auxObj.boxCollider.isTrigger = false;
 
         // Reset the transform of the collision manager
-        //parentObject.ResetTransform();
+        parentObject.Reset();
     }
 }

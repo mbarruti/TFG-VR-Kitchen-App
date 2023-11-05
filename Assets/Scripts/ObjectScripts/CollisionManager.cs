@@ -29,7 +29,7 @@ public class CollisionManager : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         Collider collider = collision.collider;
-        Debug.Log("sale");
+        //Debug.Log("sale");
         if (detectedColliders.Contains(collider))
         {
             detectedColliders.Remove(collider);
@@ -63,11 +63,18 @@ public class CollisionManager : MonoBehaviour
     //    gameObject.transform.localScale = new Vector3(_lastScale.x, _lastScale.y, _lastScale.z);
     //}
 
-    public void ResetTransform()
+    /// <summary>
+    /// Reset the transform of this object and remove all detected colliders from the list
+    /// </summary>
+    public void Reset()
     {
         boxCollider.transform.position = new Vector3(0, -3, 0);
         boxCollider.transform.eulerAngles = new Vector3(0, 0, 0);
         boxCollider.transform.localScale = new Vector3(1, 1, 1);
+
+        detectedColliders.Clear();
+
+        Debug.Log(detectedColliders.Count);
     }
 
     public void SetScale(BuildingObject selectedObject)
