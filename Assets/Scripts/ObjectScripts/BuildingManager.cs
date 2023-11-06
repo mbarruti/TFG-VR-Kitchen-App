@@ -61,12 +61,14 @@ public class BuildingManager : MonoBehaviour
         if (selectedBuildingObject != null)
         {
             parentObject.transform.position = _hitPos + GetOffset(hit.normal);
+            //selectedBuildingObject.transform.position = _hitPos + GetOffset(hit.normal);
+
             // PRUEBA: los parametros son de prueba para el cubo, dependiendo del objeto el radio de la esfera deberia cambiar
             //detectedColliders = Physics.OverlapSphere(selectedBuildingObject.transform.position, 2);
             //Debug.Log(selectedBuildingObject.detectedColliders.Count);
             //if (parentObject.detectedColliders.Count == 1)
             //{
-                //Debug.Log("no colisiona");
+            //Debug.Log("no colisiona");
             //offset = Vector3.zero;
             //}
             //Debug.Log(detectedColliders.Length);
@@ -182,12 +184,12 @@ public class BuildingManager : MonoBehaviour
         }
         else if (Mathf.Abs(normal.y) == maxAxis)
         {
-            hitOffset = normal * parentObject.boxCollider.bounds.extents.x;
+            hitOffset = normal * parentObject.boxCollider.bounds.extents.y;
             //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.y;
         }
         else if (Mathf.Abs(normal.z) == maxAxis)
         {
-            hitOffset = normal * parentObject.boxCollider.bounds.extents.x;
+            hitOffset = normal * parentObject.boxCollider.bounds.extents.z;
             //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.z;
         }
 
