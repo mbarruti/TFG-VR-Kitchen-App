@@ -42,11 +42,11 @@ public class CollisionManager : MonoBehaviour
         gameObject.transform.Rotate(Vector3.up, 30);
     }
 
-    // Escala según el valor del eje Y del mando derecho
-    public void ScaleObject(float value)
+    // Escala el collider según el valor del eje Y del mando derecho
+    public void ScaleCollider(float value)
     {
         float scaleAmount = value * Time.deltaTime;
-        transform.localScale += Vector3.one * scaleAmount;
+        boxCollider.size += Vector3.one * scaleAmount;
     }
 
     //public void SavePreviousTransform()
@@ -68,19 +68,27 @@ public class CollisionManager : MonoBehaviour
     /// </summary>
     public void Reset()
     {
-        boxCollider.transform.position = new Vector3(0, -3, 0);
-        boxCollider.transform.eulerAngles = new Vector3(0, 0, 0);
-        boxCollider.transform.localScale = new Vector3(1, 1, 1);
+        //boxCollider.transform.localScale = new Vector3(1, 1, 1);
+        boxCollider.size = new Vector3(1, 1, 1);
+        transform.position = new Vector3(0, -3, 0);
+        transform.eulerAngles = new Vector3(0, 0, 0);
 
         detectedColliders.Clear();
 
-        Debug.Log(detectedColliders.Count);
+        //Debug.Log(detectedColliders.Count);
     }
 
+    /// <summary>
+    /// Set the size of the box collider equal to the scale of the selected object
+    /// </summary>
     public void SetScale(BuildingObject selectedObject)
     {
         //boxCollider.transform.position = new Vector3(selectedObject.boxCollider..x, _lastPos.y, _lastPos.z);
         //boxCollider.transform.eulerAngles = new Vector3(selectedObject.x, _lastRot.y, _lastRot.z);
-        boxCollider.transform.localScale = new Vector3(selectedObject.boxCollider.transform.localScale.x, selectedObject.boxCollider.transform.localScale.y, selectedObject.boxCollider.transform.localScale.z);
+        //boxCollider.transform.localScale = new Vector3(selectedObject.boxCollider.transform.localScale.x, selectedObject.boxCollider.transform.localScale.y, selectedObject.boxCollider.transform.localScale.z);
+
+        // Por ahora funciona, pero hay que probar con objetos de cocina con distintas formas por si acaso
+        //boxCollider.size = new Vector3(selectedObject.transform.localScale.x, selectedObject.transform.localScale.y, selectedObject.transform.localScale.z);
+        boxCollider.size = selectedObject.transform.localScale;
     }
 }

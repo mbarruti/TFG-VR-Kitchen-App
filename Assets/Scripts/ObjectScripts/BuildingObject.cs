@@ -138,7 +138,7 @@ public class BuildingObject : MonoBehaviour
         gameObject.transform.Rotate(Vector3.up, 30);
     }
 
-    // Escala según el valor del eje Y del mando derecho
+    // Escala según el valor del eje Y del mando derecho (falta prohibir que se escale a menor o igual que 0)
     public void ScaleObject(float value)
     {
         float scaleAmount = value * Time.deltaTime;

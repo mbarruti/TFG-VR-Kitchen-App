@@ -76,6 +76,7 @@ public class BuildingManager : MonoBehaviour
             UpdateOffset();
 
             //if (offset == Vector3.zero) Debug.Log(offset);
+            //Debug.Log(offset);
             selectedBuildingObject.transform.position = parentObject.transform.position + offset;
             //selectedBuildingObject.transform.position = parentObject.transform.position + _hitPos + GetOffset(hit.normal) + offset;
             //selectedBuildingObject.transform.position = Vector3.Lerp(selectedBuildingObject.transform.position, _hitPos + GetOffset(hit.normal) + offset, 30f * Time.deltaTime);
@@ -215,9 +216,11 @@ public class BuildingManager : MonoBehaviour
                 //if (Physics.BoxCast(selectedBuildingObject.transform.position, parentObject.boxCollider.bounds.extents, dir, out var hitt))
                 if (Physics.Raycast(parentObject.transform.position, dir, out var hitt))
                 {
+                    // Maximum distance between the center of both objects before they start clipping
                     float maxDistance = GetAxis(hitt.normal, objCollider.bounds.extents + parentObject.boxCollider.bounds.extents);
+                    // Actual distance between the center of both objects
                     float actualDistance = GetAxis(hitt.normal, Vector3.Scale(-hitt.normal, parentObject.boxCollider.transform.InverseTransformPoint(objCollider.transform.position)));
-
+                    Debug.Log(maxDistance);
                     if (actualDistance < maxDistance)
                     {
                         offset += hitt.normal * (maxDistance - actualDistance);
@@ -228,7 +231,7 @@ public class BuildingManager : MonoBehaviour
                     //Debug.Log("La normal del rayo que golpea en closestPoint es:" + hitt.normal);
 
                     Debug.DrawRay(parentObject.transform.position, dir, Color.red);
-                    Debug.DrawRay(hitt.point, hitt.normal, Color.blue);
+                    //Debug.DrawRay(hitt.point, hitt.normal, Color.blue);
                 }
             }
         }
@@ -250,7 +253,7 @@ public class BuildingManager : MonoBehaviour
         // Match the scale of the colliders
         parentObject.SetScale(selectedBuildingObject);
 
-        Debug.Log(parentObject.detectedColliders.Count);
+        Debug.Log(parentObject.boxCollider.bounds.extents);
     }
 
     // FUNCIONES LLAMADAS EN PlayerActions
@@ -286,6 +289,8 @@ public class BuildingManager : MonoBehaviour
         pendingObject = null;
         //offset = new Vector3(0, 0, 0);
 
+        Debug.Log(parentObject.boxCollider.bounds.extents);
+
         // Reset the transform of the collision manager
         parentObject.Reset();
     }
@@ -298,7 +303,7 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject = null;
 
         //worldMenuManager.selectedModel = null;
-
+        Debug.Log(parentObject.boxCollider.bounds.extents);
         // Reset the transform of the collision manager
         parentObject.Reset();
     }

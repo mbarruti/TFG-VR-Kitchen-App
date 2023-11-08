@@ -170,7 +170,7 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject != null)
         {
             _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
-            _buildingManager.parentObject.ScaleObject(context.action.ReadValue<Vector2>().y);
+            _buildingManager.parentObject.ScaleCollider(context.action.ReadValue<Vector2>().y);
         }
         else
         {
