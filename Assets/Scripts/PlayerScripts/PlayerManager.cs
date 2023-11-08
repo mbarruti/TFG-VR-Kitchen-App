@@ -84,7 +84,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    // Funciones de cada boton
+    // Funcion de cada boton
     void OnRightTriggerAction(InputAction.CallbackContext context)
     {
         if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject.canPlace == true)
@@ -98,6 +98,7 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isBuilding)
         {
             _buildingManager.selectedBuildingObject.RotateObject();
+            _buildingManager.parentObject.RotateObject();
         }
     }
 
@@ -169,6 +170,7 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject != null)
         {
             _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
+            _buildingManager.parentObject.ScaleCollider(context.action.ReadValue<Vector2>().y);
         }
         else
         {

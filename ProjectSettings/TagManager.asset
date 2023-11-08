@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 2
   tags:
   - Object
+  - Wall
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Area
+  - 
   - Water
   - UI
   - 

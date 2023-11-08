@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WorldMenuManager : MonoBehaviour
 {
+    private BuildingObject buildingModel;
 
     // -------------------------------------------
 
@@ -20,6 +21,12 @@ public class WorldMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        foreach (GameObject model in modelsList)
+        {
+            buildingModel = model.GetComponent<BuildingObject>();
+
+            buildingModel._buildingManager = buildingManager;
+        }
         // Deseleccionar todos los objetos en el inicio
         DeselectAllObjects();
     }

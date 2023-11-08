@@ -44,14 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d5c2d1378e732141864842df1353b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 8
+  _hitPos: {x: 0, y: 0, z: 0}
+  playerManager: {fileID: 0}
   collisionMaterials:
   - {fileID: 2100000, guid: 3c32b8d0d1e251246a5ff314335c8966, type: 2}
   - {fileID: 2100000, guid: f8955bde5aa77e3419ab3426b4b777ac, type: 2}
   - {fileID: 2100000, guid: 3b26ba69e08dc3145bbc938057c85aa5, type: 2}
-  gridOn: 0
-  keysManager: {fileID: 0}
-  gridSize: 0.5
+  worldMenuManager: {fileID: 0}
+  pendingObject: {fileID: 0}
+  selectedBuildingObject: {fileID: 0}
+  hitObject: {fileID: 0}
+  rightController: {fileID: 0}
+  leftController: {fileID: 0}
   rotateAmount: 30
