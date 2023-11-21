@@ -14,13 +14,18 @@ public class BuildingManager : MonoBehaviour
     // Hit object from raycast
     // private RaycastHit hit;
 
-    private Collider _hitCollider;
+    //private Collider _hitCollider;
 
     [SerializeField] PlayerManager playerManager;
 
     [SerializeField] private Material[] collisionMaterials;
 
     [SerializeField] private WorldMenuManager worldMenuManager;
+
+    [SerializeField] GameObject startPole;
+    [SerializeField] GameObject endPole;
+    [SerializeField] BuildingWall wall;
+    [SerializeField] GameObject wallPrefab;
 
     // -------------------------------------
 
@@ -43,7 +48,7 @@ public class BuildingManager : MonoBehaviour
 
     public Vector3 offset = Vector3.zero;
 
-    //public Vector3 offset = new Vector3(0, 0, 0);
+    public bool finish = false;
 
     private void Start()
     {
@@ -58,20 +63,21 @@ public class BuildingManager : MonoBehaviour
         // Si hay un objeto pendiente de colocar en la escena, lo posicionamos donde apunta el usuario
         //if (pendingObject != null)
 
-        if (selectedBuildingObject != null)
+        if (playerManager.state == PlayerState.isBuildingWalls && finish == true)
+        {
+            endPole.transform.position = _hitPos + GetOffset(hit.normal);
+
+            startPole.transform.LookAt(endPole.transform.position);
+            endPole.transform.LookAt(startPole.transform.position);
+
+            wall.AdjustWall();
+        }
+
+        //if (selectedBuildingObject != null)
+        else if (playerManager.state == PlayerState.isBuilding)
         {
             parentObject.transform.position = _hitPos + GetOffset(hit.normal);
             //selectedBuildingObject.transform.position = _hitPos + GetOffset(hit.normal);
-
-            // PRUEBA: los parametros son de prueba para el cubo, dependiendo del objeto el radio de la esfera deberia cambiar
-            //detectedColliders = Physics.OverlapSphere(selectedBuildingObject.transform.position, 2);
-            //Debug.Log(selectedBuildingObject.detectedColliders.Count);
-            //if (parentObject.detectedColliders.Count == 1)
-            //{
-            //Debug.Log("no colisiona");
-            //offset = Vector3.zero;
-            //}
-            //Debug.Log(detectedColliders.Length);
 
             UpdateOffset();
 
@@ -96,11 +102,11 @@ public class BuildingManager : MonoBehaviour
             //Debug.Log(hit.collider.gameObject.name);
             //Debug.Log("Nombre de objeto que choca con rayo: " + hit.collider.gameObject.name);
             // Ajustar la posicion para que el centro del objeto este en el punto de colision
-            if (playerManager.state == PlayerState.isBuilding)
-            {
-                _hitPos = hit.point /*+ GetOffset(hit.normal)*/;
-                //parentObject.transform.position = _hitPos + GetOffset(hit.normal);
-            }
+            //if (playerManager.state == PlayerState.isBuilding)
+            //{
+            //    _hitPos = hit.point /*+ GetOffset(hit.normal)*/;
+            //    //parentObject.transform.position = _hitPos + GetOffset(hit.normal);
+            //}
 
             // Activar el outline del objeto si está siendo apuntado con el mando
             if (playerManager.state == PlayerState.isFree && hit.collider.gameObject.TryGetComponent<BuildingObject>(out var auxObj))
@@ -123,15 +129,6 @@ public class BuildingManager : MonoBehaviour
                     hitObject = null;
                 }
             }
-            // Prueba de movimiento de objeto en FixedUpdate
-            //if (selectedBuildingObject != null)
-            //{
-            //    selectedBuildingObject.objectRigidbody.MovePosition(_hitPos);
-            //    //selectedBuildingObject.objectRigidbody.transform.position = _hitPos;
-
-            //    // Actualizar materiales de colision
-            //    UpdateMaterials();
-            //}
         }
     }
 
@@ -366,4 +363,35 @@ public class BuildingManager : MonoBehaviour
         // Reset the transform of the collision manager
         parentObject.Reset();
     }
+
+    public void SetStartPole()
+    {
+        startPole.transform.position = _hitPos + GetOffset(hit.normal);
+
+        finish = true;
+
+        // Instantiate the wall in the world
+        GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
+        wall = auxWall.GetComponent<BuildingWall>();
+        wall.startPole = startPole;
+        wall.endPole = endPole;
+    }
+
+    public void SetEndPole()
+    {
+        finish = false;
+    }
+
+    //void AdjustWall()
+    //{
+    //    endPole.transform.position = _hitPos + GetOffset(hit.normal);
+
+    //    startPole.transform.LookAt(endPole.transform.position);
+    //    endPole.transform.LookAt(startPole.transform.position);
+
+    //    float distance = Vector3.Distance(startPole.transform.position, endPole.transform.position);
+    //    wall.transform.position = startPole.transform.position + distance / 2 * startPole.transform.forward;
+    //    wall.transform.rotation = startPole.transform.rotation;
+    //    wall.transform.localScale = new Vector3(wall.transform.localScale.x, wall.transform.localScale.y, distance);
+    //}
 }

@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] InputActionReference _aAction;
     [SerializeField] InputActionReference _rightTouchpadAction;
 
-    private PlayerState previousState;
+    //private PlayerState previousState;
 
     // Mandos de realidad virtual
     //[SerializeField] private GameObject rightController;
@@ -33,7 +33,7 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
-        state = PlayerState.isFree;
+        //state = PlayerState.isFree;
 
         _startAction.action.performed += OnStartAction;
         _leftTriggerAction.action.performed += OnLeftTriggerAction;
@@ -47,7 +47,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        updateStates();
+        //updateStates();
     }
 
     private void OnDestroy()
@@ -90,6 +90,11 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject.canPlace == true)
         {
             _buildingManager.PlaceObject();
+        }
+        else if (state == PlayerState.isBuildingWalls)
+        {
+            if (_buildingManager.finish == false) _buildingManager.SetStartPole();
+            else _buildingManager.SetEndPole();
         }
     }
 
