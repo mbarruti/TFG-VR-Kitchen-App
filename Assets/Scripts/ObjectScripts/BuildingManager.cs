@@ -16,6 +16,8 @@ public class BuildingManager : MonoBehaviour
 
     //private Collider _hitCollider;
 
+    [SerializeField] private List<GameObject> poleList;
+
     [SerializeField] PlayerManager playerManager;
 
     [SerializeField] private Material[] collisionMaterials;
@@ -26,6 +28,8 @@ public class BuildingManager : MonoBehaviour
     [SerializeField] GameObject endPole;
     [SerializeField] BuildingWall wall;
     [SerializeField] GameObject wallPrefab;
+
+    private RaycastHit wallHit;
 
     // -------------------------------------
 
@@ -58,14 +62,20 @@ public class BuildingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(hit.collider.bounds.size);
-        //offset = Vector3.zero;
-        // Si hay un objeto pendiente de colocar en la escena, lo posicionamos donde apunta el usuario
-        //if (pendingObject != null)
-
         if (playerManager.state == PlayerState.isBuildingWalls && finish == true)
         {
-            endPole.transform.position = _hitPos + GetOffset(hit.normal);
+            if (poleList.Count == 0)
+            {
+                var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
+                endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+            }
+            else
+            {
+                var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
+
+                if (GetAxis(wallHit.normal, sum) == sum.x) endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+                else if (GetAxis(wallHit.normal, sum) == sum.z) endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
+            }
 
             startPole.transform.LookAt(endPole.transform.position);
             endPole.transform.LookAt(startPole.transform.position);
@@ -76,7 +86,7 @@ public class BuildingManager : MonoBehaviour
         //if (selectedBuildingObject != null)
         else if (playerManager.state == PlayerState.isBuilding)
         {
-            parentObject.transform.position = _hitPos + GetOffset(hit.normal);
+            parentObject.transform.position = _hitPos + GetOffset(hit.normal, parentObject.boxCollider);
             //selectedBuildingObject.transform.position = _hitPos + GetOffset(hit.normal);
 
             UpdateOffset();
@@ -168,7 +178,7 @@ public class BuildingManager : MonoBehaviour
         return 0;
     }
 
-    private Vector3 GetOffset(Vector3 normal)
+    private Vector3 GetOffset(Vector3 normal, BoxCollider boxCollider)
     {
         // Encontrar el eje dominante de la normal
         float maxAxis = Mathf.Max(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
@@ -177,17 +187,17 @@ public class BuildingManager : MonoBehaviour
         Vector3 hitOffset = Vector3.zero;
         if (Mathf.Abs(normal.x) == maxAxis)
         {
-            hitOffset = normal * parentObject.boxCollider.bounds.extents.x;
+            hitOffset = normal * boxCollider.bounds.extents.x;
             //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.x;
         }
         else if (Mathf.Abs(normal.y) == maxAxis)
         {
-            hitOffset = normal * parentObject.boxCollider.bounds.extents.y;
+            hitOffset = normal * boxCollider.bounds.extents.y;
             //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.y;
         }
         else if (Mathf.Abs(normal.z) == maxAxis)
         {
-            hitOffset = normal * parentObject.boxCollider.bounds.extents.z;
+            hitOffset = normal * boxCollider.bounds.extents.z;
             //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.z;
         }
 
@@ -366,20 +376,53 @@ public class BuildingManager : MonoBehaviour
 
     public void SetStartPole()
     {
-        startPole.transform.position = _hitPos + GetOffset(hit.normal);
+        if (poleList.Count == 0) 
+        {
+            startPole.transform.position = _hitPos + GetOffset(hit.normal, startPole.GetComponent<BoxCollider>());
 
-        finish = true;
+            finish = true;
 
-        // Instantiate the wall in the world
-        GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
-        wall = auxWall.GetComponent<BuildingWall>();
-        wall.startPole = startPole;
-        wall.endPole = endPole;
+            // Instantiate the wall in the world
+            GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
+            wall = auxWall.GetComponent<BuildingWall>();
+            wall.startPole = startPole;
+            wall.endPole = endPole;
+        }
+        else if (hit.collider.tag == "Wall")
+        {
+            wallHit = hit;
+
+            startPole.transform.position = hit.collider.bounds.center;
+            //startPole.transform.rotation = hit.collider.gameObject.transform.rotation;
+
+            finish = true;
+
+            // Instantiate the wall in the world
+            GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
+            wall = auxWall.GetComponent<BuildingWall>();
+            wall.startPole = startPole;
+            wall.endPole = endPole;
+        }
     }
 
     public void SetEndPole()
     {
         finish = false;
+
+        var aux = Instantiate(startPole, startPole.transform.position, startPole.transform.rotation);
+        var aux2 = Instantiate(endPole, endPole.transform.position, endPole.transform.rotation);
+
+        aux.layer = LayerMask.NameToLayer("Default");
+        aux2.layer = LayerMask.NameToLayer("Default");
+
+        poleList.Add(aux);
+        poleList.Add(aux2);
+
+        startPole.transform.position = new Vector3(0, -20, 0);
+        endPole.transform.position = new Vector3(0, -20, 0);
+
+        startPole.transform.eulerAngles = new Vector3(0, 0, 0);
+        endPole.transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
     //void AdjustWall()

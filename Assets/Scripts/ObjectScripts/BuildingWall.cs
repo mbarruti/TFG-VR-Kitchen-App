@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BuildingWall : MonoBehaviour
 {
+    public BoxCollider boxCollider;
+
     public GameObject startPole;
     public GameObject endPole;
 
@@ -20,6 +22,6 @@ public class BuildingWall : MonoBehaviour
         float distance = Vector3.Distance(startPole.transform.position, endPole.transform.position);
         transform.position = startPole.transform.position + distance / 2 * startPole.transform.forward;
         transform.rotation = startPole.transform.rotation;
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distance);
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distance + 0.1f);
     }
 }
