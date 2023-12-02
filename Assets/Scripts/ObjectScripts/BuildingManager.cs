@@ -26,7 +26,6 @@ public class BuildingManager : MonoBehaviour
 
     [SerializeField] GameObject startPole;
     [SerializeField] GameObject endPole;
-    [SerializeField] BuildingWall wall;
     [SerializeField] GameObject wallPrefab;
 
     private RaycastHit wallHit;
@@ -52,6 +51,8 @@ public class BuildingManager : MonoBehaviour
 
     public Vector3 offset = Vector3.zero;
 
+    public BuildingWall wall;
+
     public bool finish = false;
 
     private void Start()
@@ -67,7 +68,18 @@ public class BuildingManager : MonoBehaviour
             if (poleList.Count == 0)
             {
                 var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
-                endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+                if (wall.axisX == true)
+                {
+                    //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
+                    endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+                }
+                else
+                {
+                    //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
+                    endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+                    endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
+                }
+
             }
             else
             {
@@ -382,9 +394,9 @@ public class BuildingManager : MonoBehaviour
 
             finish = true;
 
-            // Instantiate the wall in the world
-            GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
-            wall = auxWall.GetComponent<BuildingWall>();
+            //// Instantiate the wall in the world
+            //GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
+            //wall = auxWall.GetComponent<BuildingWall>();
             wall.startPole = startPole;
             wall.endPole = endPole;
         }

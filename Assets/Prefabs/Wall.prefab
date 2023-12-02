@@ -110,5 +110,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3c37c1dd00de8d429bb3579f18a11e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boxCollider: {fileID: 3429215769117897165}
   startPole: {fileID: 0}
   endPole: {fileID: 0}
+  axisX: 1
+  axisZ: 0

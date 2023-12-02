@@ -11,9 +11,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] BuildingManager _buildingManager;
 
     // Referencias a botones del mando izquierdo
-    [SerializeField] InputActionReference _startAction;
     [SerializeField] InputActionReference _leftTriggerAction;
     [SerializeField] InputActionReference _yAction;
+    [SerializeField] InputActionReference _xAction;
+    [SerializeField] InputActionReference _startAction;
 
     // Referencias a botones del mando derecho
     [SerializeField] InputActionReference _rightTriggerAction;
@@ -33,10 +34,9 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
-        //state = PlayerState.isFree;
-
         _startAction.action.performed += OnStartAction;
         _leftTriggerAction.action.performed += OnLeftTriggerAction;
+        _xAction.action.performed += OnXAction;
         _yAction.action.performed += OnYAction;
 
         _rightTriggerAction.action.performed += OnRightTriggerAction;
@@ -54,6 +54,7 @@ public class PlayerManager : MonoBehaviour
     {
         _startAction.action.performed -= OnStartAction;
         _leftTriggerAction.action.performed -= OnLeftTriggerAction;
+        _xAction.action.performed += OnXAction;
         _yAction.action.performed -= OnYAction;
 
         _rightTriggerAction.action.performed -= OnRightTriggerAction;
@@ -161,11 +162,25 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    void OnXAction(InputAction.CallbackContext context)
+    {
+        if (state == PlayerState.isBuildingWalls)
+        {
+            _buildingManager.wall.axisX = true;
+            _buildingManager.wall.axisZ = false;
+        }
+    }
+
     void OnYAction(InputAction.CallbackContext context)
     {
         if (state == PlayerState.isFree)
         {
             _buildingManager.SelectObject();
+        }
+        else if (state == PlayerState.isBuildingWalls)
+        {
+            _buildingManager.wall.axisX = false;
+            _buildingManager.wall.axisZ = true;
         }
     }
 
