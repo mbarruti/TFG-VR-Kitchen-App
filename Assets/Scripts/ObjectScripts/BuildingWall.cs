@@ -6,11 +6,13 @@ public class BuildingWall : MonoBehaviour
 {
     public BoxCollider boxCollider;
 
-    public GameObject startPole;
-    public GameObject endPole;
+    public Pole startPole;
+    public Pole endPole;
 
     public bool axisX;
     public bool axisZ;
+
+    // TO-DO: guardar los Poles conectados a esta pared
 
     /// <summary>
     /// Adjust the width of the wall scaling the z axis

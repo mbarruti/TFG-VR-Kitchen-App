@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
 
     [SerializeField] WorldMenuManager _worldMenuManager;
     [SerializeField] BuildingManager _buildingManager;
+    [SerializeField] WallManager _wallManager;
 
     // Referencias a botones del mando izquierdo
     [SerializeField] InputActionReference _leftTriggerAction;
@@ -66,7 +67,6 @@ public class PlayerManager : MonoBehaviour
     // Actualiza el estado del jugador, dependiendo de la situacion
     public void updateStates()
     {
-
         //if (_worldMenuManager.isOpened && _buildingManager.selectedBuildingObject != null)
         //{
         //    state = PlayerState.isInMenuAndBuilding;
@@ -94,8 +94,8 @@ public class PlayerManager : MonoBehaviour
         }
         else if (state == PlayerState.isBuildingWalls)
         {
-            if (_buildingManager.finish == false) _buildingManager.SetStartPole();
-            else _buildingManager.SetEndPole();
+            if (_wallManager.finish == false) _wallManager.SetStartPole();
+            else _wallManager.SetEndPole();
         }
     }
 
@@ -166,8 +166,8 @@ public class PlayerManager : MonoBehaviour
     {
         if (state == PlayerState.isBuildingWalls)
         {
-            _buildingManager.wall.axisX = true;
-            _buildingManager.wall.axisZ = false;
+            _wallManager.wall.axisX = true;
+            _wallManager.wall.axisZ = false;
         }
     }
 
@@ -179,8 +179,8 @@ public class PlayerManager : MonoBehaviour
         }
         else if (state == PlayerState.isBuildingWalls)
         {
-            _buildingManager.wall.axisX = false;
-            _buildingManager.wall.axisZ = true;
+            _wallManager.wall.axisX = false;
+            _wallManager.wall.axisZ = true;
         }
     }
 
