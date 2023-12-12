@@ -54,16 +54,46 @@ public class Pole : MonoBehaviour
     /// <summary>
     /// Filter the available poles in the world to connect to for this pole
     /// <summary>
-    private void FilterAvailablePoles()
+    public List<Pole> FilterAvailablePoles(Vector3 direction, Pole startPole)
     {
+        float axisPos1;
+        float axisPos2;
+
+        float directionAxis;
+
+        directionAxis = Vector3.Dot(direction, Vector3.one);
+        //Debug.Log(direction);
+        //Debug.Log(directionAxis);
+
+        Vector3 directionAbs = new Vector3(Mathf.Abs(direction.x), Mathf.Abs(direction.y), Mathf.Abs(direction.z));
+
+        axisPos1 = Vector3.Dot(startPole.transform.position, directionAbs);
+        Debug.Log(axisPos1);
+
         if (wallManager.poleList.Count != 0)
         {
             // Filter the available poles in the world to connect to for this pole
             foreach (Pole pole in wallManager.poleList)
             {
-                if (!adjacentPoles.Contains(pole) && pole.adjacentPoles.Count < 4) availablePoles.Add(pole);
+                if (!adjacentPoles.Contains(pole) && pole.adjacentPoles.Count < 4)
+                {
+                    axisPos2 = Vector3.Dot(pole.transform.position, directionAbs);
+
+                    if (directionAxis > 0 && axisPos1 < axisPos2)
+                    {
+                        //Debug.Log(axisPos2);
+                        availablePoles.Add(pole);
+                    }
+                    else if (directionAxis < 0 && axisPos1 > axisPos2)
+                    {
+                        //Debug.Log(axisPos2);
+                        availablePoles.Add(pole);
+                    }
+                }
             }
         }
+
+        return availablePoles;
     }
 
     // A lo mejor esta va en WallManager
