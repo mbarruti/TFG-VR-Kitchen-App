@@ -6,9 +6,13 @@ public class Pole : MonoBehaviour
 {
     [SerializeField] WallManager wallManager;
 
-    [SerializeField] List<Pole> availablePoles;
+    //[SerializeField] List<Pole> availablePoles;
 
     // ------------------------------------
+
+    //public List<Pole> availablePoles;
+
+    public List<GameObject> availablePoles;
 
     public List<Pole> adjacentPoles;
 
@@ -54,8 +58,12 @@ public class Pole : MonoBehaviour
     /// <summary>
     /// Filter the available poles in the world to connect to for this pole
     /// <summary>
-    public List<Pole> FilterAvailablePoles(Vector3 direction, Pole startPole)
+    //public List<Pole> FilterAvailablePoles(Vector3 direction, Pole startPole)
+    public void FilterAvailablePoles(Vector3 direction, Pole startPole)
     {
+        RaycastHit[] hitPoles;
+        hitPoles = Physics.RaycastAll(wallManager.wallHit.collider.transform.position, wallManager.wallHit.normal);
+
         float axisPos1;
         float axisPos2;
 
@@ -70,38 +78,54 @@ public class Pole : MonoBehaviour
         axisPos1 = Vector3.Dot(startPole.transform.position, directionAbs);
         Debug.Log(axisPos1);
 
-        if (wallManager.poleList.Count != 0)
+        // Filter the available poles in the world to connect to for this pole
+        foreach (Pole pole in wallManager.poleList)
         {
-            // Filter the available poles in the world to connect to for this pole
-            foreach (Pole pole in wallManager.poleList)
+            if (!adjacentPoles.Contains(pole) && pole.adjacentPoles.Count < 4)
             {
-                if (!adjacentPoles.Contains(pole) && pole.adjacentPoles.Count < 4)
-                {
-                    axisPos2 = Vector3.Dot(pole.transform.position, directionAbs);
+                axisPos2 = Vector3.Dot(pole.transform.position, directionAbs);
 
-                    if (directionAxis > 0 && axisPos1 < axisPos2)
+                if (directionAxis > 0 && axisPos1 < axisPos2)
+                {
+                    //Debug.Log(axisPos2);
+                    if (IsSecondAxisAligned(direction, directionAxis, startPole, pole) == true)
                     {
-                        //Debug.Log(axisPos2);
-                        availablePoles.Add(pole);
+                        //pole.gameObject.layer = LayerMask.NameToLayer("Default");
+                        availablePoles.Add(pole.gameObject);
                     }
-                    else if (directionAxis < 0 && axisPos1 > axisPos2)
+                    else wallManager.SetPreviewPole(startPole, pole, hitPoles);
+                }
+                else if (directionAxis < 0 && axisPos1 > axisPos2)
+                {
+                    //Debug.Log(axisPos2);
+                    if (IsSecondAxisAligned(direction, directionAxis, startPole, pole) == true)
                     {
-                        //Debug.Log(axisPos2);
-                        availablePoles.Add(pole);
+                        //pole.gameObject.layer = LayerMask.NameToLayer("Default");
+                        availablePoles.Add(pole.gameObject);
                     }
+                    else wallManager.SetPreviewPole(startPole, pole, hitPoles);
                 }
             }
         }
 
-        return availablePoles;
+        //return availablePoles;
+    }
+
+    private bool IsSecondAxisAligned(Vector3 direction, float directionAxis, Pole startPole, Pole pole)
+    {
+        if (direction.x == directionAxis && startPole.transform.position.z == pole.transform.position.z)
+            return true;
+        if (direction.z == directionAxis && startPole.transform.position.x == pole.transform.position.x)
+            return true;
+        return false;
     }
 
     // A lo mejor esta va en WallManager
     /// <summary>
     /// Set the PreviewPoles that align with other poles
     /// <summary>
-    public void SetPreviewPoles()
-    {
+    //public void SetPreviewPoles()
+    //{
 
-    }
+    //}
 }

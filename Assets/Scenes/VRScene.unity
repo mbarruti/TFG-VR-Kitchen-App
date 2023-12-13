@@ -3553,7 +3553,7 @@ GameObject:
   - component: {fileID: 933466866}
   - component: {fileID: 933466865}
   - component: {fileID: 933466864}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: PreviewPole
   m_TagString: Wall
   m_Icon: {fileID: 0}
@@ -7279,6 +7279,7 @@ MonoBehaviour:
   startPole: {fileID: 0}
   endPole: {fileID: 0}
   previewPole: {fileID: 933466863}
+  previewPoleList: []
   wallPrefab: {fileID: 3429215769117897154, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
   wall: {fileID: 2125217208}
   finish: 0

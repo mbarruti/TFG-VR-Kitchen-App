@@ -110,3 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8468ae2c3d0feea4cbcb2d1f4adbc586, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallManager: {fileID: 0}
+  availablePoles: []
+  adjacentPoles: []
+  boxCollider: {fileID: 4276431087608297149}

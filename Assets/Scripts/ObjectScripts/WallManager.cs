@@ -20,13 +20,14 @@ public class WallManager : MonoBehaviour
     [SerializeField] Pole startPole;
     [SerializeField] Pole endPole;
     [SerializeField] GameObject previewPole;
+    [SerializeField] List<GameObject> previewPoleList;
     [SerializeField] GameObject wallPrefab;
-
-    private RaycastHit wallHit;
 
     // -------------------------------------------------
 
     public BuildingWall wall;
+
+    public RaycastHit wallHit;
 
     public bool finish = false;
 
@@ -55,7 +56,7 @@ public class WallManager : MonoBehaviour
         {
             if (poleList.Count == 0)
             {
-                var sum = _hitPos + hit.normal * endPole.GetComponent<BoxCollider>().bounds.extents.y;
+                var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
                 if (wall.axisX == true)
                 {
                     //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
@@ -69,30 +70,22 @@ public class WallManager : MonoBehaviour
                 }
 
             }
-            else
+            else if ((endPole.availablePoles.Count > 0 && endPole.availablePoles.Contains(hit.collider.gameObject)) || (previewPoleList.Count > 0 && previewPoleList.Contains(hit.collider.gameObject)))
+            {
+                endPole.transform.position = hit.collider.transform.position;
+            }
+            else if (hit.collider.name == "Floor")
             {
                 var sum = _hitPos + hit.normal * endPole.GetComponent<BoxCollider>().bounds.extents.y;
 
                 // Check whether is moved in the X or Z axis based on the direction of the hit
-                if (GetAxis(wallHit.normal, sum) == sum.x)
+                if (GetAxis(wallHit.normal, sum) == sum.x) // TO-DO: cambiar la condicion
                 {
                     endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
-
-                    //// If a pole is hit, is not the same pole we started from and the pole hit and the wall we are placing are aligned in the Z axis
-                    //if (hit.collider.tag == "Wall" && hit.collider.gameObject != wallHit.collider.gameObject && endPole.transform.position.z == hit.collider.transform.position.z)
-                    //{
-                    //    endPole.transform.position = hit.collider.transform.position;
-                    //}
                 }
-                else if (GetAxis(wallHit.normal, sum) == sum.z)
+                else if (GetAxis(wallHit.normal, sum) == sum.z) // TO-DO: cambiar la condicion
                 {
                     endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
-
-                    //// If a pole is hit, is not the same pole we started from and the pole hit and the wall we are placing are aligned in the X axis
-                    //if (hit.collider.tag == "Wall" && hit.collider.gameObject != wallHit.collider.gameObject && endPole.transform.position.x == hit.collider.transform.position.x)
-                    //{
-                    //    endPole.transform.position = hit.collider.transform.position;
-                    //}
                 }
             }
 
@@ -152,16 +145,15 @@ public class WallManager : MonoBehaviour
 
             if (poleList.Count >= 3)
             {
-                RaycastHit[] hitPoles;
-                hitPoles = Physics.RaycastAll(wallHit.collider.transform.position, wallHit.normal);
-
-                List<Pole> currentPoleList = endPole.FilterAvailablePoles(ApproximateNormal(wallHit.normal), startPole);
+                //List<Pole> currentPoleList = endPole.FilterAvailablePoles(ApproximateNormal(wallHit.normal), startPole);
 
                 // Set preview poles
-                foreach (Pole pole in currentPoleList)
-                {
-                    SetPreviewPole(startPole, pole, hitPoles);
-                }
+                //foreach (Pole pole in currentPoleList)
+                //{
+                //    SetPreviewPole(startPole, pole, hitPoles);
+                //}
+
+                endPole.FilterAvailablePoles(ApproximateNormal(wallHit.normal), startPole);
             }
 
             finish = true;
@@ -184,6 +176,14 @@ public class WallManager : MonoBehaviour
         startPole.gameObject.layer = LayerMask.NameToLayer("Default");
         endPole.gameObject.layer = LayerMask.NameToLayer("Default");
 
+        foreach (GameObject pole in previewPoleList)
+        {
+            Destroy(pole);
+        }
+
+        previewPoleList.Clear();
+        endPole.availablePoles.Clear();
+
         if (poleList.Count == 0) poleList.Add(startPole);
         poleList.Add(endPole);
 
@@ -194,7 +194,7 @@ public class WallManager : MonoBehaviour
         //endPole.transform.eulerAngles = new Vector3(0, 0, 0);
     }
 
-    private void SetPreviewPole(Pole endPole, Pole pole, RaycastHit[] hitPoles)
+    public void SetPreviewPole(Pole startPole, Pole pole, RaycastHit[] hitPoles)
     {
         //Debug.Log(wallHit.normal);
 
@@ -207,22 +207,28 @@ public class WallManager : MonoBehaviour
         //if (wallHit.normal.x == 1f || wallHit.normal.x == -1f)
         {
             //Debug.Log("Dir X");
-            var previewPos = new Vector3(pole.transform.position.x, pole.transform.position.y, endPole.transform.position.z);
+            var previewPos = new Vector3(pole.transform.position.x, pole.transform.position.y, startPole.transform.position.z);
 
-            //isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
-            //if (isPosAvailable == true) 
-                Instantiate(previewPole, previewPos, Quaternion.identity);
+            isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
+            if (isPosAvailable == true)
+            {
+                GameObject auxPole = Instantiate(previewPole, previewPos, Quaternion.identity);
+                previewPoleList.Add(auxPole);
+            }
         }
         else
         {
             //Debug.Log(wallHit.normal.x);
             //Debug.Log("Dir Z");
             //Debug.Log(endPole.transform.position.x);
-            var previewPos = new Vector3(endPole.transform.position.x, pole.transform.position.y, pole.transform.position.z);
+            var previewPos = new Vector3(startPole.transform.position.x, pole.transform.position.y, pole.transform.position.z);
 
-            //isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
-            //if (isPosAvailable == true)
-                Instantiate(previewPole, previewPos, Quaternion.identity);
+            isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
+            if (isPosAvailable == true)
+            {
+                GameObject auxPole = Instantiate(previewPole, previewPos, Quaternion.identity);
+                previewPoleList.Add(auxPole);
+            }
         }
     }
 
