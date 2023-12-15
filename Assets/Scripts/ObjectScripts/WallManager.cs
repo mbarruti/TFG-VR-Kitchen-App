@@ -50,44 +50,27 @@ public class WallManager : MonoBehaviour
         {
             _hitPos = hit.point;
 
-            // Set position for endPole
+            // Update position for endPole while finish is true
             if (finish == true)
             {
-                if (poleList.Count == 0)
+                //var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
+
+                // If the hit is the floor
+                if (hit.collider.name == "Floor")
                 {
                     var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
-                    if (wall.axisX == true)
-                    {
-                        //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
-                        endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
-                    }
-                    else
-                    {
-                        //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
-                        endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
-                        endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
-                    }
+                    //var sum = _hitPos + hit.normal * endPole.GetComponent<BoxCollider>().bounds.extents.y;
+
+                    wall.SetEndPolePosition(sum);
 
                 }
+                // If the hit is an available pole
                 else if ((endPole.availablePoles.Count > 0 && endPole.availablePoles.Contains(hit.collider.gameObject)) || (previewPoleList.Count > 0 && previewPoleList.Contains(hit.collider.gameObject)))
                 {
                     endPole.transform.position = hit.collider.transform.position;
                 }
-                else if (hit.collider.name == "Floor")
-                {
-                    var sum = _hitPos + hit.normal * endPole.GetComponent<BoxCollider>().bounds.extents.y;
 
-                    // Check whether is moved in the X or Z axis based on the direction of the hit
-                    if (GetAxis(wallHit.normal, sum) == sum.x) // TO-DO: cambiar la condicion
-                    {
-                        endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
-                    }
-                    else if (GetAxis(wallHit.normal, sum) == sum.z) // TO-DO: cambiar la condicion
-                    {
-                        endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
-                    }
-                }
-
+                // Set the Z axis pointing at each other so the wall can be adjusted in that axis
                 startPole.transform.LookAt(endPole.transform.position);
                 endPole.transform.LookAt(startPole.transform.position);
 
@@ -120,13 +103,15 @@ public class WallManager : MonoBehaviour
             startPole.adjacentPoles.Add(endPole);
             endPole.adjacentPoles.Add(startPole);
 
-            finish = true;
+            //finish = true;
 
             //// Instantiate the wall in the world
             //GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
             //wall = auxWall.GetComponent<BuildingWall>();
             wall.startPole = startPole;
             wall.endPole = endPole;
+
+            finish = true;
         }
         else if (hit.collider.tag == "Wall")
         {
@@ -143,6 +128,14 @@ public class WallManager : MonoBehaviour
             //startPole.transform.position = hit.collider.bounds.center;
             //startPole.transform.rotation = hit.collider.gameObject.transform.rotation;
 
+            // Instantiate the wall in the world
+            GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
+            wall = auxWall.GetComponent<BuildingWall>();
+            wall.startPole = startPole;
+            wall.endPole = endPole;
+
+            wall.SetActiveAxis(ApproximateNormal(wallHit.normal));
+
             if (poleList.Count >= 3)
             {
                 //List<Pole> currentPoleList = endPole.FilterAvailablePoles(ApproximateNormal(wallHit.normal), startPole);
@@ -157,12 +150,6 @@ public class WallManager : MonoBehaviour
             }
 
             finish = true;
-
-            // Instantiate the wall in the world
-            GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
-            wall = auxWall.GetComponent<BuildingWall>();
-            wall.startPole = startPole;
-            wall.endPole = endPole;
         }
     }
 

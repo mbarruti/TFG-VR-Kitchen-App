@@ -27,57 +27,47 @@ public class BuildingWall : MonoBehaviour
         float distance = Vector3.Distance(startPole.transform.position, endPole.transform.position);
         transform.position = startPole.transform.position + distance / 2 * startPole.transform.forward;
         transform.rotation = startPole.transform.rotation;
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distance + 0.1f);
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distance - 0.1f);
     }
 
-    //public void SetStartPole()
-    //{
-    //    if (poleList.Count == 0)
-    //    {
-    //        startPole.transform.position = _hitPos + GetOffset(hit.normal, startPole.GetComponent<BoxCollider>());
+    public void SetActiveAxis(Vector3 normal)
+    {
+        if (normal == Vector3.right || normal == Vector3.left)
+        {
+            axisX = true;
+            axisZ = false;
+        }
+        else if (normal == Vector3.forward || normal == Vector3.back)
+        {
+            axisX = false;
+            axisZ = true;
+        }
 
-    //        finish = true;
+        endPole.SetActiveAxisSign(this, normal);
+    }
 
-    //        // Instantiate the wall in the world
-    //        GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
-    //        wall = auxWall.GetComponent<BuildingWall>();
-    //        wall.startPole = startPole;
-    //        wall.endPole = endPole;
-    //    }
-    //    else if (hit.collider.tag == "Wall")
-    //    {
-    //        wallHit = hit;
+    public void SetEndPolePosition(Vector3 sum)
+    {
+        if (axisX == true)
+        {
+            //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
 
-    //        startPole.transform.position = hit.collider.bounds.center;
-    //        //startPole.transform.rotation = hit.collider.gameObject.transform.rotation;
-
-    //        finish = true;
-
-    //        // Instantiate the wall in the world
-    //        GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
-    //        wall = auxWall.GetComponent<BuildingWall>();
-    //        wall.startPole = startPole;
-    //        wall.endPole = endPole;
-    //    }
-    //}
-
-    //public void SetEndPole()
-    //{
-    //    finish = false;
-
-    //    var aux = Instantiate(startPole, startPole.transform.position, startPole.transform.rotation);
-    //    var aux2 = Instantiate(endPole, endPole.transform.position, endPole.transform.rotation);
-
-    //    aux.layer = LayerMask.NameToLayer("Default");
-    //    aux2.layer = LayerMask.NameToLayer("Default");
-
-    //    poleList.Add(aux);
-    //    poleList.Add(aux2);
-
-    //    startPole.transform.position = new Vector3(0, -20, 0);
-    //    endPole.transform.position = new Vector3(0, -20, 0);
-
-    //    startPole.transform.eulerAngles = new Vector3(0, 0, 0);
-    //    endPole.transform.eulerAngles = new Vector3(0, 0, 0);
-    //}
+            if (endPole.activeAxis > 0)
+                endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, startPole.transform.position.x, Mathf.Infinity), sum.y, startPole.transform.position.z);
+            else if (endPole.activeAxis < 0)
+                endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, Mathf.NegativeInfinity, startPole.transform.position.x), sum.y, startPole.transform.position.z);
+            else
+                endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+        }
+        else
+        {
+            //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
+            if (endPole.activeAxis > 0)
+                endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, Mathf.Clamp(sum.z, startPole.transform.position.z, Mathf.Infinity));
+            else if (endPole.activeAxis < 0)
+                endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, Mathf.Clamp(sum.z, Mathf.NegativeInfinity, startPole.transform.position.z));
+            else
+                endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
+        }
+    }
 }

@@ -166,8 +166,15 @@ public class PlayerManager : MonoBehaviour
     {
         if (state == PlayerState.isBuildingWalls)
         {
-            _wallManager.wall.axisX = true;
-            _wallManager.wall.axisZ = false;
+            if (_wallManager.poleList.Count > 0)
+            {
+                Debug.Log("TO-DO");
+            }
+            else
+            {
+                _wallManager.wall.axisX = true;
+                _wallManager.wall.axisZ = false;
+            }
         }
     }
 
@@ -179,8 +186,15 @@ public class PlayerManager : MonoBehaviour
         }
         else if (state == PlayerState.isBuildingWalls)
         {
-            _wallManager.wall.axisX = false;
-            _wallManager.wall.axisZ = true;
+            if (_wallManager.poleList.Count > 0)
+            {
+                Debug.Log("TO-DO");
+            }
+            else
+            {
+                _wallManager.wall.axisX = false;
+                _wallManager.wall.axisZ = true;
+            }
         }
     }
 
