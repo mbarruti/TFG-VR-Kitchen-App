@@ -49,51 +49,51 @@ public class WallManager : MonoBehaviour
         if (rightRay.TryGetCurrent3DRaycastHit(out hit))
         {
             _hitPos = hit.point;
-        }
 
-        // Set position for endPole
-        if (finish == true)
-        {
-            if (poleList.Count == 0)
+            // Set position for endPole
+            if (finish == true)
             {
-                var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
-                if (wall.axisX == true)
+                if (poleList.Count == 0)
                 {
-                    //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
-                    endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+                    var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
+                    if (wall.axisX == true)
+                    {
+                        //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
+                        endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+                    }
+                    else
+                    {
+                        //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
+                        endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+                        endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
+                    }
+
                 }
-                else
+                else if ((endPole.availablePoles.Count > 0 && endPole.availablePoles.Contains(hit.collider.gameObject)) || (previewPoleList.Count > 0 && previewPoleList.Contains(hit.collider.gameObject)))
                 {
-                    //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
-                    endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
-                    endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
+                    endPole.transform.position = hit.collider.transform.position;
+                }
+                else if (hit.collider.name == "Floor")
+                {
+                    var sum = _hitPos + hit.normal * endPole.GetComponent<BoxCollider>().bounds.extents.y;
+
+                    // Check whether is moved in the X or Z axis based on the direction of the hit
+                    if (GetAxis(wallHit.normal, sum) == sum.x) // TO-DO: cambiar la condicion
+                    {
+                        endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
+                    }
+                    else if (GetAxis(wallHit.normal, sum) == sum.z) // TO-DO: cambiar la condicion
+                    {
+                        endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
+                    }
                 }
 
+                startPole.transform.LookAt(endPole.transform.position);
+                endPole.transform.LookAt(startPole.transform.position);
+
+                // Adjust the width of the wall based on the position of the two poles
+                wall.AdjustWall();
             }
-            else if ((endPole.availablePoles.Count > 0 && endPole.availablePoles.Contains(hit.collider.gameObject)) || (previewPoleList.Count > 0 && previewPoleList.Contains(hit.collider.gameObject)))
-            {
-                endPole.transform.position = hit.collider.transform.position;
-            }
-            else if (hit.collider.name == "Floor")
-            {
-                var sum = _hitPos + hit.normal * endPole.GetComponent<BoxCollider>().bounds.extents.y;
-
-                // Check whether is moved in the X or Z axis based on the direction of the hit
-                if (GetAxis(wallHit.normal, sum) == sum.x) // TO-DO: cambiar la condicion
-                {
-                    endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
-                }
-                else if (GetAxis(wallHit.normal, sum) == sum.z) // TO-DO: cambiar la condicion
-                {
-                    endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
-                }
-            }
-
-            startPole.transform.LookAt(endPole.transform.position);
-            endPole.transform.LookAt(startPole.transform.position);
-
-            // Adjust the width of the wall based on the position of the two poles
-            wall.AdjustWall();
         }
     }
 
