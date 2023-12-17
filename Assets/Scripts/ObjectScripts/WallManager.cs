@@ -53,6 +53,9 @@ public class WallManager : MonoBehaviour
             // Update position for endPole while finish is true
             if (finish == true)
             {
+                // Set the Z axis pointing at each other so the wall can be adjusted in that axis
+                startPole.transform.LookAt(endPole.transform.position);
+                endPole.transform.LookAt(startPole.transform.position);
                 //var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
 
                 // If the hit is the floor
@@ -68,10 +71,6 @@ public class WallManager : MonoBehaviour
                 {
                     endPole.transform.position = hit.collider.transform.position;
                 }
-
-                // Set the Z axis pointing at each other so the wall can be adjusted in that axis
-                startPole.transform.LookAt(endPole.transform.position);
-                endPole.transform.LookAt(startPole.transform.position);
 
                 // Adjust the width of the wall based on the position of the two poles
                 wall.AdjustWall();
@@ -104,7 +103,7 @@ public class WallManager : MonoBehaviour
 
             //finish = true;
 
-            //// Instantiate the wall in the world
+            // Instantiate the wall in the world
             //GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
             //wall = auxWall.GetComponent<BuildingWall>();
             wall.startPole = startPole;
@@ -163,7 +162,7 @@ public class WallManager : MonoBehaviour
         startPole.gameObject.layer = LayerMask.NameToLayer("Default");
         //endPole.gameObject.layer = LayerMask.NameToLayer("Default");
 
-        // Destroy every preview pole for the wall that has just been placed
+        // Destroy every preview pole
         foreach (GameObject pole in previewPoleList)
         {
             Destroy(pole);
@@ -211,11 +210,12 @@ public class WallManager : MonoBehaviour
 
         bool isPosAvailable;
 
-        // Threshold to approximate the direction with the small errors caused by the rotation
-        float threshold = 0.01f;
+        Vector3 normal = ApproximateNormal(wallHit.normal);
+        //// Threshold to approximate the direction with the small errors caused by the rotation
+        //float threshold = 0.01f;
 
-        if (Mathf.Abs(wallHit.normal.x - 1f) < threshold || Mathf.Abs(wallHit.normal.x + 1f) < threshold)
-        //if (wallHit.normal.x == 1f || wallHit.normal.x == -1f)
+        //if (Mathf.Abs(wallHit.normal.x - 1f) < threshold || Mathf.Abs(wallHit.normal.x + 1f) < threshold)
+        if (normal.x == 1f || normal.x == -1f)
         {
             //Debug.Log("Dir X");
             var previewPos = new Vector3(pole.transform.position.x, pole.transform.position.y, startPole.transform.position.z);
@@ -257,6 +257,50 @@ public class WallManager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// Cancel the placement of a wall by destroying it and the corresponding poles
+    /// <summary>
+    public void CancelWallPlacement()
+    {
+        if (finish == true)
+        {
+            finish = false;
+
+            if (startPole.adjacentPoles.Count == 1)
+            {
+                Pole auxStartPole = startPole;
+                startPole = null;
+                Destroy(auxStartPole.gameObject);
+            }
+            else
+                startPole.adjacentPoles.Remove(endPole);
+
+            Pole auxEndPole = endPole;
+            endPole = null;
+            Destroy(auxEndPole.gameObject);
+
+            if (poleList.Count == 0)
+            {
+                wall.transform.position = new Vector3(0, -20f, 0);
+                wall.transform.localScale = new Vector3(0.1f, 4f, 0.1f);
+            }
+            else
+            {
+                BuildingWall auxWall = wall;
+                wall = null;
+                Destroy(auxWall.gameObject);
+            }
+
+            // Destroy every preview pole
+            foreach (GameObject pole in previewPoleList)
+            {
+                Destroy(pole);
+            }
+            // Clear every element in the preview list
+            previewPoleList.Clear();
+        }
+    }
+
     //private float GetAxis(Vector3 normal, Vector3 vector)
     //{
     //    // Encontrar el eje dominante de la normal
@@ -286,17 +330,17 @@ public class WallManager : MonoBehaviour
         // Threshold to approximate the direction with the small errors (caused by the rotation, for example)
         float threshold = 0.01f;
 
-        if (Mathf.Abs(wallHit.normal.x - 1f) < threshold)
+        if (Mathf.Abs(normal.x - 1f) < threshold)
             return new Vector3(1f, 0f, 0f);
-        else if (Mathf.Abs(wallHit.normal.x + 1f) < threshold)
+        else if (Mathf.Abs(normal.x + 1f) < threshold)
             return new Vector3(-1f, 0f, 0f);
-        else if (Mathf.Abs(wallHit.normal.y - 1f) < threshold)
+        else if (Mathf.Abs(normal.y - 1f) < threshold)
             return new Vector3(0f, 1f, 0f);
-        else if (Mathf.Abs(wallHit.normal.y + 1f) < threshold)
+        else if (Mathf.Abs(normal.y + 1f) < threshold)
             return new Vector3(0f, -1f, 0f);
-        else if (Mathf.Abs(wallHit.normal.z - 1f) < threshold)
+        else if (Mathf.Abs(normal.z - 1f) < threshold)
             return new Vector3(0f, 0f, 1f);
-        else if (Mathf.Abs(wallHit.normal.z + 1f) < threshold)
+        else if (Mathf.Abs(normal.z + 1f) < threshold)
             return new Vector3(0f, 0f, -1f);
 
         Debug.Log("Direccion aproximada: " + new Vector3(0f, 0f, 0f));

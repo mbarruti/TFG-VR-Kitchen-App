@@ -7285,7 +7285,7 @@ MonoBehaviour:
   previewPole: {fileID: 933466863}
   previewPoleList: []
   wallPrefab: {fileID: 3429215769117897154, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
-  wall: {fileID: 2125217208}
+  wall: {fileID: 0}
   finish: 0
   poleList: []
   rightController: {fileID: 1758346702}

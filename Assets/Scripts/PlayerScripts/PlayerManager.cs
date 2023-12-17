@@ -160,6 +160,11 @@ public class PlayerManager : MonoBehaviour
                 _buildingManager.CancelObjectTransform();
             }
         }
+
+        else if (state == PlayerState.isBuildingWalls)
+        {
+            _wallManager.CancelWallPlacement();
+        }
     }
 
     void OnXAction(InputAction.CallbackContext context)
