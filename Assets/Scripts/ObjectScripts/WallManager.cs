@@ -59,7 +59,6 @@ public class WallManager : MonoBehaviour
                 if (hit.collider.name == "Floor")
                 {
                     var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
-                    //var sum = _hitPos + hit.normal * endPole.GetComponent<BoxCollider>().bounds.extents.y;
 
                     wall.SetEndPolePosition(sum);
 
@@ -93,8 +92,8 @@ public class WallManager : MonoBehaviour
     {
         if (poleList.Count == 0)
         {
-            var auxPole = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
-            var auxPole2 = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
+            GameObject auxPole = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
+            GameObject auxPole2 = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
             startPole = auxPole.GetComponent<Pole>();
             endPole = auxPole2.GetComponent<Pole>();
 
@@ -113,13 +112,13 @@ public class WallManager : MonoBehaviour
 
             finish = true;
         }
-        else if (hit.collider.tag == "Wall")
+        else if (hit.collider.tag == "Pole")
         {
             wallHit = hit;
             //Debug.Log(wallHit.normal);
 
             startPole = wallHit.collider.gameObject.GetComponent<Pole>();
-            var auxPole2 = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
+            GameObject auxPole2 = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
             endPole = auxPole2.GetComponent<Pole>();
 
             startPole.adjacentPoles.Add(endPole);
@@ -160,25 +159,49 @@ public class WallManager : MonoBehaviour
         //var aux = Instantiate(startPole, startPole.transform.position, startPole.transform.rotation);
         //var aux2 = Instantiate(endPole, endPole.transform.position, endPole.transform.rotation);
 
+        // Change the layers so the raycast can hit them
         startPole.gameObject.layer = LayerMask.NameToLayer("Default");
-        endPole.gameObject.layer = LayerMask.NameToLayer("Default");
+        //endPole.gameObject.layer = LayerMask.NameToLayer("Default");
 
+        // Destroy every preview pole for the wall that has just been placed
         foreach (GameObject pole in previewPoleList)
         {
             Destroy(pole);
         }
-
+        // Clear every element in the preview list
         previewPoleList.Clear();
-        endPole.availablePoles.Clear();
 
-        if (poleList.Count == 0) poleList.Add(startPole);
-        poleList.Add(endPole);
+        //endPole.availablePoles.Clear();
 
-        //startPole.transform.position = new Vector3(0, -20, 0);
-        //endPole.transform.position = new Vector3(0, -20, 0);
+        // If it's the first wall being placed, startPole is added to the list of all poles in the world,
+        // else it's already in the list
+        if (poleList.Count == 0)
+            poleList.Add(startPole);
+        //poleList.Add(endPole);
 
-        //startPole.transform.eulerAngles = new Vector3(0, 0, 0);
-        //endPole.transform.eulerAngles = new Vector3(0, 0, 0);
+        if (hit.collider.tag == "Pole" && endPole.availablePoles.Count > 0 && endPole.availablePoles.Contains(hit.collider.gameObject))
+        {
+            Debug.Log("hola");
+            startPole.adjacentPoles.Remove(endPole);
+
+            // Destroy the current endPole so it doesn't overlap with the hit pole
+            Destroy(endPole.gameObject);
+
+            // New endPole is the hit pole
+            endPole = hit.collider.GetComponent<Pole>();
+            endPole.adjacentPoles.Add(startPole);
+            startPole.adjacentPoles.Add(endPole);
+            wall.endPole = endPole;
+        }
+        else // If it's placed in any free position on the floor
+        {
+            // Repeat the same process for the endPole
+            endPole.gameObject.layer = LayerMask.NameToLayer("Default");
+            poleList.Add(endPole);
+
+            // Clear every element in the list
+            endPole.availablePoles.Clear();
+        }
     }
 
     public void SetPreviewPole(Pole startPole, Pole pole, RaycastHit[] hitPoles)
@@ -220,7 +243,7 @@ public class WallManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Check if there is any of the Poles hit in the corresponding direction in that position
+    /// Check if there are any of the Poles hit in the corresponding direction in that position
     /// <summary>
     private bool CheckHitPolesPositions(RaycastHit[] hitPoles, Vector3 position)
     {
@@ -233,26 +256,26 @@ public class WallManager : MonoBehaviour
         return true;
     }
 
-    private float GetAxis(Vector3 normal, Vector3 vector)
-    {
-        // Encontrar el eje dominante de la normal
-        float maxAxis = Mathf.Max(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
+    //private float GetAxis(Vector3 normal, Vector3 vector)
+    //{
+    //    // Encontrar el eje dominante de la normal
+    //    float maxAxis = Mathf.Max(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
 
-        if (Mathf.Abs(normal.x) == maxAxis)
-        {
-            return vector.x;
-        }
-        else if (Mathf.Abs(normal.y) == maxAxis)
-        {
-            return vector.y;
-        }
-        else if (Mathf.Abs(normal.z) == maxAxis)
-        {
-            return vector.z;
-        }
-        //Debug.Log("ninguna");
-        return 0;
-    }
+    //    if (Mathf.Abs(normal.x) == maxAxis)
+    //    {
+    //        return vector.x;
+    //    }
+    //    else if (Mathf.Abs(normal.y) == maxAxis)
+    //    {
+    //        return vector.y;
+    //    }
+    //    else if (Mathf.Abs(normal.z) == maxAxis)
+    //    {
+    //        return vector.z;
+    //    }
+    //    //Debug.Log("ninguna");
+    //    return 0;
+    //}
 
     /// <summary>
     /// Approximate the direction

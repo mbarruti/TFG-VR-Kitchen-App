@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2138810877157724231}
   m_Layer: 2
   m_Name: Pole
-  m_TagString: Wall
+  m_TagString: Pole
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -113,4 +113,5 @@ MonoBehaviour:
   wallManager: {fileID: 0}
   availablePoles: []
   adjacentPoles: []
+  activeAxis: 0
   boxCollider: {fileID: 4276431087608297149}

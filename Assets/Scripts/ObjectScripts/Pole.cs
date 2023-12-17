@@ -43,7 +43,7 @@ public class Pole : MonoBehaviour
         Vector3 directionAbs = new Vector3(Mathf.Abs(direction.x), Mathf.Abs(direction.y), Mathf.Abs(direction.z));
 
         axisPos1 = Vector3.Dot(startPole.transform.position, directionAbs);
-        Debug.Log(axisPos1);
+        //Debug.Log(axisPos1);
 
         // Filter the available poles in the world to connect to for this pole
         foreach (Pole pole in wallManager.poleList)
