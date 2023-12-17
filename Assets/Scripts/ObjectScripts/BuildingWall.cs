@@ -53,9 +53,9 @@ public class BuildingWall : MonoBehaviour
             //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
 
             if (endPole.activeAxis > 0)
-                endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, startPole.transform.position.x, Mathf.Infinity), sum.y, startPole.transform.position.z);
+                endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, startPole.transform.position.x + startPole.transform.localScale.x, Mathf.Infinity), sum.y, startPole.transform.position.z);
             else if (endPole.activeAxis < 0)
-                endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, Mathf.NegativeInfinity, startPole.transform.position.x), sum.y, startPole.transform.position.z);
+                endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, Mathf.NegativeInfinity, startPole.transform.position.x - startPole.transform.localScale.x), sum.y, startPole.transform.position.z);
             else
                 endPole.transform.position = new Vector3(sum.x, sum.y, startPole.transform.position.z);
         }
@@ -63,9 +63,9 @@ public class BuildingWall : MonoBehaviour
         {
             //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
             if (endPole.activeAxis > 0)
-                endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, Mathf.Clamp(sum.z, startPole.transform.position.z, Mathf.Infinity));
+                endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, Mathf.Clamp(sum.z, startPole.transform.position.z + startPole.transform.localScale.z, Mathf.Infinity));
             else if (endPole.activeAxis < 0)
-                endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, Mathf.Clamp(sum.z, Mathf.NegativeInfinity, startPole.transform.position.z));
+                endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, Mathf.Clamp(sum.z, Mathf.NegativeInfinity, startPole.transform.position.z - startPole.transform.localScale.z));
             else
                 endPole.transform.position = new Vector3(startPole.transform.position.x, sum.y, sum.z);
         }

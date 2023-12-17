@@ -58,7 +58,7 @@ public class WallManager : MonoBehaviour
                 // If the hit is the floor
                 if (hit.collider.name == "Floor")
                 {
-                    var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
+                    Vector3 sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
 
                     wall.SetEndPolePosition(sum);
 
@@ -190,6 +190,7 @@ public class WallManager : MonoBehaviour
             // New endPole is the hit pole
             endPole = hit.collider.GetComponent<Pole>();
             endPole.adjacentPoles.Add(startPole);
+
             startPole.adjacentPoles.Add(endPole);
             wall.endPole = endPole;
         }

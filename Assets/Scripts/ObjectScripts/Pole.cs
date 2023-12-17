@@ -34,9 +34,9 @@ public class Pole : MonoBehaviour
         float axisPos1;
         float axisPos2;
 
-        float directionAxis;
+        //float directionAxis;
 
-        directionAxis = Vector3.Dot(direction, Vector3.one);
+        //directionAxis = Vector3.Dot(direction, Vector3.one);
         //Debug.Log(direction);
         //Debug.Log(directionAxis);
 
@@ -52,20 +52,20 @@ public class Pole : MonoBehaviour
             {
                 axisPos2 = Vector3.Dot(pole.transform.position, directionAbs);
 
-                if (directionAxis > 0 && axisPos1 < axisPos2)
+                if (activeAxis > 0 && axisPos1 < axisPos2)
                 {
                     //Debug.Log(axisPos2);
-                    if (IsSecondAxisAligned(direction, directionAxis, startPole, pole) == true)
+                    if (IsSecondAxisAligned(direction, activeAxis, startPole, pole) == true)
                     {
                         //pole.gameObject.layer = LayerMask.NameToLayer("Default");
                         availablePoles.Add(pole.gameObject);
                     }
                     else wallManager.SetPreviewPole(startPole, pole, hitPoles);
                 }
-                else if (directionAxis < 0 && axisPos1 > axisPos2)
+                else if (activeAxis < 0 && axisPos1 > axisPos2)
                 {
                     //Debug.Log(axisPos2);
-                    if (IsSecondAxisAligned(direction, directionAxis, startPole, pole) == true)
+                    if (IsSecondAxisAligned(direction, activeAxis, startPole, pole) == true)
                     {
                         //pole.gameObject.layer = LayerMask.NameToLayer("Default");
                         availablePoles.Add(pole.gameObject);
