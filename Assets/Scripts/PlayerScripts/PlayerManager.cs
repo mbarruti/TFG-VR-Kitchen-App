@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        //updateStates();
+        updateStates();
     }
 
     private void OnDestroy()
@@ -67,21 +67,20 @@ public class PlayerManager : MonoBehaviour
     // Actualiza el estado del jugador, dependiendo de la situacion
     public void updateStates()
     {
-        //if (_worldMenuManager.isOpened && _buildingManager.selectedBuildingObject != null)
-        //{
-        //    state = PlayerState.isInMenuAndBuilding;
-        //}
-        if (_worldMenuManager.isOpened)
+        if (state != PlayerState.isBuildingWalls)
         {
-            state = PlayerState.isInMenu;
-        }
-        else if (_buildingManager.selectedBuildingObject != null)
-        {
-            state = PlayerState.isBuilding;
-        }
-        else
-        {
-            state = PlayerState.isFree;
+            if (_worldMenuManager.isOpened)
+            {
+                state = PlayerState.isInMenu;
+            }
+            else if (_buildingManager.selectedBuildingObject != null)
+            {
+                state = PlayerState.isBuilding;
+            }
+            else
+            {
+                state = PlayerState.isFree;
+            }
         }
     }
 
@@ -125,7 +124,7 @@ public class PlayerManager : MonoBehaviour
             }
             else Debug.Log("No se puede abrir si estas editando");
         }
-        else if (state == PlayerState.isFree)
+        else if (state == PlayerState.isFree || state == PlayerState.isBuildingWalls)
         {
             _worldMenuManager.showWorldMenu();
         }
@@ -171,11 +170,11 @@ public class PlayerManager : MonoBehaviour
     {
         if (state == PlayerState.isBuildingWalls)
         {
-            if (_wallManager.poleList.Count > 0)
+            if (_wallManager.hit.collider.tag == "Wall")
             {
-                Debug.Log("TO-DO");
+                _wallManager.DestroyWall(_wallManager.hit.collider.GetComponent<BuildingWall>());
             }
-            else
+            else if (_wallManager.poleList.Count == 0)
             {
                 _wallManager.wall.axisX = true;
                 _wallManager.wall.axisZ = false;

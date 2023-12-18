@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class WallManager : MonoBehaviour
 {
-    RaycastHit hit;
+    //RaycastHit hit;
 
     Vector3 _hitPos;
 
@@ -24,6 +24,8 @@ public class WallManager : MonoBehaviour
     [SerializeField] GameObject wallPrefab;
 
     // -------------------------------------------------
+
+    public RaycastHit hit;
 
     public BuildingWall wall;
 
@@ -160,6 +162,7 @@ public class WallManager : MonoBehaviour
 
         // Change the layers so the raycast can hit them
         startPole.gameObject.layer = LayerMask.NameToLayer("Default");
+        wall.gameObject.layer = LayerMask.NameToLayer("Default");
         //endPole.gameObject.layer = LayerMask.NameToLayer("Default");
 
         // Destroy every preview pole
@@ -180,7 +183,6 @@ public class WallManager : MonoBehaviour
 
         if (hit.collider.tag == "Pole" && endPole.availablePoles.Count > 0 && endPole.availablePoles.Contains(hit.collider.gameObject))
         {
-            Debug.Log("hola");
             startPole.adjacentPoles.Remove(endPole);
 
             // Destroy the current endPole so it doesn't overlap with the hit pole
@@ -298,6 +300,89 @@ public class WallManager : MonoBehaviour
             }
             // Clear every element in the preview list
             previewPoleList.Clear();
+        }
+    }
+
+    /// <summary>
+    /// Destroy the selected wall
+    /// <summary>
+    public void DestroyWall(BuildingWall buildingWall)
+    {
+        if (finish == false)
+        {
+            GameObject auxStartPole = null;
+            GameObject auxEndPole = null;
+
+            // If any of the two poles connected to the selected wall have more than one adjacent pole, it is not destroyed
+            if (buildingWall.startPole.adjacentPoles.Count < 2)
+            {
+                // If it has only one, its reference is saved in a local variable (to destroy it later) so the next pole doesn't get a null in its list
+                auxStartPole = buildingWall.startPole.gameObject;
+
+                poleList.Remove(buildingWall.startPole);
+
+                foreach (Pole pole in buildingWall.startPole.adjacentPoles)
+                {
+                    pole.adjacentPoles.Remove(buildingWall.startPole);
+                }
+
+                if (startPole == buildingWall.startPole)
+                    startPole = null;
+            }
+            else
+            {
+                // Remove each other from the others adjacent list
+                buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
+            }
+
+            if (buildingWall.endPole.adjacentPoles.Count < 2)
+            {
+                auxEndPole = buildingWall.endPole.gameObject;
+
+                poleList.Remove(buildingWall.endPole);
+
+                foreach (Pole pole in buildingWall.endPole.adjacentPoles)
+                {
+                    pole.adjacentPoles.Remove(buildingWall.endPole);
+                }
+
+                if (endPole == buildingWall.endPole)
+                    endPole = null;
+            }
+            else
+            {
+                // Remove each other from the others adjacent list
+                buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
+            }
+
+            //// Remove each other from the others adjacent list
+            //buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
+            //endPole.adjacentPoles.Remove(buildingWall.startPole);
+
+            // If the condition above is true for any of them, it is destroyed
+            if (auxStartPole != null)
+            {
+                Destroy(auxStartPole);
+            }
+            if (auxEndPole != null)
+            {
+                Destroy(auxEndPole);
+            }
+
+            // Destroy the wall
+            if (poleList.Count > 2)
+                Destroy(buildingWall.gameObject);
+            else
+            {
+                buildingWall.startPole = null;
+                buildingWall.endPole = null;
+
+                buildingWall.transform.position = new Vector3(0, -20f, 0);
+                buildingWall.transform.localScale = new Vector3(0.1f, 4f, 0.1f);
+                buildingWall.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+                wall = buildingWall;
+            }
         }
     }
 

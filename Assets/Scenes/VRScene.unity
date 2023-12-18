@@ -5558,6 +5558,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall
       objectReference: {fileID: 0}
+    - target: {fileID: 3429215769117897154, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429215769117897165, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3429215769117897166, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -7285,7 +7293,7 @@ MonoBehaviour:
   previewPole: {fileID: 933466863}
   previewPoleList: []
   wallPrefab: {fileID: 3429215769117897154, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
-  wall: {fileID: 0}
+  wall: {fileID: 2125217208}
   finish: 0
   poleList: []
   rightController: {fileID: 1758346702}
