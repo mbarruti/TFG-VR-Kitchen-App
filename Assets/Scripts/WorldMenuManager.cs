@@ -6,6 +6,10 @@ public class WorldMenuManager : MonoBehaviour
 {
     private BuildingObject buildingModel;
 
+    [SerializeField] PlayerManager _playerManager;
+    //[SerializeField] BuildingManager _buildingManager;
+    [SerializeField] WallManager _wallManager;
+
     // -------------------------------------------
 
     public bool isOpened;
@@ -66,5 +70,12 @@ public class WorldMenuManager : MonoBehaviour
     {
         gameObject.SetActive(false);
         isOpened = false;
+    }
+
+    public void FinishBuildingWalls()
+    {
+        _wallManager.gameObject.SetActive(false);
+        buildingManager.gameObject.SetActive(true);
+        _playerManager.state = PlayerState.isFree;
     }
 }
