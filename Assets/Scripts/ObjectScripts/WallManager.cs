@@ -14,6 +14,8 @@ public class WallManager : MonoBehaviour
 
     [SerializeField] PlayerManager playerManager;
 
+    [SerializeField] List<BuildingWall> wallList;
+
     //[SerializeField] List<GameObject> poleList;
 
     [SerializeField] GameObject originPole;
@@ -204,6 +206,8 @@ public class WallManager : MonoBehaviour
             // Clear every element in the list
             endPole.availablePoles.Clear();
         }
+
+        wallList.Add(wall);
     }
 
     public void SetPreviewPole(Pole startPole, Pole pole, RaycastHit[] hitPoles)
@@ -280,6 +284,8 @@ public class WallManager : MonoBehaviour
             Pole auxEndPole = endPole;
             endPole = null;
             Destroy(auxEndPole.gameObject);
+
+            wallList.Remove(wall);
 
             if (poleList.Count == 0)
             {
@@ -369,6 +375,8 @@ public class WallManager : MonoBehaviour
                 Destroy(auxEndPole);
             }
 
+            wallList.Remove(wall);
+
             // Destroy the wall
             if (poleList.Count > 2)
                 Destroy(buildingWall.gameObject);
@@ -383,6 +391,26 @@ public class WallManager : MonoBehaviour
 
                 wall = buildingWall;
             }
+        }
+    }
+
+    public void DeleteAllPoles()
+    {
+        foreach (Pole pole in poleList)
+        {
+            Destroy(pole.gameObject);
+        }
+
+        poleList.Clear();
+
+        foreach (BuildingWall buildingWall in wallList)
+        {
+            float distance = Vector3.Distance(buildingWall.startPole.transform.position, buildingWall.endPole.transform.position);
+
+            buildingWall.startPole = null;
+            buildingWall.endPole = null;
+
+            buildingWall.transform.localScale = new Vector3(buildingWall.transform.localScale.x, buildingWall.transform.localScale.y, distance + 0.1f);
         }
     }
 
