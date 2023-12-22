@@ -35,6 +35,8 @@ public class WallManager : MonoBehaviour
 
     public bool finish = false;
 
+    public bool freePlacement;
+
     public List<Pole> poleList;
 
     // Mandos de realidad virtual
@@ -62,18 +64,25 @@ public class WallManager : MonoBehaviour
                 endPole.transform.LookAt(startPole.transform.position);
                 //var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
 
-                // If the hit is the floor
-                if (hit.collider.name == "Floor")
+                if (freePlacement == false)
                 {
-                    Vector3 sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
+                    // If the hit is the floor
+                    if (hit.collider.name == "Floor")
+                    {
+                        Vector3 sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
 
-                    wall.SetEndPolePosition(sum);
+                        wall.SetEndPolePosition(sum);
 
+                    }
+                    // If the hit is an available pole
+                    else if ((endPole.availablePoles.Count > 0 && endPole.availablePoles.Contains(hit.collider.gameObject)) || (previewPoleList.Count > 0 && previewPoleList.Contains(hit.collider.gameObject)))
+                    {
+                        endPole.transform.position = hit.collider.transform.position;
+                    }
                 }
-                // If the hit is an available pole
-                else if ((endPole.availablePoles.Count > 0 && endPole.availablePoles.Contains(hit.collider.gameObject)) || (previewPoleList.Count > 0 && previewPoleList.Contains(hit.collider.gameObject)))
+                else
                 {
-                    endPole.transform.position = hit.collider.transform.position;
+                    endPole.transform.position = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
                 }
 
                 // Adjust the width of the wall based on the position of the two poles

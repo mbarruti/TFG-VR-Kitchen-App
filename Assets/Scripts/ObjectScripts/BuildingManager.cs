@@ -66,7 +66,7 @@ public class BuildingManager : MonoBehaviour
             //selectedBuildingObject.transform.position = Vector3.Lerp(selectedBuildingObject.transform.position, _hitPos + GetOffset(hit.normal) + offset, 30f * Time.deltaTime);
 
             // Actualizar materiales de colision
-            UpdateMaterials();
+            //UpdateMaterials();
         }
     }
 
@@ -222,7 +222,7 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject = pendingObject.GetComponent<BuildingObject>();
 
         // Guardamos su material en la lista de materiales de colision
-        collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
+        //collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
 
         // Match the scale of the colliders
         parentObject.SetScale(selectedBuildingObject);
@@ -236,7 +236,7 @@ public class BuildingManager : MonoBehaviour
     public void PlaceObject()
     {
         // Volvemos a asignarle su material original
-        selectedBuildingObject.assignMaterial(collisionMaterials[2]);
+        //selectedBuildingObject.assignMaterial(collisionMaterials[2]);
 
         //// Instanciamos el objeto pendiente de colocacion
         //if (pendingObject != null)
@@ -301,7 +301,7 @@ public class BuildingManager : MonoBehaviour
 
             selectedBuildingObject = hitObject;
             // Guardamos su material en la lista de materiales de colision
-            collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
+            //collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
             // Activamos isTrigger para que no haya conflicto con el Raycast
             //selectedBuildingObject.boxCollider.isTrigger = true;
 
@@ -333,7 +333,7 @@ public class BuildingManager : MonoBehaviour
 
         auxObj.SetPreviousTransform();
         // Volvemos a asignarle su material original
-        auxObj.assignMaterial(collisionMaterials[2]);
+        //auxObj.assignMaterial(collisionMaterials[2]);
         // Desactivamos isTrigger para que no haya conflicto con el Raycast
         //auxObj.boxCollider.isTrigger = false;
 
