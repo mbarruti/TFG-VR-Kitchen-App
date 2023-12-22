@@ -16,15 +16,15 @@ public class CollisionManager : MonoBehaviour
 
     public List<Collider> detectedColliders;
 
-    private void OnCollisionStay(Collision collision)
-    {
-        Collider collider = collision.collider;
-        if (/*collision.collider != _buildingManager.hit.collider && */!detectedColliders.Contains(collider))
-        {
-            detectedColliders.Add(collider);
-        }
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    Collider collider = collision.collider;
+    //    if (/*collision.collider != _buildingManager.hit.collider && */!detectedColliders.Contains(collider))
+    //    {
+    //        detectedColliders.Add(collider);
+    //    }
 
-    }
+    //}
 
     private void OnCollisionExit(Collision collision)
     {
