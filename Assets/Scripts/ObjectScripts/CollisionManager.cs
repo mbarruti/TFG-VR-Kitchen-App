@@ -4,37 +4,151 @@ using UnityEngine;
 
 public class CollisionManager : MonoBehaviour
 {
-    //[SerializeField] BuildingManager buildingManager;
+    [SerializeField] BuildingManager _buildingManager;
 
     private Vector3 _lastPos;
     private Vector3 _lastRot;
     private Vector3 _lastScale;
 
+    private Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
+
     // -------------------------------------------
+
+    public bool canPlace;
 
     public BoxCollider boxCollider;
 
     public List<Collider> detectedColliders;
 
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    Collider collider = collision.collider;
+    //    if (/*collision.collider != _buildingManager.hit.collider && */!detectedColliders.Contains(collider))
+    //    {
+    //        detectedColliders.Add(collider);
+    //    }
+
+    //}
+
+    private void Start()
+    {
+        SetBoxVertices();
+    }
+
+    //private void Update()
+    //{
+    //    _buildingManager.cubos[0].transform.position = transform.TransformPoint(vertices[0]);
+    //    _buildingManager.cubos[1].transform.position = transform.TransformPoint(vertices[1]);
+    //    _buildingManager.cubos[2].transform.position = transform.TransformPoint(vertices[2]);
+    //    _buildingManager.cubos[3].transform.position = transform.TransformPoint(vertices[3]);
+    //    _buildingManager.cubos[4].transform.position = transform.TransformPoint(vertices[4]);
+    //    _buildingManager.cubos[5].transform.position = transform.TransformPoint(vertices[5]);
+    //    _buildingManager.cubos[6].transform.position = transform.TransformPoint(vertices[6]);
+    //    _buildingManager.cubos[7].transform.position = transform.TransformPoint(vertices[7]);
+    //}
+
     private void OnCollisionStay(Collision collision)
     {
-        Collider collider = collision.collider;
-        if (/*collision.collider != _buildingManager.hit.collider && */!detectedColliders.Contains(collider))
-        {
-            detectedColliders.Add(collider);
-        }
+        //for (int i = 0; i < collision.contactCount; i++)
+        //{
+        //    _buildingManager.cubos[i].transform.position = collision.GetContact(i).point;
+        //}
 
+        if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
+        {
+            canPlace = IsInLimit(collision.collider, collision.GetContact(0));
+        }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        Collider collider = collision.collider;
-        //Debug.Log("sale");
-        if (detectedColliders.Contains(collider))
+        if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject) canPlace = true;
+    }
+
+    // Set the collider vertices
+    void SetBoxVertices()
+    {
+        Vector3 center = boxCollider.center;
+        Vector3 size = boxCollider.size * 0.5f; // Divide to get half of the collider
+
+        //Vector3[] vertices = new Vector3[8];
+        for (int i = 0; i < 8; i++)
         {
-            detectedColliders.Remove(collider);
+            float x = ((i & 1) == 0) ? size.x : -size.x;
+            float y = ((i & 2) == 0) ? size.y : -size.y;
+            float z = ((i & 4) == 0) ? size.z : -size.z;
+
+            vertices[i] = center + new Vector3(x, y, z);
+            //Debug.Log(vertices[i]);
         }
     }
+
+    public bool IsInLimit(Collider collider, ContactPoint contactPoint)
+    {
+        //bool allSameSide = false;
+
+        Vector3 auxVertex;
+        //BoxCollider auxCollider = collider as BoxCollider;
+        //auxCollider.center = 
+        //Vector3[] directions = { Vector3.up };
+
+        //Vector3[] vertices = GetBoxVertices();
+        float previousNum = 0;
+        float num = 0;
+        foreach (Vector3 vertex in vertices)
+        {
+            Vector3 closestPoint = collider.ClosestPoint(transform.position);
+            Vector3 diff = closestPoint - transform.position;
+            Vector3 dir = diff.normalized;
+
+            if (Physics.Raycast(transform.position, dir, out var planeHit))
+            {
+                // (A, B, C) vector perpendicular al plano del objeto que esta quieto
+                //Vector3 normal = contactPoint.normal;
+                Vector3 normal = planeHit.normal;
+
+                // (x, y, z) un punto del plano del objeto que esta quieto /*+ Vector3.Dot(planeHit.normal, collider.bounds.extents);*/
+                //Vector3 point = contactPoint.point;
+                Vector3 offset = Vector3.Scale(planeHit.normal, collider.bounds.extents);
+                Vector3 point = collider.transform.position + offset;
+                Debug.DrawRay(point, normal, Color.blue);
+
+                // (x2, y2, z2) punto del vertice del objeto que pretendes mover
+                auxVertex = transform.TransformPoint(vertex);
+
+                // A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
+                // D = -A*x - B*y - C*z Calculo la D de esta forma
+                float d = Vector3.Dot(-normal, point);
+
+                // A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
+                if (num != 0) previousNum = num;
+                num = Vector3.Dot(normal, auxVertex) + d;
+
+                // Si algun valor tiene signo distinto a los demas, esta al otro lado del plano
+                if (num > 0 && previousNum < 0)
+                {
+                    //Debug.Log(vertex);
+                    return false;
+                }
+                if (num < 0 && previousNum > 0)
+                {
+                    //Debug.Log(vertex);
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    Collider collider = collision.collider;
+    //    //Debug.Log("sale");
+    //    if (detectedColliders.Contains(collider))
+    //    {
+    //        detectedColliders.Remove(collider);
+    //    }
+    //}
 
     //Con el trigger izquierdo se rota el objeto en el eje Y (30 grados)
     public void RotateObject()
@@ -89,6 +203,9 @@ public class CollisionManager : MonoBehaviour
 
         // Por ahora funciona, pero hay que probar con objetos de cocina con distintas formas por si acaso
         //boxCollider.size = new Vector3(selectedObject.transform.localScale.x, selectedObject.transform.localScale.y, selectedObject.transform.localScale.z);
-        boxCollider.size = selectedObject.transform.localScale;
+        boxCollider.size = new Vector3(selectedObject.boxCollider.size.x, selectedObject.boxCollider.size.y, selectedObject.boxCollider.size.z);
+
+        // Update the vertices of the collider
+        SetBoxVertices();
     }
 }

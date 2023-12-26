@@ -125,6 +125,7 @@ MonoBehaviour:
   objectRigidbody: {fileID: 1381000276489102917}
   isPlaced: 0
   isInLimit: 1
+  detectedColliders: []
 --- !u!54 &1381000276489102917
 Rigidbody:
   m_ObjectHideFlags: 0

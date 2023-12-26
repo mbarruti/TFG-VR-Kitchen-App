@@ -24,6 +24,10 @@ public class BuildingManager : MonoBehaviour
 
     // -------------------------------------
 
+    // TEST
+    public GameObject[] cubos;
+    //
+
     public RaycastHit hit;
 
     // Objeto instanciado que indica donde se colocara el modelo seleccionado
@@ -54,16 +58,34 @@ public class BuildingManager : MonoBehaviour
         //if (selectedBuildingObject != null)
         if (playerManager.state == PlayerState.isBuilding)
         {
-            parentObject.transform.position = _hitPos + GetOffset(hit.normal, parentObject.boxCollider);
-            //selectedBuildingObject.transform.position = _hitPos + GetOffset(hit.normal);
+            parentObject.transform.position = _hitPos + GetOffset(hit.normal);
 
-            UpdateOffset();
+            if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+
+            // PRUEBA: los parametros son de prueba para el cubo, dependiendo del objeto el radio de la esfera deberia cambiar
+            //detectedColliders = Physics.OverlapSphere(selectedBuildingObject.transform.position, 2);
+            //Debug.Log(selectedBuildingObject.detectedColliders.Count);
+            //if (parentObject.detectedColliders.Count == 1)
+            //{
+            //Debug.Log("no colisiona");
+            //offset = Vector3.zero;
+            //}
+            //Debug.Log(detectedColliders.Length);
+
+            //UpdateOffset();
 
             //if (offset == Vector3.zero) Debug.Log(offset);
             //Debug.Log(offset);
-            selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+            //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
             //selectedBuildingObject.transform.position = parentObject.transform.position + _hitPos + GetOffset(hit.normal) + offset;
             //selectedBuildingObject.transform.position = Vector3.Lerp(selectedBuildingObject.transform.position, _hitPos + GetOffset(hit.normal) + offset, 30f * Time.deltaTime);
+
+            //Debug.Log(selectedBuildingObject.boxCollider.size);
+            //Vector3 aux = selectedBuildingObject.transform.TransformVector(selectedBuildingObject.boxCollider.size);
+            //cuboX.transform.position = new Vector3(selectedBuildingObject.transform.position.x + aux.x, selectedBuildingObject.transform.position.y, selectedBuildingObject.transform.position.z);
+
+            ////Debug.Log(aux);
+            //cuboZ.transform.position = new Vector3(selectedBuildingObject.transform.position.x, selectedBuildingObject.transform.position.y, selectedBuildingObject.transform.position.z + aux.z);
 
             // Actualizar materiales de colision
             //UpdateMaterials();
@@ -76,6 +98,7 @@ public class BuildingManager : MonoBehaviour
 
         if (ray.TryGetCurrent3DRaycastHit(out hit))
         {
+            //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
             _hitPos = hit.point;
             //Debug.Log(hit.collider.gameObject.name);
             //Debug.Log("Nombre de objeto que choca con rayo: " + hit.collider.gameObject.name);
@@ -86,7 +109,7 @@ public class BuildingManager : MonoBehaviour
             //    //parentObject.transform.position = _hitPos + GetOffset(hit.normal);
             //}
 
-            // Activar el outline del objeto si está siendo apuntado con el mando
+            // Activar el outline del objeto si estï¿½ siendo apuntado con el mando
             if (playerManager.state == PlayerState.isFree && hit.collider.gameObject.TryGetComponent<BuildingObject>(out var auxObj))
             {
                 if (hitObject != auxObj)
@@ -194,7 +217,7 @@ public class BuildingManager : MonoBehaviour
                     float maxDistance = GetAxis(hitt.normal, objCollider.bounds.extents + parentObject.boxCollider.bounds.extents);
                     // Actual distance between the center of both objects
                     float actualDistance = GetAxis(hitt.normal, Vector3.Scale(-hitt.normal, parentObject.boxCollider.transform.InverseTransformPoint(objCollider.transform.position)));
-                    Debug.Log(maxDistance);
+                    //Debug.Log(maxDistance);
                     if (actualDistance < maxDistance)
                     {
                         offset += hitt.normal * (maxDistance - actualDistance);
@@ -220,6 +243,8 @@ public class BuildingManager : MonoBehaviour
         //pendingObject = Instantiate(selectedModel, Vector3.zero, transform.rotation, parentObject.transform);
 
         selectedBuildingObject = pendingObject.GetComponent<BuildingObject>();
+        //selectedBuildingObject.transform.position = new Vector3(0, 50f, 0);
+        selectedBuildingObject._buildingManager = this;
 
         // Guardamos su material en la lista de materiales de colision
         //collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
