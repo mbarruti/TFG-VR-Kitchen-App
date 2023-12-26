@@ -35,12 +35,24 @@ public class CollisionManager : MonoBehaviour
         SetBoxVertices();
     }
 
+    //private void Update()
+    //{
+    //    _buildingManager.cubos[0].transform.position = transform.TransformPoint(vertices[0]);
+    //    _buildingManager.cubos[1].transform.position = transform.TransformPoint(vertices[1]);
+    //    _buildingManager.cubos[2].transform.position = transform.TransformPoint(vertices[2]);
+    //    _buildingManager.cubos[3].transform.position = transform.TransformPoint(vertices[3]);
+    //    _buildingManager.cubos[4].transform.position = transform.TransformPoint(vertices[4]);
+    //    _buildingManager.cubos[5].transform.position = transform.TransformPoint(vertices[5]);
+    //    _buildingManager.cubos[6].transform.position = transform.TransformPoint(vertices[6]);
+    //    _buildingManager.cubos[7].transform.position = transform.TransformPoint(vertices[7]);
+    //}
+
     private void OnCollisionStay(Collision collision)
     {
-        for (int i = 0; i < collision.contactCount; i++)
-        {
-            _buildingManager.cubos[i].transform.position = collision.GetContact(i).point;
-        }
+        //for (int i = 0; i < collision.contactCount; i++)
+        //{
+        //    _buildingManager.cubos[i].transform.position = collision.GetContact(i).point;
+        //}
 
         if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
         {
@@ -89,17 +101,17 @@ public class CollisionManager : MonoBehaviour
             Vector3 diff = closestPoint - transform.position;
             Vector3 dir = diff.normalized;
 
-            //if (Physics.Raycast(transform.position, dir, out var planeHit))
-            //{
+            if (Physics.Raycast(transform.position, dir, out var planeHit))
+            {
                 // (A, B, C) vector perpendicular al plano del objeto que esta quieto
-                Vector3 normal = contactPoint.normal;
-                //Vector3 normal = planeHit.normal;
+                //Vector3 normal = contactPoint.normal;
+                Vector3 normal = planeHit.normal;
 
                 // (x, y, z) un punto del plano del objeto que esta quieto /*+ Vector3.Dot(planeHit.normal, collider.bounds.extents);*/
-                Vector3 point = contactPoint.point;
+                //Vector3 point = contactPoint.point;
+                Vector3 offset = Vector3.Scale(planeHit.normal, collider.bounds.extents);
+                Vector3 point = collider.transform.position + offset;
                 Debug.DrawRay(point, normal, Color.blue);
-                //Vector3 offset = Vector3.Scale(planeHit.normal, collider.bounds.extents);
-                //Vector3 point = collider.transform.position + offset;
 
                 // (x2, y2, z2) punto del vertice del objeto que pretendes mover
                 auxVertex = transform.TransformPoint(vertex);
@@ -123,7 +135,7 @@ public class CollisionManager : MonoBehaviour
                     //Debug.Log(vertex);
                     return false;
                 }
-            //}
+            }
         }
         return true;
     }
@@ -191,6 +203,9 @@ public class CollisionManager : MonoBehaviour
 
         // Por ahora funciona, pero hay que probar con objetos de cocina con distintas formas por si acaso
         //boxCollider.size = new Vector3(selectedObject.transform.localScale.x, selectedObject.transform.localScale.y, selectedObject.transform.localScale.z);
-        boxCollider.size = selectedObject.transform.localScale;
+        boxCollider.size = new Vector3(selectedObject.boxCollider.size.x, selectedObject.boxCollider.size.y, selectedObject.boxCollider.size.z);
+
+        // Update the vertices of the collider
+        SetBoxVertices();
     }
 }

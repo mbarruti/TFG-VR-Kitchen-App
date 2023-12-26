@@ -49,19 +49,17 @@ public class BuildingObject : MonoBehaviour
         SetBoxVertices();
     }
 
-    private void Update()
-    {
-        //SetBoxVertices();
-
-        //_buildingManager.cubos[0].transform.position = transform.TransformPoint(vertices[0]);
-        //_buildingManager.cubos[1].transform.position = transform.TransformPoint(vertices[1]);
-        //_buildingManager.cubos[2].transform.position = transform.TransformPoint(vertices[2]);
-        //_buildingManager.cubos[3].transform.position = transform.TransformPoint(vertices[3]);
-        //_buildingManager.cubos[4].transform.position = transform.TransformPoint(vertices[4]);
-        //_buildingManager.cubos[5].transform.position = transform.TransformPoint(vertices[5]);
-        //_buildingManager.cubos[6].transform.position = transform.TransformPoint(vertices[6]);
-        //_buildingManager.cubos[7].transform.position = transform.TransformPoint(vertices[7]);
-    }
+    //private void Update()
+    //{
+    //    _buildingManager.cubos[0].transform.position = transform.TransformPoint(vertices[0]);
+    //    _buildingManager.cubos[1].transform.position = transform.TransformPoint(vertices[1]);
+    //    _buildingManager.cubos[2].transform.position = transform.TransformPoint(vertices[2]);
+    //    _buildingManager.cubos[3].transform.position = transform.TransformPoint(vertices[3]);
+    //    _buildingManager.cubos[4].transform.position = transform.TransformPoint(vertices[4]);
+    //    _buildingManager.cubos[5].transform.position = transform.TransformPoint(vertices[5]);
+    //    _buildingManager.cubos[6].transform.position = transform.TransformPoint(vertices[6]);
+    //    _buildingManager.cubos[7].transform.position = transform.TransformPoint(vertices[7]);
+    //}
 
     //private void OnCollisionStay(Collision collision)
     //{
