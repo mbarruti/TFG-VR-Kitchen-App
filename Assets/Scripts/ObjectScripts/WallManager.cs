@@ -59,9 +59,9 @@ public class WallManager : MonoBehaviour
             // Update position for endPole while finish is true
             if (finish == true)
             {
-                // Set the Z axis pointing at each other so the wall can be adjusted in that axis
-                startPole.transform.LookAt(endPole.transform.position);
-                endPole.transform.LookAt(startPole.transform.position);
+                //// Set the Z axis pointing at each other so the wall can be adjusted in that axis
+                //startPole.transform.LookAt(endPole.transform.position);
+                //endPole.transform.LookAt(startPole.transform.position);
                 //var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
 
                 if (freePlacement == false)
@@ -84,6 +84,10 @@ public class WallManager : MonoBehaviour
                 {
                     endPole.transform.position = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
                 }
+
+                // Set the Z axis pointing at each other so the wall can be adjusted in that axis
+                startPole.transform.LookAt(endPole.transform.position);
+                endPole.transform.LookAt(startPole.transform.position);
 
                 // Adjust the width of the wall based on the position of the two poles
                 wall.AdjustWall();
