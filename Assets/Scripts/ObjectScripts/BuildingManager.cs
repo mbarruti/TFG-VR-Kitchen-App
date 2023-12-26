@@ -62,10 +62,11 @@ public class BuildingManager : MonoBehaviour
         // Si hay un objeto pendiente de colocar en la escena, lo posicionamos donde apunta el usuario
         //if (pendingObject != null)
 
-        if (selectedBuildingObject != null && selectedBuildingObject.canPlace == true)
+        if (selectedBuildingObject != null)
         {
-            //parentObject.transform.position = _hitPos + GetOffset(hit.normal);
-            selectedBuildingObject.transform.position = _hitPos + GetOffset(hit.normal);
+            parentObject.transform.position = _hitPos + GetOffset(hit.normal);
+
+            if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
 
             // PRUEBA: los parametros son de prueba para el cubo, dependiendo del objeto el radio de la esfera deberia cambiar
             //detectedColliders = Physics.OverlapSphere(selectedBuildingObject.transform.position, 2);

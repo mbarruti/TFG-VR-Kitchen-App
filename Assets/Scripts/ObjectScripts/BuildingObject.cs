@@ -101,69 +101,90 @@ public class BuildingObject : MonoBehaviour
     //    }
     //}
 
-    public bool IsInLimit(Collider collider)
-    {
-        //bool allSameSide = false;
-        float distance;
+    //public bool IsInLimit(Collider collider)
+    //{
+    //    //bool allSameSide = false;
 
-        //Vector3 aux;
+    //    Vector3 auxVertex;
+    //    //BoxCollider auxCollider = collider as BoxCollider;
+    //    //auxCollider.center = 
+    //    //Vector3[] directions = { Vector3.up };
 
-        //BoxCollider auxCollider = collider as BoxCollider;
-        //auxCollider.center = 
-        //Vector3[] directions = { Vector3.up };
+    //    //Vector3[] vertices = GetBoxVertices();
 
-        //Vector3[] vertices = GetBoxVertices();
+    //    foreach (Vector3 vertex in vertices)
+    //    {
+    //        //auxVertex = transform.TransformPoint(vertex);
+    //        //distance = Vector3.Dot(auxVertex - collider.transform.position + new Vector3(0, 0, 0.05f), Vector3.up);
 
-        foreach (Vector3 vertex in vertices)
-        {
-            //aux = collider.transform.InverseTransformPoint(vertex);
+    //        // (A, B, C) vector perpendicular al plano del objeto que esta quieto
+    //        Vector3 up = Vector3.up;
+    //        // (x, y, z) un punto del plano del objeto que esta quieto
+    //        Vector3 point;
+    //        point.x = collider.transform.position.x;
+    //        point.y = collider.transform.position.y + collider.bounds.extents.y;
+    //        point.z = collider.transform.position.z;
+    //        // (x2, y2, z2) punto del vertice del objeto que pretendes mover
+    //        auxVertex = transform.TransformPoint(vertex);
+    //        // A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
+    //        // D = -A*x - B*y - C*z Calculo la D de esta forma
+    //        float d = Vector3.Dot(-up, point);
+    //        // A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
+    //        float num = Vector3.Dot(up, auxVertex) + d;
+    //        //auxVertex = collider.transform.InverseTransformPoint(vertex);
+    //        //distance = Vector3.Dot(auxVertex, Vector3.up);
+    //        //if (distance < 0)
+    //        if (num < 0)
+    //        {
+    //            // (A, B, C) vector perpendicular al plano del objeto que esta quieto
+    //            // (x, y, z) un punto del plano del objeto que esta quieto
+    //            // (x2, y2, z2) punto del vertice del objeto que pretendes mover
+    //            // A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
+    //            // D = -A*x - B*y - C*z Calculo la D de esta forma
+    //            // A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
+    //            Debug.Log(vertex);
+    //            return false;
+    //        }
+    //    }
 
-            distance = Vector3.Dot(vertex - collider.transform.position, Vector3.up);
-            if (distance < 0)
-            {
-                Debug.Log(distance);
-                return false;
-            }
-        }
+    //    return true;
+    //}
 
-        return true;
-    }
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    if (collision.collider != _buildingManager.hit.collider)
+    //    {
+    //        canPlace = IsInLimit(collision.collider);
+    //        //Vector3[] auxVertices = vertices;
 
-    private void OnCollisionStay(Collision collision)
-    {
-        if (collision.collider != _buildingManager.hit.collider)
-        {
-            canPlace = IsInLimit(collision.collider);
-            //Vector3[] auxVertices = vertices;
+    //        //// Obtener el BoxCollider del objeto con el que choca
+    //        //BoxCollider otherCollider = collision.collider as BoxCollider;
 
-            //// Obtener el BoxCollider del objeto con el que choca
-            //BoxCollider otherCollider = collision.collider as BoxCollider;
+    //        //if (boxCollider != null && otherCollider != null)
+    //        //{
 
-            //if (boxCollider != null && otherCollider != null)
-            //{
+    //        //    // Obtener la matriz de transformación del espacio local al espacio del otro BoxCollider
+    //        //    Matrix4x4 localToOtherMatrix = otherCollider.transform.worldToLocalMatrix * boxCollider.transform.localToWorldMatrix;
 
-            //    // Obtener la matriz de transformación del espacio local al espacio del otro BoxCollider
-            //    Matrix4x4 localToOtherMatrix = otherCollider.transform.worldToLocalMatrix * boxCollider.transform.localToWorldMatrix;
+    //        //    // Transformar los vértices al espacio local del otro BoxCollider
+    //        //    for (int i = 0; i < auxVertices.Length; i++)
+    //        //    {
+    //        //        auxVertices[i] = localToOtherMatrix.MultiplyPoint3x4(auxVertices[i]);
+    //        //    }
 
-            //    // Transformar los vértices al espacio local del otro BoxCollider
-            //    for (int i = 0; i < auxVertices.Length; i++)
-            //    {
-            //        auxVertices[i] = localToOtherMatrix.MultiplyPoint3x4(auxVertices[i]);
-            //    }
-
-            //    // Verificar si alguno de los vértices atraviesa cualquier plano del otro BoxCollider
-            //    for (int i = 0; i < auxVertices.Length; i++)
-            //    {
-            //        if (auxVertices[i].z < 0)
-            //        {
-            //            Debug.Log("El vértice " + auxVertices[i] + " atraviesa el plano Z del otro objeto.");
-            //            Debug.Log(auxVertices[i]);
-            //            canPlace = false;
-            //        }
-            //    }
-            //}
-        }
-    }
+    //        //    // Verificar si alguno de los vértices atraviesa cualquier plano del otro BoxCollider
+    //        //    for (int i = 0; i < auxVertices.Length; i++)
+    //        //    {
+    //        //        if (auxVertices[i].z < 0)
+    //        //        {
+    //        //            Debug.Log("El vértice " + auxVertices[i] + " atraviesa el plano Z del otro objeto.");
+    //        //            Debug.Log(auxVertices[i]);
+    //        //            canPlace = false;
+    //        //        }
+    //        //    }
+    //        //}
+    //    }
+    //}
 
     // Get the collider vertices
     Vector3[] GetBoxVertices()
@@ -185,7 +206,7 @@ public class BuildingObject : MonoBehaviour
         return vertices;
     }
 
-    // Get the collider vertices
+    // Set the collider vertices
     void SetBoxVertices()
     {
         Vector3 center = boxCollider.center;
