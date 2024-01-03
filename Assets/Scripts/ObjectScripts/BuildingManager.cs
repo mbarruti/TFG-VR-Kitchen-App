@@ -58,7 +58,7 @@ public class BuildingManager : MonoBehaviour
         //if (selectedBuildingObject != null)
         if (playerManager.state == PlayerState.isBuilding)
         {
-            parentObject.transform.position = _hitPos + GetOffset(hit.normal);
+            parentObject.transform.position = _hitPos + GetOffset(hit.normal, parentObject.boxCollider);
 
             if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
 
@@ -110,26 +110,26 @@ public class BuildingManager : MonoBehaviour
             //}
 
             // Activar el outline del objeto si est� siendo apuntado con el mando
-            if (playerManager.state == PlayerState.isFree && hit.collider.gameObject.TryGetComponent<BuildingObject>(out var auxObj))
-            {
-                if (hitObject != auxObj)
-                {
-                    //Debug.Log("Apunta a obj");
-                    if (hitObject != null) hitObject.switchOutline(false);
-                    hitObject = auxObj;
-                    hitObject.switchOutline(true);
-                }
-            }
-            else
-            {
-                //Debug.Log("No apunta a obj");
-                if (hitObject != null)
-                {
-                    //Debug.Log("Outline desactivada");
-                    hitObject.switchOutline(false);
-                    hitObject = null;
-                }
-            }
+            //if (playerManager.state == PlayerState.isFree && hit.collider.gameObject.TryGetComponent<BuildingObject>(out var auxObj))
+            //{
+            //    if (hitObject != auxObj)
+            //    {
+            //        //Debug.Log("Apunta a obj");
+            //        if (hitObject != null) hitObject.switchOutline(false);
+            //        hitObject = auxObj;
+            //        hitObject.switchOutline(true);
+            //    }
+            //}
+            //else
+            //{
+            //    //Debug.Log("No apunta a obj");
+            //    if (hitObject != null)
+            //    {
+            //        //Debug.Log("Outline desactivada");
+            //        hitObject.switchOutline(false);
+            //        hitObject = null;
+            //    }
+            //}
         }
     }
 
