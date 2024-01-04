@@ -17,9 +17,13 @@ public class BuildingObject : MonoBehaviour
 
     //private Collider hitCollider;
 
-    private Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
+    //private Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
+
+    //private Vector3 boxColliderCenter;
 
     // ------------------------------------------------
+
+    public Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
 
     public BuildingManager _buildingManager;
 
@@ -49,17 +53,17 @@ public class BuildingObject : MonoBehaviour
         SetBoxVertices();
     }
 
-    //private void Update()
-    //{
-    //    _buildingManager.cubos[0].transform.position = transform.TransformPoint(vertices[0]);
-    //    _buildingManager.cubos[1].transform.position = transform.TransformPoint(vertices[1]);
-    //    _buildingManager.cubos[2].transform.position = transform.TransformPoint(vertices[2]);
-    //    _buildingManager.cubos[3].transform.position = transform.TransformPoint(vertices[3]);
-    //    _buildingManager.cubos[4].transform.position = transform.TransformPoint(vertices[4]);
-    //    _buildingManager.cubos[5].transform.position = transform.TransformPoint(vertices[5]);
-    //    _buildingManager.cubos[6].transform.position = transform.TransformPoint(vertices[6]);
-    //    _buildingManager.cubos[7].transform.position = transform.TransformPoint(vertices[7]);
-    //}
+    private void Update()
+    {
+        _buildingManager.cubos[0].transform.position = transform.TransformPoint(vertices[0]);
+        _buildingManager.cubos[1].transform.position = transform.TransformPoint(vertices[1]);
+        _buildingManager.cubos[2].transform.position = transform.TransformPoint(vertices[2]);
+        _buildingManager.cubos[3].transform.position = transform.TransformPoint(vertices[3]);
+        _buildingManager.cubos[4].transform.position = transform.TransformPoint(vertices[4]);
+        _buildingManager.cubos[5].transform.position = transform.TransformPoint(vertices[5]);
+        _buildingManager.cubos[6].transform.position = transform.TransformPoint(vertices[6]);
+        _buildingManager.cubos[7].transform.position = transform.TransformPoint(vertices[7]);
+    }
 
     //private void OnCollisionStay(Collision collision)
     //{
@@ -222,12 +226,13 @@ public class BuildingObject : MonoBehaviour
         }
     }
 
+
+
     //Con el trigger izquierdo se rota el objeto en el eje Y (30 grados)
     public void RotateObject()
     {
         //Debug.Log(transform.TransformPoint(boxCollider.bounds.extents));
         gameObject.transform.Rotate(Vector3.up, 30);
-        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAA" + transform.TransformVector(boxCollider.size));
     }
 
     // Escala según el valor del eje Y del mando derecho (falta prohibir que se escale a menor o igual que 0)

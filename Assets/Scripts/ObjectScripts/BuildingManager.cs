@@ -52,40 +52,59 @@ public class BuildingManager : MonoBehaviour
         ray = rightController.GetComponent<XRRayInteractor>();
     }
 
+    // Para dibujar el bounding box del objeto elegido (o de su collider)
+    void DrawBoundingBox(Bounds bounds)
+    {
+        // Get the center and extents of the bounds
+        Vector3 center = bounds.center;
+        Vector3 extents = bounds.extents;
+
+        // Calculate the corner positions of the bounding box
+        Vector3 frontBottomLeft = center - extents;
+        Vector3 frontBottomRight = new Vector3(center.x + extents.x, center.y - extents.y, center.z - extents.z);
+        Vector3 frontTopLeft = new Vector3(center.x - extents.x, center.y + extents.y, center.z - extents.z);
+        Vector3 frontTopRight = new Vector3(center.x + extents.x, center.y + extents.y, center.z - extents.z);
+        Vector3 backBottomLeft = new Vector3(center.x - extents.x, center.y - extents.y, center.z + extents.z);
+        Vector3 backBottomRight = new Vector3(center.x + extents.x, center.y - extents.y, center.z + extents.z);
+        Vector3 backTopLeft = new Vector3(center.x - extents.x, center.y + extents.y, center.z + extents.z);
+        Vector3 backTopRight = center + extents;
+
+        // Draw the bounding box wireframe
+        Debug.DrawLine(frontBottomLeft, frontBottomRight);
+        Debug.DrawLine(frontBottomRight, frontTopRight);
+        Debug.DrawLine(frontTopRight, frontTopLeft);
+        Debug.DrawLine(frontTopLeft, frontBottomLeft);
+
+        Debug.DrawLine(backBottomLeft, backBottomRight);
+        Debug.DrawLine(backBottomRight, backTopRight);
+        Debug.DrawLine(backTopRight, backTopLeft);
+        Debug.DrawLine(backTopLeft, backBottomLeft);
+
+        Debug.DrawLine(frontBottomLeft, backBottomLeft);
+        Debug.DrawLine(frontBottomRight, backBottomRight);
+        Debug.DrawLine(frontTopLeft, backTopLeft);
+        Debug.DrawLine(frontTopRight, backTopRight);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        //if (Physics.Raycast(new Vector3(0, 5f, 0), Vector3.forward, out var auxHit))
+        //{
+        //    DrawBoundingBox(auxHit.collider.gameObject.GetComponent<MeshRenderer>().bounds);
+        //    //DrawBoundingBox(auxHit.collider.bounds);
+        //    //cubos[0].transform.position = new Vector3(auxHit.collider.transform.position.x + auxHit.collider.bounds.extents.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z);
+        //    //cubos[1].transform.position = new Vector3(auxHit.collider.transform.position.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z + auxHit.collider.bounds.extents.z);
+        //}
         //if (selectedBuildingObject != null)
         if (playerManager.state == PlayerState.isBuilding)
         {
-            parentObject.transform.position = _hitPos + GetOffset(hit.normal, parentObject.boxCollider);
+            selectedBuildingObject.transform.position = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
+            //parentObject.transform.position = _hitPos + GetOffset(hit.normal, parentObject.boxCollider);
 
-            if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-
-            // PRUEBA: los parametros son de prueba para el cubo, dependiendo del objeto el radio de la esfera deberia cambiar
-            //detectedColliders = Physics.OverlapSphere(selectedBuildingObject.transform.position, 2);
-            //Debug.Log(selectedBuildingObject.detectedColliders.Count);
-            //if (parentObject.detectedColliders.Count == 1)
-            //{
-            //Debug.Log("no colisiona");
-            //offset = Vector3.zero;
-            //}
-            //Debug.Log(detectedColliders.Length);
+            //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
 
             //UpdateOffset();
-
-            //if (offset == Vector3.zero) Debug.Log(offset);
-            //Debug.Log(offset);
-            //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
-            //selectedBuildingObject.transform.position = parentObject.transform.position + _hitPos + GetOffset(hit.normal) + offset;
-            //selectedBuildingObject.transform.position = Vector3.Lerp(selectedBuildingObject.transform.position, _hitPos + GetOffset(hit.normal) + offset, 30f * Time.deltaTime);
-
-            //Debug.Log(selectedBuildingObject.boxCollider.size);
-            //Vector3 aux = selectedBuildingObject.transform.TransformVector(selectedBuildingObject.boxCollider.size);
-            //cuboX.transform.position = new Vector3(selectedBuildingObject.transform.position.x + aux.x, selectedBuildingObject.transform.position.y, selectedBuildingObject.transform.position.z);
-
-            ////Debug.Log(aux);
-            //cuboZ.transform.position = new Vector3(selectedBuildingObject.transform.position.x, selectedBuildingObject.transform.position.y, selectedBuildingObject.transform.position.z + aux.z);
 
             // Actualizar materiales de colision
             //UpdateMaterials();
@@ -100,6 +119,8 @@ public class BuildingManager : MonoBehaviour
         {
             //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
             _hitPos = hit.point;
+            //cubos[0].transform.position = hit.collider.bounds.max;
+            //cubos[1].transform.position = hit.collider.bounds.min;
             //Debug.Log(hit.collider.gameObject.name);
             //Debug.Log("Nombre de objeto que choca con rayo: " + hit.collider.gameObject.name);
             // Ajustar la posicion para que el centro del objeto este en el punto de colision
@@ -169,31 +190,75 @@ public class BuildingManager : MonoBehaviour
         return 0;
     }
 
-    private Vector3 GetOffset(Vector3 normal, BoxCollider boxCollider)
-    {
-        // Encontrar el eje dominante de la normal
-        float maxAxis = Mathf.Max(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
+    //private Vector3 GetOffset(Vector3 normal, BoxCollider boxCollider)
+    //{
+    //    // Encontrar el eje dominante de la normal
+    //    float maxAxis = Mathf.Max(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
 
-        // Calcular el desplazamiento necesario para que el centro del objeto este alineado con la superficie
-        Vector3 hitOffset = Vector3.zero;
-        if (Mathf.Abs(normal.x) == maxAxis)
-        {
-            hitOffset = normal * boxCollider.bounds.extents.x;
-            //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.x;
-        }
-        else if (Mathf.Abs(normal.y) == maxAxis)
-        {
-            hitOffset = normal * boxCollider.bounds.extents.y;
-            //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.y;
-        }
-        else if (Mathf.Abs(normal.z) == maxAxis)
-        {
-            hitOffset = normal * boxCollider.bounds.extents.z;
-            //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.z;
-        }
+    //    // Calcular el desplazamiento necesario para que el centro del objeto este alineado con la superficie
+    //    Vector3 hitOffset = Vector3.zero;
+    //    if (Mathf.Abs(normal.x) == maxAxis)
+    //    {
+    //        hitOffset = normal * boxCollider.bounds.extents.x;
+    //        //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.x;
+    //    }
+    //    else if (Mathf.Abs(normal.y) == maxAxis)
+    //    {
+    //        hitOffset = normal * boxCollider.bounds.extents.y;
+    //        //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.y;
+    //    }
+    //    else if (Mathf.Abs(normal.z) == maxAxis)
+    //    {
+    //        hitOffset = normal * boxCollider.bounds.extents.z;
+    //        //hitOffset = normal * selectedBuildingObject.boxCollider.bounds.extents.z;
+    //    }
 
-        return hitOffset;
-    }
+    //    return hitOffset;
+    //}
+
+    //private Vector3 GetOffset(RaycastHit planeHit, BuildingObject buildingObject)
+    //{
+    //    Vector3 hitOffset = Vector3.zero;
+    //    Vector3 auxVertex;
+
+    //    //float previousNum = 0;
+    //    //float num = 0;
+
+    //    foreach (Vector3 vertex in buildingObject.vertices)
+    //    {
+    //        // (A, B, C) vector perpendicular al plano del objeto que esta quieto
+    //        Vector3 normal = planeHit.normal;
+
+    //        // (x, y, z) un punto del plano del objeto que esta quieto en la direccion del vector perpendicular
+    //        Vector3 point = Vector3.Scale(normal, planeHit.point);
+    //        //Debug.DrawRay(point, normal, Color.blue);
+
+    //        // (x2, y2, z2) punto del vertice del objeto que pretendes mover
+    //        auxVertex = transform.TransformPoint(vertex);
+
+    //        //// A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
+    //        //// D = -A*x - B*y - C*z Calculo la D de esta forma
+    //        //float d = Vector3.Dot(-normal, point);
+
+    //        //// A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
+    //        //if (num != 0) previousNum = num;
+    //        //num = Vector3.Dot(normal, auxVertex) + d;
+
+    //        //// Si algun valor tiene signo distinto a los demas, esta al otro lado del plano
+    //        //if (num > 0 && previousNum < 0)
+    //        //{
+    //        //    //Debug.Log(vertex);
+    //        //    hitOffset =
+    //        //}
+    //        //if (num < 0 && previousNum > 0)
+    //        //{
+    //        //    //Debug.Log(vertex);
+
+    //        //}
+    //    }
+
+    //    return hitOffset;
+    //}
 
     private void UpdateOffset()
     {
@@ -250,7 +315,7 @@ public class BuildingManager : MonoBehaviour
         //collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
 
         // Match the scale of the colliders
-        parentObject.SetScale(selectedBuildingObject);
+        //parentObject.SetScale(selectedBuildingObject);
 
         Debug.Log(parentObject.boxCollider.bounds.extents);
     }
@@ -338,7 +403,7 @@ public class BuildingManager : MonoBehaviour
             selectedBuildingObject.isPlaced = false;
 
             // Match the scale of the colliders
-            parentObject.SetScale(selectedBuildingObject);
+            //parentObject.SetScale(selectedBuildingObject);
         }
     }
 

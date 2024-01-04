@@ -12,6 +12,8 @@ public class WallManager : MonoBehaviour
     // Raycast from right controller
     XRRayInteractor rightRay;
 
+    [SerializeField] GameObject ceiling;
+
     [SerializeField] PlayerManager playerManager;
 
     [SerializeField] List<BuildingWall> wallList;
@@ -405,6 +407,15 @@ public class WallManager : MonoBehaviour
                 wall = buildingWall;
             }
         }
+    }
+
+    /// <summary>
+    /// Sets the height of the ceiling when before finishing building walls
+    /// 
+    public void SetCeiling()
+    {
+        ceiling.SetActive(true);
+        ceiling.transform.position = new Vector3(0, 0, wall.boxCollider.bounds.extents.y + 0.05f);
     }
 
     public void DeleteAllPoles()
