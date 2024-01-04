@@ -99,10 +99,10 @@ public class BuildingManager : MonoBehaviour
         //if (selectedBuildingObject != null)
         if (playerManager.state == PlayerState.isBuilding)
         {
-            selectedBuildingObject.transform.position = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
-            //parentObject.transform.position = _hitPos + GetOffset(hit.normal, parentObject.boxCollider);
+            //selectedBuildingObject.transform.position = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
+            parentObject.transform.position = _hitPos + Vector3.Scale(hit.normal, parentObject.boxCollider.bounds.extents);
 
-            //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+            if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
 
             //UpdateOffset();
 
@@ -315,7 +315,7 @@ public class BuildingManager : MonoBehaviour
         //collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
 
         // Match the scale of the colliders
-        //parentObject.SetScale(selectedBuildingObject);
+        parentObject.SetScale(selectedBuildingObject);
 
         Debug.Log(parentObject.boxCollider.bounds.extents);
     }
@@ -403,7 +403,7 @@ public class BuildingManager : MonoBehaviour
             selectedBuildingObject.isPlaced = false;
 
             // Match the scale of the colliders
-            //parentObject.SetScale(selectedBuildingObject);
+            parentObject.SetScale(selectedBuildingObject);
         }
     }
 
