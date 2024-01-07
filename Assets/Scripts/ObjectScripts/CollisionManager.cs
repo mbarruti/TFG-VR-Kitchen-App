@@ -54,15 +54,18 @@ public class CollisionManager : MonoBehaviour
         //    _buildingManager.cubos[i].transform.position = collision.GetContact(i).point;
         //}
 
-        if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
-        {
-            canPlace = IsInLimit(collision.collider, collision.GetContact(0));
-        }
+        //if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
+        //{
+        //    canPlace = IsInLimit(collision.collider, collision.GetContact(0));
+        //}
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject) canPlace = true;
+        if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
+        {
+            canPlace = true;
+        }
     }
 
     // Set the collider vertices
@@ -121,20 +124,23 @@ public class CollisionManager : MonoBehaviour
                 float d = Vector3.Dot(-normal, point);
 
                 // A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
-                if (num != 0) previousNum = num;
                 num = Vector3.Dot(normal, auxVertex) + d;
+                if (num != 0 && previousNum == 0) previousNum = num;
+
+                // Si la siguiente operacion es negativa, significa que el vertice asociado al valor num esta al otro lado del plano
+                if (num * previousNum < 0) return false;
 
                 // Si algun valor tiene signo distinto a los demas, esta al otro lado del plano
-                if (num > 0 && previousNum < 0)
-                {
-                    //Debug.Log(vertex);
-                    return false;
-                }
-                if (num < 0 && previousNum > 0)
-                {
-                    //Debug.Log(vertex);
-                    return false;
-                }
+                //if (num > 0 && previousNum < 0)
+                //{
+                //    //Debug.Log(vertex);
+                //    return false;
+                //}
+                //if (num < 0 && previousNum > 0)
+                //{
+                //    //Debug.Log(vertex);
+                //    return false;
+                //}
             }
         }
         return true;

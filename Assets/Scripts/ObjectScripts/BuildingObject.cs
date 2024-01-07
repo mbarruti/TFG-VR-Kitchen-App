@@ -9,6 +9,8 @@ public class BuildingObject : MonoBehaviour
 
     [SerializeField] Outline outline;
 
+    [SerializeField] private Material[] collisionMaterials;
+
     // Aqui se guardan las transformaciones previas a la edicion del objeto seleccionado
     //private Transform lastTransform;
     private Vector3 _lastPos;
@@ -154,39 +156,93 @@ public class BuildingObject : MonoBehaviour
 
     //private void OnCollisionStay(Collision collision)
     //{
-    //    if (collision.collider != _buildingManager.hit.collider)
+    //    //for (int i = 0; i < collision.contactCount; i++)
+    //    //{
+    //    //    _buildingManager.cubos[i].transform.position = collision.GetContact(i).point;
+    //    //}
+
+    //    if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
     //    {
-    //        canPlace = IsInLimit(collision.collider);
-    //        //Vector3[] auxVertices = vertices;
-
-    //        //// Obtener el BoxCollider del objeto con el que choca
-    //        //BoxCollider otherCollider = collision.collider as BoxCollider;
-
-    //        //if (boxCollider != null && otherCollider != null)
+    //        canPlace = IsInLimit(collision.collider, collision.GetContact(0));
+    //        //if (canPlace == false)
     //        //{
-
-    //        //    // Obtener la matriz de transformación del espacio local al espacio del otro BoxCollider
-    //        //    Matrix4x4 localToOtherMatrix = otherCollider.transform.worldToLocalMatrix * boxCollider.transform.localToWorldMatrix;
-
-    //        //    // Transformar los vértices al espacio local del otro BoxCollider
-    //        //    for (int i = 0; i < auxVertices.Length; i++)
-    //        //    {
-    //        //        auxVertices[i] = localToOtherMatrix.MultiplyPoint3x4(auxVertices[i]);
-    //        //    }
-
-    //        //    // Verificar si alguno de los vértices atraviesa cualquier plano del otro BoxCollider
-    //        //    for (int i = 0; i < auxVertices.Length; i++)
-    //        //    {
-    //        //        if (auxVertices[i].z < 0)
-    //        //        {
-    //        //            Debug.Log("El vértice " + auxVertices[i] + " atraviesa el plano Z del otro objeto.");
-    //        //            Debug.Log(auxVertices[i]);
-    //        //            canPlace = false;
-    //        //        }
-    //        //    }
+    //        //    AssignMaterial(collisionMaterials[0]);
+    //        //}
+    //        //else
+    //        //{
+    //        //    AssignMaterial(collisionMaterials[1]);
     //        //}
     //    }
     //}
+
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
+    //    {
+    //        AssignMaterial(collisionMaterials[1]);
+    //    }
+    //}
+
+    public bool IsInLimit(Collider collider, ContactPoint contactPoint)
+    {
+        //bool allSameSide = false;
+
+        Vector3 auxVertex;
+        //BoxCollider auxCollider = collider as BoxCollider;
+        //auxCollider.center = 
+        //Vector3[] directions = { Vector3.up };
+
+        //Vector3[] vertices = GetBoxVertices();
+        float previousNum = 0;
+        float num = 0;
+        foreach (Vector3 vertex in vertices)
+        {
+            Vector3 closestPoint = collider.ClosestPoint(transform.position);
+            Vector3 diff = closestPoint - transform.position;
+            Vector3 dir = diff.normalized;
+
+            if (Physics.Raycast(transform.position, dir, out var planeHit))
+            {
+                // (A, B, C) vector perpendicular al plano del objeto que esta quieto
+                //Vector3 normal = contactPoint.normal;
+                Vector3 normal = planeHit.normal;
+
+                // (x, y, z) un punto del plano del objeto que esta quieto /*+ Vector3.Dot(planeHit.normal, collider.bounds.extents);*/
+                //Vector3 point = contactPoint.point;
+                Vector3 offset = Vector3.Scale(planeHit.normal, collider.bounds.extents);
+                Vector3 point = collider.transform.position + offset;
+                Debug.DrawRay(point, normal, Color.blue);
+
+                // (x2, y2, z2) punto del vertice del objeto que pretendes mover
+                auxVertex = transform.TransformPoint(vertex);
+
+                // A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
+                // D = -A*x - B*y - C*z Calculo la D de esta forma
+                float d = Vector3.Dot(-normal, point);
+
+                // A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
+                num = Vector3.Dot(normal, auxVertex) + d;
+                if (num != 0 && previousNum == 0) previousNum = num;
+
+                Debug.Log(num * previousNum);
+                // Si la siguiente operacion es negativa, significa que el vertice asociado al valor num esta al otro lado del plano
+                if (num * previousNum < 0) return false;
+
+                // Si algun valor tiene signo distinto a los demas, esta al otro lado del plano
+                //if (num > 0 && previousNum < 0)
+                //{
+                //    //Debug.Log(vertex);
+                //    return false;
+                //}
+                //if (num < 0 && previousNum > 0)
+                //{
+                //    //Debug.Log(vertex);
+                //    return false;
+                //}
+            }
+        }
+        return true;
+    }
 
     // Get the collider vertices
     Vector3[] GetBoxVertices()
@@ -226,7 +282,14 @@ public class BuildingObject : MonoBehaviour
         }
     }
 
+    public void MoveWithJoystick(float valueX, float valueY)
+    {
+        Vector3 movement = new Vector3(valueX, valueY, 0f);
+        //movement.Normalize();
+        Vector3 nextPosition = transform.position + movement * 5f * Time.deltaTime;
 
+        objectRigidbody.MovePosition(nextPosition);
+    }
 
     //Con el trigger izquierdo se rota el objeto en el eje Y (30 grados)
     public void RotateObject()
@@ -243,7 +306,7 @@ public class BuildingObject : MonoBehaviour
         Debug.Log(transform.TransformVector(boxCollider.size));
     }
 
-    public void assignMaterial(Material material)
+    public void AssignMaterial(Material material)
     {
         meshRenderer.material = material;
     }

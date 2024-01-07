@@ -12,6 +12,8 @@ public class WorldMenuManager : MonoBehaviour
 
     // -------------------------------------------
 
+    public BuildingState buildingState;
+
     public bool isOpened;
 
     // Objeto seleccionado a generar
@@ -43,10 +45,14 @@ public class WorldMenuManager : MonoBehaviour
 
         // Seleccionar el objeto actual
         selectedModel = modelsList[index];
-        buildingManager.InstantiateModel(selectedModel);
+
+        // (Optional, just for organization) If there is a pending object and another model is selected, the placement of the current selected object is cancelled
+        if (buildingManager.pendingObject != null) buildingManager.CancelObjectPlacement();
+
+        //buildingManager.InstantiateModel(selectedModel);
 
         // Mientras el objeto este seleccionado, el menu estara cerrado
-        hideWorldMenu();
+        //hideWorldMenu();
     }
 
     private void DeselectAllObjects()

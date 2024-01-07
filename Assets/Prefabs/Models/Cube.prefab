@@ -147,6 +147,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outline: {fileID: 4212214152288071408}
+  collisionMaterials:
+  - {fileID: 2100000, guid: f8955bde5aa77e3419ab3426b4b777ac, type: 2}
+  - {fileID: 2100000, guid: 3c32b8d0d1e251246a5ff314335c8966, type: 2}
+  vertices:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   _buildingManager: {fileID: 0}
   canPlace: 1
   meshRenderer: {fileID: 375431031995641209}

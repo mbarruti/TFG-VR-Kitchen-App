@@ -114,24 +114,39 @@ public class PlayerManager : MonoBehaviour
             //// Si hay un objeto pendiente de colocar y abrimos el menu, se controla que ese proceso sigue pendiente
             //if (_buildingManager.selectedBuildingObject != null)
             //{
+            //if (_buildingManager.pendingObject != null)
+            //{
+            //    //_buildingManager.selectedBuildingObject = null;
+            //    //_buildingManager.pendingObject.SetActive(false);
+            //    //}
+
+            //    _worldMenuManager.showWorldMenu();
+            //}
+            //if (_buildingManager.selectedBuildingObject != null)
+            //{
+
             if (_buildingManager.pendingObject != null)
             {
-                _buildingManager.selectedBuildingObject = null;
-                _buildingManager.pendingObject.SetActive(false);
-                //}
-
-                _worldMenuManager.showWorldMenu();
+                // Stops the object placement
+                _buildingManager.selectedBuildingObject.gameObject.SetActive(false);
             }
-            else Debug.Log("No se puede abrir si estas editando");
+            else if (_buildingManager.selectedBuildingObject != null)
+            {
+                _buildingManager.CancelObjectTransform();
+            }
+
+            _worldMenuManager.showWorldMenu();
+            //}
+            //else Debug.Log("No se puede abrir si estas editando");
         }
         else if (state == PlayerState.isFree || state == PlayerState.isBuildingWalls)
         {
             _worldMenuManager.showWorldMenu();
         }
-        else
-        {
-            Debug.Log("No se puede abrir el menu mientras estas colocando un objeto / El menu ya esta abierto");
-        }
+        //else
+        //{
+        //    Debug.Log("No se puede abrir el menu mientras estas colocando un objeto / El menu ya esta abierto");
+        //}
     }
 
     void OnBAction(InputAction.CallbackContext context)
@@ -140,14 +155,19 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isInMenu)
         {
             // Si hay un modelo del menu seleccionado, continua ese proceso al cerrarlo
-            if (_buildingManager.pendingObject != null)
-            {
-                //_buildingManager.pendingObject.SetActive(true);
-                //_buildingManager.CancelObjectPlacement();
-                _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
-            }
+            //if (_buildingManager.pendingObject != null)
+            //{
+            //    //_buildingManager.pendingObject.SetActive(true);
+            //    //_buildingManager.CancelObjectPlacement();
+            //    _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
+            //}
 
             _worldMenuManager.hideWorldMenu();
+
+            if (_buildingManager.pendingObject != null)
+            {
+                _buildingManager.selectedBuildingObject.gameObject.SetActive(true);
+            }
         }
 
         // Cancelar la transformacion del objeto
@@ -210,13 +230,20 @@ public class PlayerManager : MonoBehaviour
         //if (_buildingManager.selectedBuildingObject != null)
         if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject != null)
         {
-            _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
-            _buildingManager.parentObject.ScaleCollider(context.action.ReadValue<Vector2>().y);
+            if (_worldMenuManager.buildingState == BuildingState.withPhysics)
+            {
+                _buildingManager.selectedBuildingObject.MoveWithJoystick(context.action.ReadValue<Vector2>().x, context.action.ReadValue<Vector2>().y);
+            }
+            //else
+            //{
+            //    _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
+            //    _buildingManager.parentObject.ScaleCollider(context.action.ReadValue<Vector2>().y);
+            //}
         }
-        else
-        {
-            Debug.Log("No hay objeto seleccionado para escalar");
-        }
+        //else
+        //{
+        //    Debug.Log("No hay objeto seleccionado para escalar");
+        //}
     }
 
     void OnAAction(InputAction.CallbackContext context)

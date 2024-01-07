@@ -28,6 +28,9 @@ public class BuildingManager : MonoBehaviour
     public GameObject[] cubos;
     //
 
+    // Perpendicular vector to the normal of the RaycastHit that sets the direction fo the movement of an object with physics
+    public Vector3 movementDirection;
+
     public RaycastHit hit;
 
     // Objeto instanciado que indica donde se colocara el modelo seleccionado
@@ -97,14 +100,24 @@ public class BuildingManager : MonoBehaviour
         //    //cubos[1].transform.position = new Vector3(auxHit.collider.transform.position.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z + auxHit.collider.bounds.extents.z);
         //}
         //if (selectedBuildingObject != null)
+        //if (ray.TryGetCurrent3DRaycastHit(out hit))
+        //{
+        //    //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
+        //    _hitPos = hit.point;
+        //}
+
         if (playerManager.state == PlayerState.isBuilding)
         {
-            //selectedBuildingObject.transform.position = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
-            parentObject.transform.position = _hitPos + Vector3.Scale(hit.normal, parentObject.boxCollider.bounds.extents);
+            DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
+            if (worldMenuManager.buildingState == BuildingState.withOffset)
+            {
+                //selectedBuildingObject.transform.position = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
+                parentObject.transform.position = _hitPos + Vector3.Scale(hit.normal, parentObject.boxCollider.bounds.extents);
 
-            if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+                if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
 
-            //UpdateOffset();
+                //UpdateOffset();
+            }
 
             // Actualizar materiales de colision
             //UpdateMaterials();
@@ -119,6 +132,19 @@ public class BuildingManager : MonoBehaviour
         {
             //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
             _hitPos = hit.point;
+            movementDirection = Vector3.Cross(hit.normal, Vector3.left);
+            Debug.DrawRay(hit.point, movementDirection, Color.blue);
+            Debug.Log("Vector perpendicular: " + movementDirection);
+            //if (playerManager.state == PlayerState.isBuilding) selectedBuildingObject.transform.position = _hitPos;
+
+            //if (playerManager.state == PlayerState.isBuilding)
+            //{
+            //    Vector3 hitOffset = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
+            //    Vector3 direction = hitOffset - selectedBuildingObject.transform.position;
+            //    direction.Normalize();
+            //    Vector3 nextPosition = selectedBuildingObject.transform.position + direction * 5f * Time.deltaTime;
+            //    selectedBuildingObject.objectRigidbody.MovePosition(nextPosition);
+            //}
             //cubos[0].transform.position = hit.collider.bounds.max;
             //cubos[1].transform.position = hit.collider.bounds.min;
             //Debug.Log(hit.collider.gameObject.name);
@@ -130,27 +156,28 @@ public class BuildingManager : MonoBehaviour
             //    //parentObject.transform.position = _hitPos + GetOffset(hit.normal);
             //}
 
-            // Activar el outline del objeto si est� siendo apuntado con el mando
-            //if (playerManager.state == PlayerState.isFree && hit.collider.gameObject.TryGetComponent<BuildingObject>(out var auxObj))
-            //{
-            //    if (hitObject != auxObj)
-            //    {
-            //        //Debug.Log("Apunta a obj");
-            //        if (hitObject != null) hitObject.switchOutline(false);
-            //        hitObject = auxObj;
-            //        hitObject.switchOutline(true);
-            //    }
-            //}
-            //else
-            //{
-            //    //Debug.Log("No apunta a obj");
-            //    if (hitObject != null)
-            //    {
-            //        //Debug.Log("Outline desactivada");
-            //        hitObject.switchOutline(false);
-            //        hitObject = null;
-            //    }
-            //}
+            // Activar el outline del objeto si esta siendo apuntado con el mando
+            // If a BuildingObject is hit, we can select it
+            if (playerManager.state == PlayerState.isFree && hit.collider.gameObject.TryGetComponent<BuildingObject>(out var auxObj))
+            {
+                if (hitObject != auxObj)
+                {
+                    //Debug.Log("Apunta a obj");
+                    //if (hitObject != null) hitObject.switchOutline(false);
+                    hitObject = auxObj;
+                    //hitObject.switchOutline(true);
+                }
+            }
+            else
+            {
+                //Debug.Log("No apunta a obj");
+                if (hitObject != null)
+                {
+                    //Debug.Log("Outline desactivada");
+                    //hitObject.switchOutline(false);
+                    hitObject = null;
+                }
+            }
         }
     }
 
@@ -161,11 +188,11 @@ public class BuildingManager : MonoBehaviour
     {
         if (selectedBuildingObject.canPlace)
         {
-            selectedBuildingObject.assignMaterial(collisionMaterials[0]);
+            selectedBuildingObject.AssignMaterial(collisionMaterials[0]);
         }
         else
         {
-            selectedBuildingObject.assignMaterial(collisionMaterials[1]);
+            selectedBuildingObject.AssignMaterial(collisionMaterials[1]);
         }
     }
 
@@ -301,7 +328,7 @@ public class BuildingManager : MonoBehaviour
 
     public void InstantiateModel(GameObject selectedModel)
     {
-        if (pendingObject != null) Destroy(pendingObject);
+        //if (pendingObject != null) Destroy(pendingObject);
 
         // Instancia para el objeto indicador que se proyecta en el mundo
         pendingObject = Instantiate(selectedModel, _hitPos, transform.rotation);
@@ -311,13 +338,14 @@ public class BuildingManager : MonoBehaviour
         //selectedBuildingObject.transform.position = new Vector3(0, 50f, 0);
         selectedBuildingObject._buildingManager = this;
 
+        if (worldMenuManager.buildingState == BuildingState.withPhysics)
+            selectedBuildingObject.objectRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
+
         // Guardamos su material en la lista de materiales de colision
         //collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
 
         // Match the scale of the colliders
         parentObject.SetScale(selectedBuildingObject);
-
-        Debug.Log(parentObject.boxCollider.bounds.extents);
     }
 
     // FUNCIONES LLAMADAS EN PlayerActions
@@ -346,6 +374,9 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject.objectRigidbody.isKinematic = true;
         selectedBuildingObject.isPlaced = true;
 
+        if (worldMenuManager.buildingState == BuildingState.withPhysics)
+            selectedBuildingObject.objectRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+
         // "Soltamos" el objeto seleccionado
         selectedBuildingObject = null;
         //}
@@ -367,7 +398,6 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject = null;
 
         //worldMenuManager.selectedModel = null;
-        Debug.Log(parentObject.boxCollider.bounds.extents);
         // Reset the transform of the collision manager
         parentObject.Reset();
     }
@@ -375,10 +405,8 @@ public class BuildingManager : MonoBehaviour
     // Parar la colocacion del objeto pendiente
     //public void StopObjectPlacement()
     //{
-    //    Destroy(pendingObject);
-    //    Debug.Log(pendingObject);
     //    //pendingObject = null;
-    //    selectedBuildingObject = null;
+    //    selectedBuildingObject.gameObject.SetActive(false);
     //}
 
     // Seleccion de objeto en el mundo
@@ -402,6 +430,9 @@ public class BuildingManager : MonoBehaviour
             selectedBuildingObject.objectRigidbody.isKinematic = false;
             selectedBuildingObject.isPlaced = false;
 
+            if (worldMenuManager.buildingState == BuildingState.withPhysics)
+                selectedBuildingObject.objectRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
+
             // Match the scale of the colliders
             parentObject.SetScale(selectedBuildingObject);
         }
@@ -410,6 +441,9 @@ public class BuildingManager : MonoBehaviour
     // Cancelar la transformacion del objeto del mundo seleccionado
     public void CancelObjectTransform()
     {
+        if (worldMenuManager.buildingState == BuildingState.withPhysics)
+            selectedBuildingObject.objectRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+
         var auxObj = selectedBuildingObject;
 
         selectedBuildingObject = null;
