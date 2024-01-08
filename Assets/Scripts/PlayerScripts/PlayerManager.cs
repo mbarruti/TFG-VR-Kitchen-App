@@ -228,11 +228,12 @@ public class PlayerManager : MonoBehaviour
     void OnRightTouchpadAction(InputAction.CallbackContext context)
     {
         //if (_buildingManager.selectedBuildingObject != null)
-        if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject != null)
+        if (state == PlayerState.isBuilding /*&& _buildingManager.selectedBuildingObject != null*/)
         {
             if (_worldMenuManager.buildingState == BuildingState.withPhysics)
             {
-                _buildingManager.selectedBuildingObject.MoveWithJoystick(context.action.ReadValue<Vector2>().x, context.action.ReadValue<Vector2>().y);
+                _buildingManager.selectedBuildingObject.SetTouchpadValues(context.action.ReadValue<Vector2>().x, context.action.ReadValue<Vector2>().y);
+                _buildingManager.selectedBuildingObject.MoveWithTouchpad();
             }
             //else
             //{

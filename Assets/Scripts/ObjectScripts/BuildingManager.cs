@@ -134,7 +134,8 @@ public class BuildingManager : MonoBehaviour
             _hitPos = hit.point;
             movementDirection = Vector3.Cross(hit.normal, Vector3.left);
             Debug.DrawRay(hit.point, movementDirection, Color.blue);
-            Debug.Log("Vector perpendicular: " + movementDirection);
+            //Debug.Log("Vector perpendicular: " + movementDirection);
+
             //if (playerManager.state == PlayerState.isBuilding) selectedBuildingObject.transform.position = _hitPos;
 
             //if (playerManager.state == PlayerState.isBuilding)
@@ -339,7 +340,12 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject._buildingManager = this;
 
         if (worldMenuManager.buildingState == BuildingState.withPhysics)
+        {
+            selectedBuildingObject.surfaceNormal = hit.normal;
+            selectedBuildingObject.surfaceObject = hit.collider.gameObject;
+            selectedBuildingObject.SetObjectRotation();
             selectedBuildingObject.objectRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
+        }
 
         // Guardamos su material en la lista de materiales de colision
         //collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;

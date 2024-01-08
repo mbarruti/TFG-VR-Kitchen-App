@@ -17,6 +17,10 @@ public class BuildingObject : MonoBehaviour
     private Vector3 _lastRot;
     private Vector3 _lastScale;
 
+    //private Vector3 localMovement;
+    private float touchpadValueX;
+    private float touchpadValueY;
+
     //private Collider hitCollider;
 
     //private Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
@@ -24,6 +28,9 @@ public class BuildingObject : MonoBehaviour
     //private Vector3 boxColliderCenter;
 
     // ------------------------------------------------
+
+    public GameObject surfaceObject;
+    public Vector3 surfaceNormal;
 
     public Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
 
@@ -282,13 +289,68 @@ public class BuildingObject : MonoBehaviour
         }
     }
 
-    public void MoveWithJoystick(float valueX, float valueY)
+    public void SetTouchpadValues(float valueX, float valueY)
     {
-        Vector3 movement = new Vector3(valueX, valueY, 0f);
-        //movement.Normalize();
-        Vector3 nextPosition = transform.position + movement * 5f * Time.deltaTime;
+        touchpadValueX = valueX;
+        touchpadValueY = valueY;
+    }
 
+    public void SetObjectRotation()
+    {
+        if (surfaceObject.CompareTag("Wall")) 
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(surfaceNormal, Vector3.up);
+            transform.rotation = targetRotation;
+        }
+        else if (surfaceObject.CompareTag("Floor"))
+        {
+            transform.eulerAngles = new Vector3(0f, 180f, 0f);
+        }
+    }
+
+    public void MoveWithTouchpad()
+    {
+        Vector3 localMovement = Vector3.zero;
+
+        if (surfaceObject.CompareTag("Wall")) localMovement = new Vector3(-touchpadValueX, touchpadValueY, 0f);
+        else if (surfaceObject.CompareTag("Floor")) localMovement = new Vector3(-touchpadValueX, 0f, -touchpadValueY);
+
+        // Convertir el desplazamiento local a coordenadas globales
+        Vector3 worldMovement = transform.TransformDirection(localMovement);
+
+        // Calcular la nueva posición sumando el desplazamiento a la posición actual
+        Vector3 nextPosition = transform.position + worldMovement * 5f * Time.deltaTime;
+
+        // Mover el objeto utilizando Rigidbody.MovePosition
         objectRigidbody.MovePosition(nextPosition);
+
+
+        ////movement.Normalize();
+
+        //Vector3 surfaceLocalMovement = Vector3.zero;
+
+        ////Transformar surface normal a
+
+        //if (surfaceNormal.x != 0)
+        //{
+        //    surfaceLocalMovement = new Vector3(0f, valueY, valueX);
+        //}
+        //else if (surfaceNormal.y != 0)
+        //{
+        //    surfaceLocalMovement = new Vector3(valueX, 0f, valueY);
+        //}
+        //else if (surfaceNormal.z != 0)
+        //{
+        //    surfaceLocalMovement = new Vector3(valueX, valueY, 0f);
+        //}
+
+        //Vector3 objectInSurfaceLocalPosition = surfaceObject.transform.InverseTransformPoint(transform.position);
+        //Vector3 nextLocalPosition = objectInSurfaceLocalPosition + surfaceLocalMovement * 2f * Time.deltaTime;
+        ////Vector3 worldMovement = surfaceObject.transform.TransformPoint(nextLocalPosition) * 5f * Time.deltaTime;
+        ////Vector3 nextPosition = movement * 5f * Time.deltaTime;
+
+        //objectRigidbody.MovePosition(surfaceObject.transform.TransformPoint(nextLocalPosition));
+        //objectRigidbody.MovePosition(worldMovement);
     }
 
     //Con el trigger izquierdo se rota el objeto en el eje Y (30 grados)
