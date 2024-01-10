@@ -2065,6 +2065,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buildingManager: {fileID: 2100674399}
+  vertices:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   canPlace: 0
   boxCollider: {fileID: 503942688}
   detectedColliders: []
@@ -2182,6 +2191,10 @@ PrefabInstance:
     - target: {fileID: 4812051433206976269, guid: 989f65e02a6cc0749a14fdaa3cea3c08, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4812051433206976269, guid: 989f65e02a6cc0749a14fdaa3cea3c08, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4812051433206976269, guid: 989f65e02a6cc0749a14fdaa3cea3c08, type: 3}
       propertyPath: m_LocalScale.z
@@ -7226,9 +7239,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerManager: {fileID: 830296140}
   _wallManager: {fileID: 2032544278}
-  buildingState: 0
+  buildingState: 1
   isOpened: 0
-  selectedModel: {fileID: 904717223459320015, guid: a58387dd179c4be42ab7bc99af63e416, type: 3}
+  selectedModel: {fileID: 1910349313623022167, guid: e6f0fe6660397e247812ce69733a3201, type: 3}
   modelsList:
   - {fileID: 1910349313623022167, guid: e6f0fe6660397e247812ce69733a3201, type: 3}
   - {fileID: 2570844246776298401, guid: bcf91efad1d59f5458957287ecd2a4eb, type: 3}
@@ -8068,6 +8081,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4994585125139106519, guid: 1ab863eb8289db6489f4d9a37e2386f2, type: 3}
   m_PrefabInstance: {fileID: 1710465383}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1738041706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1738041708}
+  m_Layer: 0
+  m_Name: PlaneHit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1738041708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738041706}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -20, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 28
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1738578411
 Transform:
   m_ObjectHideFlags: 0
@@ -10442,6 +10486,10 @@ PrefabInstance:
       propertyPath: _inputManager
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8375075432082508608, guid: 4c6ae0418e3d3ca42b7f514855d1fbdd, type: 3}
+      propertyPath: localPlaneHit
+      value: 
+      objectReference: {fileID: 1738041706}
     - target: {fileID: 8375075432082508608, guid: 4c6ae0418e3d3ca42b7f514855d1fbdd, type: 3}
       propertyPath: playerManager
       value: 

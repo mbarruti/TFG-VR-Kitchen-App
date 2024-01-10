@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3b26ba69e08dc3145bbc938057c85aa5, type: 2}
+  - {fileID: 2100000, guid: 5ce52a1c9bff8834bbb6c4df32ea3977, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -150,6 +150,8 @@ MonoBehaviour:
   collisionMaterials:
   - {fileID: 2100000, guid: f8955bde5aa77e3419ab3426b4b777ac, type: 2}
   - {fileID: 2100000, guid: 3c32b8d0d1e251246a5ff314335c8966, type: 2}
+  surfaceObject: {fileID: 0}
+  surfaceNormal: {x: 0, y: 0, z: 0}
   vertices:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}

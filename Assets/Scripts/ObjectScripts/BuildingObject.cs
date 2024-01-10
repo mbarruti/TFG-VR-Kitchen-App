@@ -94,24 +94,6 @@ public class BuildingObject : MonoBehaviour
     //    }
     //}
 
-    // Si el objeto colisiona con otros objetos, no se puede colocar
-    //private void OnTriggerStay(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Object"))
-    //    {
-    //        //Debug.Log("No se puede");
-    //        canPlace = false;
-    //    }
-    //}
-
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    if (other.gameObject.CompareTag("Object"))
-    //    {
-    //        canPlace = true;
-    //    }
-    //}
-
     //public bool IsInLimit(Collider collider)
     //{
     //    //bool allSameSide = false;
@@ -168,7 +150,7 @@ public class BuildingObject : MonoBehaviour
     //    //    _buildingManager.cubos[i].transform.position = collision.GetContact(i).point;
     //    //}
 
-    //    if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
+    //    if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.parentObject.gameObject)
     //    {
     //        canPlace = IsInLimit(collision.collider, collision.GetContact(0));
     //        //if (canPlace == false)
@@ -184,9 +166,9 @@ public class BuildingObject : MonoBehaviour
 
     //private void OnCollisionExit(Collision collision)
     //{
-    //    if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
+    //    if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.parentObject.gameObject)
     //    {
-    //        AssignMaterial(collisionMaterials[1]);
+    //        canPlace = true;
     //    }
     //}
 
@@ -295,6 +277,9 @@ public class BuildingObject : MonoBehaviour
         touchpadValueY = valueY;
     }
 
+    /// <summary>
+    /// Rotate the objects forward vector so its direction is the same as the perpendicular vector of the surface
+    /// </summary>
     public void SetObjectRotation()
     {
         if (surfaceObject.CompareTag("Wall")) 

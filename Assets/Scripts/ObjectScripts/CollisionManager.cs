@@ -10,25 +10,17 @@ public class CollisionManager : MonoBehaviour
     private Vector3 _lastRot;
     private Vector3 _lastScale;
 
-    private Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
+    //private Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
 
     // -------------------------------------------
+
+    public Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
 
     public bool canPlace;
 
     public BoxCollider boxCollider;
 
     public List<Collider> detectedColliders;
-
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    Collider collider = collision.collider;
-    //    if (/*collision.collider != _buildingManager.hit.collider && */!detectedColliders.Contains(collider))
-    //    {
-    //        detectedColliders.Add(collider);
-    //    }
-
-    //}
 
     private void Start()
     {
@@ -47,24 +39,35 @@ public class CollisionManager : MonoBehaviour
     //    _buildingManager.cubos[7].transform.position = transform.TransformPoint(vertices[7]);
     //}
 
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    //for (int i = 0; i < collision.contactCount; i++)
+    //    //{
+    //    //    _buildingManager.cubos[i].transform.position = collision.GetContact(i).point;
+    //    //}
+
+    //    //if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
+    //    //{
+    //    //    canPlace = IsInLimit(collision.collider, collision.GetContact(0));
+    //    //}
+    //}
+
     private void OnCollisionStay(Collision collision)
     {
-        //for (int i = 0; i < collision.contactCount; i++)
-        //{
-        //    _buildingManager.cubos[i].transform.position = collision.GetContact(i).point;
-        //}
+        Collider collider = collision.collider;
+        if (/*collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject && */!detectedColliders.Contains(collider))
+        {
+            detectedColliders.Add(collider);
+        }
 
-        //if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
-        //{
-        //    canPlace = IsInLimit(collision.collider, collision.GetContact(0));
-        //}
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject)
+        Collider collider = collision.collider;
+        if (detectedColliders.Contains(collider))
         {
-            canPlace = true;
+            detectedColliders.Remove(collider);
         }
     }
 
