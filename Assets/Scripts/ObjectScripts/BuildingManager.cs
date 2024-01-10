@@ -51,6 +51,7 @@ public class BuildingManager : MonoBehaviour
     public float rotateAmount;
 
     public Vector3 offset = Vector3.zero;
+    public Vector3 newPosition;
 
     private void Start()
     {
@@ -115,13 +116,14 @@ public class BuildingManager : MonoBehaviour
             {
                 //selectedBuildingObject.transform.position = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
                 parentObject.transform.position = _hitPos + Vector3.Scale(hit.normal, parentObject.boxCollider.bounds.extents);
-                IsInLimit(hit.point);
-                if (offset == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
-                else selectedBuildingObject.transform.position = offset;
+                UpdateOffset(hit.point);
+                selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+                //if (newPosition == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
+                //else selectedBuildingObject.transform.position = newPosition;
                 //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
 
-                    //UpdateOffset();
-                    //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+                //UpdateOffset();
+                //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
             }
 
             // Actualizar materiales de colision
@@ -188,113 +190,63 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public void IsInLimit(Vector3 planePoint)
+    public void UpdateOffset(Vector3 planePoint)
     {
-        //bool allSameSide = false;
-
-        // Reset offset back to zero so it doesn't stack
-        //Vector3 updatedOffset = Vector3.zero;
         offset = Vector3.zero;
+        Vector3 nextLocalObjectPosition = Vector3.zero;
 
-        //Vector3 auxVertex;
-
-        //BoxCollider auxCollider = collider as BoxCollider;
-        //auxCollider.center = 
-        //Vector3[] directions = { Vector3.up };
-
-        //Vector3[] vertices = GetBoxVertices();
         foreach (Collider collider in parentObject.detectedColliders)
         {
             if (collider != hit.collider && collider.gameObject != selectedBuildingObject.boxCollider.gameObject)
             {
-                Vector3 auxVertex;
-                float previousNum = 0;
-                float num = 0;
+                //Vector3 auxVertex;
 
                 Vector3 closestPoint = collider.ClosestPoint(parentObject.transform.position);
                 Vector3 diff = closestPoint - parentObject.transform.position;
                 Vector3 dir = diff.normalized;
 
-                // El raycast a lo mejor hay que tirarlo desde objCollider.Raycast
                 //if (Physics.BoxCast(selectedBuildingObject.transform.position, parentObject.boxCollider.bounds.extents, dir, out var hitt))
                 if (Physics.Raycast(parentObject.transform.position, dir, out var planeHit))
                 {
                     //Debug.Log(planeHit.normal);
                     Debug.DrawRay(planeHit.point, planeHit.normal, Color.blue);
 
-                    foreach (Vector3 vertex in parentObject.vertices)
+                    localPlaneHit.transform.position = planeHit.point;
+                    Quaternion targetRotation = Quaternion.LookRotation(planeHit.normal, Vector3.up);
+                    localPlaneHit.transform.rotation = targetRotation;
+
+                    Vector3 nextLocalPlanePosition = GetNextPosition(localPlaneHit);
+
+                    if (nextLocalPlanePosition != Vector3.zero)
                     {
-                        // (A, B, C) vector perpendicular al plano del objeto que esta quieto
-                        //Vector3 normal = contactPoint.normal;
-                        Vector3 normal = planeHit.normal;
-
-                        // (x2, y2, z2) punto del vertice del objeto que pretendes mover
-                        auxVertex = parentObject.transform.TransformPoint(vertex);
-
-                        //// A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
-                        //// D = -A*x - B*y - C*z Calculo la D de esta forma
-                        //float d = Vector3.Dot(-normal, planePoint);
-
-                        //// A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
-                        //num = Vector3.Dot(normal, auxVertex) + d;
-                        //if (num != 0 && previousNum == 0) previousNum = num;
-
-                        ////Debug.Log(num * previousNum);
-                        //// Si la siguiente operacion es negativa, significa que el vertice asociado al valor num esta al otro lado del plano
-                        //if (num * previousNum < 0)
-                        //{
-                            //return false;
-                        localPlaneHit.transform.position = planeHit.point;
-                        Quaternion targetRotation = Quaternion.LookRotation(normal, Vector3.up);
-                        localPlaneHit.transform.rotation = targetRotation;
-
-                        //Vector3 localHitNormal = planeHit.transform.InverseTransformDirection(planeHit.normal);
-                        Vector3 localVertex = localPlaneHit.transform.InverseTransformPoint(auxVertex);
-
-                        if (localVertex.z < 0)
-                        {
-                            Vector3 localObjectPosition = localPlaneHit.transform.InverseTransformPoint(parentObject.transform.position);
-                            Vector3 newLocalPosition = localObjectPosition + new Vector3 (0f, 0f, Mathf.Abs(localVertex.z));
-
-                            Vector3 newPosition = localPlaneHit.transform.TransformPoint(newLocalPosition);
-                            offset = newPosition;
-                        }
-
-                        //updatedOffset = Vector3.Scale(localHitNormal, localVertex);
-
-                        //Vector3 planePointVertexDistance = planePoint - auxVertex;
-                        //Vector3 planePointVertexOffset = Vector3.Scale(planeHit.normal, planePointVertexDistance);
-
-                        // Actual distance between the center of both objects
-                        //float actualDistance = GetAxis(planeHit.normal, Vector3.Scale(-planeHit.normal, parentObject.boxCollider.transform.InverseTransformPoint(collider.transform.position)));
-
-                        //updatedOffset += planeHit.normal * (maxDistance - actualDistance);
-                        //updatedOffset = planePointVertexOffset;
-
-                        //return updatedOffset;
-                        //return Vector3.zero;
-
-                        //}
-
-                        // Si algun valor tiene signo distinto a los demas, esta al otro lado del plano
-                        //if (num > 0 && previousNum < 0)
-                        //{
-                        //    //Debug.Log(vertex);
-                        //    return false;
-                        //}
-                        //if (num < 0 && previousNum > 0)
-                        //{
-                        //    //Debug.Log(vertex);
-                        //    return false;
-                        //}
+                        Vector3 worldPosition = localPlaneHit.transform.TransformPoint(nextLocalPlanePosition);
+                        nextLocalObjectPosition += parentObject.transform.InverseTransformPoint(worldPosition);
                     }
                 }
             }
         }
-        //return true;
-        //Debug.Log(updatedOffset);
-        //return updatedOffset;
-        //return parentObject.transform.position;
+        offset = nextLocalObjectPosition;
+        //Debug.Log(offset);
+    }
+
+    private Vector3 GetNextPosition(GameObject plane)
+    {
+        foreach (Vector3 vertex in parentObject.vertices)
+        {
+            Vector3 auxVertex = parentObject.transform.TransformPoint(vertex);
+
+            Vector3 localVertex = plane.transform.InverseTransformPoint(auxVertex);
+
+            if (localVertex.z < 0)
+            {
+                Vector3 localObjectPosition = plane.transform.InverseTransformPoint(parentObject.transform.position);
+                Vector3 nextLocalPosition = localObjectPosition + new Vector3(0f, 0f, Mathf.Abs(localVertex.z));
+
+                //Vector3 nextPosition = plane.transform.TransformPoint(newLocalPosition);
+                return nextLocalPosition;
+            }
+        }
+        return Vector3.zero;
     }
 
     /// <summary>
@@ -403,46 +355,46 @@ public class BuildingManager : MonoBehaviour
     //    return hitOffset;
     //}
 
-    private void UpdateOffset()
-    {
-        // Reset offset back to zero so it doesn't stack
-        offset = Vector3.zero;
+    //private void UpdateOffset()
+    //{
+    //    // Reset offset back to zero so it doesn't stack
+    //    offset = Vector3.zero;
 
-        foreach (Collider objCollider in parentObject.detectedColliders)
-        {
-            if (/*objCollider != selectedBuildingObject.boxCollider &&*/ objCollider != hit.collider)
-            {
-                //Debug.Log(objCollider.name);
-                Vector3 closestPoint = objCollider.ClosestPoint(parentObject.transform.position);
-                Vector3 diff = closestPoint - parentObject.transform.position;
-                Vector3 dir = diff.normalized;
+    //    foreach (Collider objCollider in parentObject.detectedColliders)
+    //    {
+    //        if (/*objCollider != selectedBuildingObject.boxCollider &&*/ objCollider != hit.collider)
+    //        {
+    //            //Debug.Log(objCollider.name);
+    //            Vector3 closestPoint = objCollider.ClosestPoint(parentObject.transform.position);
+    //            Vector3 diff = closestPoint - parentObject.transform.position;
+    //            Vector3 dir = diff.normalized;
 
-                // El raycast a lo mejor hay que tirarlo desde objCollider.Raycast
-                //if (Physics.BoxCast(selectedBuildingObject.transform.position, parentObject.boxCollider.bounds.extents, dir, out var hitt))
-                if (Physics.Raycast(parentObject.transform.position, dir, out var hitt))
-                {
-                    Debug.Log(hitt.normal);
-                    Debug.DrawRay(hitt.point, hitt.normal, Color.blue);
-                    // Maximum distance between the center of both objects before they start clipping
-                    float maxDistance = GetAxis(hitt.normal, objCollider.bounds.extents + parentObject.boxCollider.bounds.extents);
-                    // Actual distance between the center of both objects
-                    float actualDistance = GetAxis(hitt.normal, Vector3.Scale(-hitt.normal, parentObject.boxCollider.transform.InverseTransformPoint(objCollider.transform.position)));
-                    //Debug.Log(maxDistance);
-                    if (actualDistance < maxDistance)
-                    {
-                        offset += hitt.normal * (maxDistance - actualDistance);
-                    }
-                    //Debug.Log(dir);
-                    //Debug.Log("closestPoint es:" + closestPoint);
-                    //Debug.Log("hit.point es:" + hit.point);
-                    //Debug.Log("La normal del rayo que golpea en closestPoint es:" + hitt.normal);
+    //            // El raycast a lo mejor hay que tirarlo desde objCollider.Raycast
+    //            //if (Physics.BoxCast(selectedBuildingObject.transform.position, parentObject.boxCollider.bounds.extents, dir, out var hitt))
+    //            if (Physics.Raycast(parentObject.transform.position, dir, out var hitt))
+    //            {
+    //                Debug.Log(hitt.normal);
+    //                Debug.DrawRay(hitt.point, hitt.normal, Color.blue);
+    //                // Maximum distance between the center of both objects before they start clipping
+    //                float maxDistance = GetAxis(hitt.normal, objCollider.bounds.extents + parentObject.boxCollider.bounds.extents);
+    //                // Actual distance between the center of both objects
+    //                float actualDistance = GetAxis(hitt.normal, Vector3.Scale(-hitt.normal, parentObject.boxCollider.transform.InverseTransformPoint(objCollider.transform.position)));
+    //                //Debug.Log(maxDistance);
+    //                if (actualDistance < maxDistance)
+    //                {
+    //                    offset += hitt.normal * (maxDistance - actualDistance);
+    //                }
+    //                //Debug.Log(dir);
+    //                //Debug.Log("closestPoint es:" + closestPoint);
+    //                //Debug.Log("hit.point es:" + hit.point);
+    //                //Debug.Log("La normal del rayo que golpea en closestPoint es:" + hitt.normal);
 
-                    //Debug.DrawRay(parentObject.transform.position, dir, Color.red);
-                    //Debug.DrawRay(hitt.point, hitt.normal, Color.blue);
-                }
-            }
-        }
-    }
+    //                //Debug.DrawRay(parentObject.transform.position, dir, Color.red);
+    //                //Debug.DrawRay(hitt.point, hitt.normal, Color.blue);
+    //            }
+    //        }
+    //    }
+    //}
 
     public void InstantiateModel(GameObject selectedModel)
     {
