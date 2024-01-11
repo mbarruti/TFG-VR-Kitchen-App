@@ -77,6 +77,25 @@ public class BuildingObject : MonoBehaviour
     //private void OnCollisionStay(Collision collision)
     //{
     //    Collider collider = collision.collider;
+    //    if (/*collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject && */!detectedColliders.Contains(collider))
+    //    {
+    //        detectedColliders.Add(collider);
+    //    }
+
+    //}
+
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    Collider collider = collision.collider;
+    //    if (detectedColliders.Contains(collider))
+    //    {
+    //        detectedColliders.Remove(collider);
+    //    }
+    //}
+
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    Collider collider = collision.collider;
     //    if (/*collision.collider != _buildingManager.hit.collider && */!detectedColliders.Contains(collider))
     //    {
     //        detectedColliders.Add(collider);
