@@ -95,6 +95,7 @@ public class BuildingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //parentObject.transform.position = new Vector3(10f, 0f, 0f);
         //if (Physics.Raycast(new Vector3(0, 5f, 0), Vector3.forward, out var auxHit))
         //{
         //    DrawBoundingBox(auxHit.collider.gameObject.GetComponent<MeshRenderer>().bounds);
@@ -114,12 +115,34 @@ public class BuildingManager : MonoBehaviour
             DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
             if (worldMenuManager.buildingState == BuildingState.withOffset)
             {
-                //selectedBuildingObject.transform.position = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
+                //parentObject.transform.position = _hitPos;
+                ////parentObject.transform.position = SetFirstObjectPosition();
+                //parentObject.transform.position = UpdateOffset(hit.point);
 
-                //parentObject.transform.position = _hitPos + Vector3.Scale(hit.normal, parentObject.boxCollider.bounds.extents);
-                parentObject.transform.position = _hitPos;
-                SetFirstObjectPosition();
-                UpdateOffset(hit.point);
+                //if (selectedBuildingObject.canPlace == true)
+                //{
+                //    selectedBuildingObject.transform.position = parentObject.transform.position;
+                //}
+
+                if (parentObject.canPlace == true)
+                {
+                    if (selectedBuildingObject.canPlace == true)
+                    {
+                        selectedBuildingObject.transform.position = parentObject.transform.position;
+                    }
+                    //Debug.Log("entra");
+                    parentObject.transform.position = _hitPos;
+                    parentObject.transform.position = SetFirstObjectPosition();
+                    parentObject.transform.position = UpdateOffset(hit.point);
+                }
+                else
+                {
+                    //Debug.Log("entra");
+                    if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
+                    parentObject.transform.position = UpdateOffset(hit.point);
+                }
+
+                //UpdateOffset(hit.point);
                 //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
                 //if (newPosition == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
                 //else selectedBuildingObject.transform.position = newPosition;
@@ -138,10 +161,61 @@ public class BuildingManager : MonoBehaviour
     {
         //RaycastHit hit;
 
+        //parentObject.detectedColliders2 = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
+
+        // parentObject.transform.position = new Vector3(10f, 10f, 0f);
+        //parentObject.detectedColliders2 = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
+        //if (parentObject.detectedColliders2.Length == 2) Debug.Log(parentObject.detectedColliders2.Length);
+        //parentObject.transform.position = new Vector3(10f, 10f, 0f);
+
+        //Debug.Log(parentObject.detectedColliders2.Length);
+
+        //Collider[] lista = 
+
         if (ray.TryGetCurrent3DRaycastHit(out hit))
         {
             //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
             _hitPos = hit.point;
+
+            //if (playerManager.state == PlayerState.isBuilding)
+            //{
+            //    DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
+            //    if (worldMenuManager.buildingState == BuildingState.withOffset)
+            //    {
+            //        //selectedBuildingObject.transform.position = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
+
+            //        //parentObject.transform.position = _hitPos + Vector3.Scale(hit.normal, parentObject.boxCollider.bounds.extents);
+            //        if (parentObject.canPlace == true)
+            //        {
+            //            if (selectedBuildingObject.canPlace == true)
+            //            {
+            //                selectedBuildingObject.transform.position = parentObject.transform.position;
+            //            }
+            //            //Debug.Log("entra");
+            //            parentObject.transform.position = _hitPos;
+            //            parentObject.transform.position = SetFirstObjectPosition();
+            //            parentObject.transform.position = UpdateOffset(hit.point);
+            //        }
+            //        else
+            //        {
+            //            //Debug.Log("entra");
+            //            if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
+            //            parentObject.transform.position = UpdateOffset(hit.point);
+            //        }
+            //        //UpdateOffset(hit.point);
+            //        //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+            //        //if (newPosition == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
+            //        //else selectedBuildingObject.transform.position = newPosition;
+            //        //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+
+            //        //UpdateOffset();
+            //        //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+            //    }
+
+            //    // Actualizar materiales de colision
+            //    //UpdateMaterials();
+            //}
+
             //Debug.Log(hit.collider.transform.InverseTransformDirection(hit.normal));
             //movementDirection = Vector3.Cross(hit.normal, Vector3.left);
             //Debug.DrawRay(hit.point, movementDirection, Color.blue);
@@ -193,24 +267,30 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public void UpdateOffset(Vector3 planePoint)
+    public Vector3 UpdateOffset(Vector3 planePoint)
     {
+        //Vector3 firstPosition = SetFirstObjectPosition();
+
         offset = Vector3.zero;
         Vector3 nextLocalObjectPosition = parentObject.transform.position;
         //Vector3 nextLocalObjectPosition = Vector3.zero;
 
         List<(Vector3, Vector3)> planesNormals = new List<(Vector3, Vector3)>(); // (Normal of the plane, Offset in the direction of the normal)
 
+        //parentObject.transform.position = SetFirstObjectPosition();
+        //Collider[] colliderList;
+        //colliderList = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
+        //foreach (Collider collider in colliderList)
         foreach (Collider collider in parentObject.detectedColliders)
         {
-            if (collider != hit.collider && collider.gameObject != selectedBuildingObject.boxCollider.gameObject)
+            if (/*collider != hit.collider && */collider.gameObject != selectedBuildingObject.boxCollider.gameObject/* && collider.gameObject != parentObject.gameObject*/)
             {
-                Vector3 closestPoint = collider.ClosestPoint(parentObject.transform.position);
-                Vector3 diff = closestPoint - parentObject.transform.position;
+                Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
+                Vector3 diff = closestPoint - selectedBuildingObject.transform.position;
                 Vector3 dir = diff.normalized;
 
                 //if (Physics.BoxCast(selectedBuildingObject.transform.position, parentObject.boxCollider.bounds.extents, dir, out var hitt))
-                if (Physics.Raycast(parentObject.transform.position, dir, out var planeHit))
+                if (Physics.Raycast(selectedBuildingObject.transform.position, dir, out var planeHit))
                 {
                     //Debug.Log(planeHit.normal);
                     Debug.DrawRay(planeHit.point, planeHit.normal, Color.blue);
@@ -223,31 +303,41 @@ public class BuildingManager : MonoBehaviour
                     //Vector3 nextLocalPlanePosition = GetNextPosition(localPlaneHit);
                     Vector3 localPlaneOffset = GetNextPosition(localPlaneHit);
 
-                    (Vector3, Vector3) planeInfo = HasCorrectVertices(planesNormals, planeHit.normal, localPlaneOffset);
+                    //(Vector3, Vector3) planeInfo = HasCorrectVertices(planesNormals, planeHit.normal, localPlaneOffset);
 
-                    if (planeInfo.Item1 != Vector3.zero && planeInfo.Item2 != Vector3.zero)
-                    //if (/*localPlaneOffset != Vector3.zero &&*/ planesNormals.Count > 0)
-                    //if (parentObject.detectedColliders.Count > 3)
+                    //if (planeInfo.Item1 != Vector3.zero && planeInfo.Item2 != Vector3.zero)
+                    ////if (/*localPlaneOffset != Vector3.zero &&*/ planesNormals.Count > 0)
+                    ////if (parentObject.detectedColliders.Count > 3)
+                    //{
+                    //    Debug.Log("entra");
+                    //    planesNormals.Remove((planeInfo.Item1, planeInfo.Item2));
+                    //    planesNormals.Add((planeHit.normal, localPlaneOffset));
+
+                    //    // Collision manager position in the local coordinates of the plane
+                    //    Vector3 localPlaneObjectPosition = localPlaneHit.transform.InverseTransformPoint(parentObject.transform.position);
+                    //    // Sum the offset of the distance between vertex and plane point in the Z axis to the collision manager position
+                    //    Vector3 nextLocalPlanePosition = localPlaneObjectPosition + new Vector3(0f, 0f, Mathf.Abs(localPlaneOffset.z));
+                    //    // Next position in world coordinates
+                    //    Vector3 worldPosition = localPlaneHit.transform.TransformPoint(nextLocalPlanePosition);
+                    //    // Change world position to the collision manager coordinates
+                    //    // This way we get the offset needed to add in world coordinates through the collision manager coordinates
+                    //    nextLocalObjectPosition += parentObject.transform.InverseTransformPoint(worldPosition);
+
+                    //}
+                    //else if (planeInfo.Item1 == Vector3.zero)
+                    //{
+                    //if (localPlaneOffset.z < 0f)
+                    if (Mathf.Abs(localPlaneOffset.z) > 0.00001f)
+                    //if (!Mathf.Approximately(localPlaneOffset.z, 0f))
+                    //if (localPlaneOffset != Vector3.zero)
+                    //if (localPlaneOffset.z + 0f < 0)
+                    //if (localPlaneOffset.z * localPlaneOffset.y < 0f)
                     {
-                        Debug.Log("entra");
-                        planesNormals.Remove((planeInfo.Item1, planeInfo.Item2));
-                        planesNormals.Add((planeHit.normal, localPlaneOffset));
+                        //Debug.Log(localPlaneOffset.z * localPlaneOffset.y);
+                        selectedBuildingObject.canPlace = false;
+                        parentObject.canPlace = false;
 
-                        // Collision manager position in the local coordinates of the plane
-                        Vector3 localPlaneObjectPosition = localPlaneHit.transform.InverseTransformPoint(parentObject.transform.position);
-                        // Sum the offset of the distance between vertex and plane point in the Z axis to the collision manager position
-                        Vector3 nextLocalPlanePosition = localPlaneObjectPosition + new Vector3(0f, 0f, Mathf.Abs(localPlaneOffset.z));
-                        // Next position in world coordinates
-                        Vector3 worldPosition = localPlaneHit.transform.TransformPoint(nextLocalPlanePosition);
-                        // Change world position to the collision manager coordinates
-                        // This way we get the offset needed to add in world coordinates through the collision manager coordinates
-                        nextLocalObjectPosition += parentObject.transform.InverseTransformPoint(worldPosition);
-
-                    }
-                    else if (planeInfo.Item1 == Vector3.zero)
-                    {
-                        //Debug.Log("entra");
-                        planesNormals.Add((planeHit.normal, localPlaneOffset));
+                        //planesNormals.Add((planeHit.normal, localPlaneOffset));
                         // Collision manager position in the local coordinates of the plane
                         Vector3 localPlaneObjectPosition = localPlaneHit.transform.InverseTransformPoint(parentObject.transform.position);
                         // Sum the offset of the distance between vertex and plane point in the Z axis to the collision manager position
@@ -257,17 +347,23 @@ public class BuildingManager : MonoBehaviour
                         // Change world position to the collision manager coordinates
                         // This way we get the offset needed to add in world coordinates through the collision manager coordinates
                         //nextLocalObjectPosition += parentObject.transform.InverseTransformPoint(worldPosition);
-                        nextLocalObjectPosition = worldPosition;
+                        //nextLocalObjectPosition = worldPosition;
+                        //parentObject.transform.position = worldPosition;
+                        //UpdateOffset(hit.point);
+                        return worldPosition;
                     }
                 }
             }
         }
-        selectedBuildingObject.transform.position = nextLocalObjectPosition;
+        selectedBuildingObject.canPlace = true;
+        parentObject.canPlace = true;
+        return parentObject.transform.position;
+        //selectedBuildingObject.transform.position = nextLocalObjectPosition;
         //offset = nextLocalObjectPosition;
         //Debug.Log(offset);
     }
 
-    private void SetFirstObjectPosition()
+    private Vector3 SetFirstObjectPosition()
     {
         localPlaneHit.transform.position = _hitPos;
         Quaternion targetRotation = Quaternion.LookRotation(hit.normal, Vector3.up);
@@ -301,13 +397,15 @@ public class BuildingManager : MonoBehaviour
         // This way we get the offset needed to add in world coordinates through the collision manager coordinates
         //Vector3 localObjectPosition = parentObject.transform.InverseTransformPoint(worldPosition);
 
-        parentObject.transform.position = worldPosition;
+        return worldPosition;
     }
 
     private Vector3 GetNextPosition(GameObject plane)
     {
         //Vector3 nextLocalPosition = Vector3.zero;
         float selectedLocalVertex = 0f;
+
+        float positiveLocalVertex = 0f;
 
         // Iterate through the vertices of the collision manager
         foreach (Vector3 vertex in parentObject.vertices)
@@ -320,21 +418,26 @@ public class BuildingManager : MonoBehaviour
 
             // If the current vertex is in the other side of the plane and farther than de selected vertex,
             //the new selected vertex is the current one
-            if (localVertex.z < 0 && localVertex.z < selectedLocalVertex)
+            if (localVertex.z < 0f && localVertex.z < selectedLocalVertex)
             {
+                Debug.Log("entra");
                 selectedLocalVertex = localVertex.z;
 
                 // Collision manager position in the local coordinates of the plane
                 //Vector3 localObjectPosition = plane.transform.InverseTransformPoint(parentObject.transform.position);
                 // Sum the offset of the distance between vertex and plane point in the Z axis to the collision manager position
                 //nextLocalPosition = localObjectPosition + new Vector3(0f, 0f, Mathf.Abs(selectedLocalVertex));
-                
+
 
                 //Vector3 nextPosition = plane.transform.TransformPoint(newLocalPosition);
                 //return nextLocalPosition;
             }
+            else if (localVertex.z > 0f)
+            {
+                positiveLocalVertex = localVertex.z;
+            }
         }
-        return new Vector3(0f, 0f, selectedLocalVertex);
+        return new Vector3(0f, positiveLocalVertex, selectedLocalVertex);
     }
 
     private (Vector3, Vector3) HasCorrectVertices(List<(Vector3, Vector3)> planesNormals, Vector3 planeHitNormal, Vector3 localPlaneOffset)
