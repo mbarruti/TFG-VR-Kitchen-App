@@ -115,32 +115,32 @@ public class BuildingManager : MonoBehaviour
             DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
             if (worldMenuManager.buildingState == BuildingState.withOffset)
             {
-                //parentObject.transform.position = _hitPos;
-                ////parentObject.transform.position = SetFirstObjectPosition();
-                //parentObject.transform.position = UpdateOffset(hit.point);
+                parentObject.transform.position = _hitPos;
+                //parentObject.transform.position = SetFirstObjectPosition();
+                parentObject.transform.position = UpdateOffset(SetFirstObjectPosition());
 
                 //if (selectedBuildingObject.canPlace == true)
                 //{
-                //    selectedBuildingObject.transform.position = parentObject.transform.position;
+                    selectedBuildingObject.transform.position = parentObject.transform.position;
                 //}
 
-                if (parentObject.canPlace == true)
-                {
-                    if (selectedBuildingObject.canPlace == true)
-                    {
-                        selectedBuildingObject.transform.position = parentObject.transform.position;
-                    }
-                    //Debug.Log("entra");
-                    parentObject.transform.position = _hitPos;
-                    parentObject.transform.position = SetFirstObjectPosition();
-                    parentObject.transform.position = UpdateOffset(hit.point);
-                }
-                else
-                {
-                    //Debug.Log("entra");
-                    if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
-                    parentObject.transform.position = UpdateOffset(hit.point);
-                }
+                //if (parentObject.canPlace == true)
+                //{
+                //    if (selectedBuildingObject.canPlace == true)
+                //    {
+                //        selectedBuildingObject.transform.position = parentObject.transform.position;
+                //    }
+                //    //Debug.Log("entra");
+                //    parentObject.transform.position = _hitPos;
+                //    parentObject.transform.position = SetFirstObjectPosition();
+                //    parentObject.transform.position = UpdateOffset(hit.point);
+                //}
+                //else
+                //{
+                //    //Debug.Log("entra");
+                //    if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
+                //    parentObject.transform.position = UpdateOffset(hit.point);
+                //}
 
                 //UpdateOffset(hit.point);
                 //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
@@ -267,8 +267,10 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public Vector3 UpdateOffset(Vector3 planePoint)
+    public Vector3 UpdateOffset(Vector3 parentPos)
     {
+        parentObject.transform.position = parentPos;
+
         //Vector3 firstPosition = SetFirstObjectPosition();
 
         offset = Vector3.zero;
@@ -278,12 +280,12 @@ public class BuildingManager : MonoBehaviour
         List<(Vector3, Vector3)> planesNormals = new List<(Vector3, Vector3)>(); // (Normal of the plane, Offset in the direction of the normal)
 
         //parentObject.transform.position = SetFirstObjectPosition();
-        //Collider[] colliderList;
-        //colliderList = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
-        //foreach (Collider collider in colliderList)
-        foreach (Collider collider in parentObject.detectedColliders)
+        Collider[] colliderList;
+        colliderList = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
+        foreach (Collider collider in colliderList)
+        //foreach (Collider collider in parentObject.detectedColliders)
         {
-            if (/*collider != hit.collider && */collider.gameObject != selectedBuildingObject.boxCollider.gameObject/* && collider.gameObject != parentObject.gameObject*/)
+            if (/*collider != hit.collider && */collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
             {
                 Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
                 Vector3 diff = closestPoint - selectedBuildingObject.transform.position;
@@ -327,7 +329,7 @@ public class BuildingManager : MonoBehaviour
                     //else if (planeInfo.Item1 == Vector3.zero)
                     //{
                     //if (localPlaneOffset.z < 0f)
-                    if (Mathf.Abs(localPlaneOffset.z) > 0.00001f)
+                    if (Mathf.Abs(localPlaneOffset.z) > 0.001f)
                     //if (!Mathf.Approximately(localPlaneOffset.z, 0f))
                     //if (localPlaneOffset != Vector3.zero)
                     //if (localPlaneOffset.z + 0f < 0)
@@ -349,8 +351,8 @@ public class BuildingManager : MonoBehaviour
                         //nextLocalObjectPosition += parentObject.transform.InverseTransformPoint(worldPosition);
                         //nextLocalObjectPosition = worldPosition;
                         //parentObject.transform.position = worldPosition;
-                        //UpdateOffset(hit.point);
-                        return worldPosition;
+                        parentObject.transform.position = UpdateOffset(worldPosition);
+                        return parentObject.transform.position;
                     }
                 }
             }

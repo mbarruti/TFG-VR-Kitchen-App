@@ -128,6 +128,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outline: {fileID: 0}
+  collisionMaterials: []
+  surfaceObject: {fileID: 0}
+  surfaceNormal: {x: 0, y: 0, z: 0}
   vertices:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -138,7 +141,7 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   _buildingManager: {fileID: 0}
-  canPlace: 1
+  canPlace: 0
   meshRenderer: {fileID: 0}
   boxCollider: {fileID: 9095120030141485955}
   objectRigidbody: {fileID: 9095120030147591487}
