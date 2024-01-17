@@ -87,7 +87,7 @@ public class PlayerManager : MonoBehaviour
     // Funcion de cada boton
     void OnRightTriggerAction(InputAction.CallbackContext context)
     {
-        if (state == PlayerState.isBuilding && _buildingManager.selectedBuildingObject.canPlace == true)
+        if (state == PlayerState.isBuilding /*&& _buildingManager.selectedBuildingObject.canPlace == true*/)
         {
             _buildingManager.PlaceObject();
         }

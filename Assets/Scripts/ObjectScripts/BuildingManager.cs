@@ -117,11 +117,11 @@ public class BuildingManager : MonoBehaviour
             {
                 parentObject.transform.position = _hitPos;
                 //parentObject.transform.position = SetFirstObjectPosition();
-                parentObject.transform.position = UpdateOffset(SetFirstObjectPosition());
+                parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(), 0f);
 
                 //if (selectedBuildingObject.canPlace == true)
                 //{
-                    selectedBuildingObject.transform.position = parentObject.transform.position;
+                if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
                 //}
 
                 //if (parentObject.canPlace == true)
@@ -267,8 +267,11 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public Vector3 UpdateOffset(Vector3 parentPos)
+    public Vector3 UpdateOffset(Vector3 parentPos, float counter)
     {
+        // Limit of the amount of callings of this recursive function
+        if (counter > 40) return parentPos; //40 empieza a lagear, 45 lagea un poco, 50 lagea un poco mas, 60 lagea mucho
+
         parentObject.transform.position = parentPos;
 
         //Vector3 firstPosition = SetFirstObjectPosition();
@@ -296,6 +299,8 @@ public class BuildingManager : MonoBehaviour
                 {
                     //Debug.Log(planeHit.normal);
                     Debug.DrawRay(planeHit.point, planeHit.normal, Color.blue);
+
+                    //if (planeHit.normal == -hit.normal) return parentObject.transform.position;
 
                     localPlaneHit.transform.position = planeHit.point;
                     Quaternion targetRotation = Quaternion.LookRotation(planeHit.normal, Vector3.up);
@@ -329,7 +334,7 @@ public class BuildingManager : MonoBehaviour
                     //else if (planeInfo.Item1 == Vector3.zero)
                     //{
                     //if (localPlaneOffset.z < 0f)
-                    if (Mathf.Abs(localPlaneOffset.z) > 0.001f)
+                    if (Mathf.Abs(localPlaneOffset.z) > 0.0001f)
                     //if (!Mathf.Approximately(localPlaneOffset.z, 0f))
                     //if (localPlaneOffset != Vector3.zero)
                     //if (localPlaneOffset.z + 0f < 0)
@@ -351,7 +356,7 @@ public class BuildingManager : MonoBehaviour
                         //nextLocalObjectPosition += parentObject.transform.InverseTransformPoint(worldPosition);
                         //nextLocalObjectPosition = worldPosition;
                         //parentObject.transform.position = worldPosition;
-                        parentObject.transform.position = UpdateOffset(worldPosition);
+                        parentObject.transform.position = UpdateOffset(worldPosition, counter+1);
                         return parentObject.transform.position;
                     }
                 }
@@ -420,7 +425,8 @@ public class BuildingManager : MonoBehaviour
 
             // If the current vertex is in the other side of the plane and farther than de selected vertex,
             //the new selected vertex is the current one
-            if (localVertex.z < 0f && localVertex.z < selectedLocalVertex)
+            //if (localVertex.z < 0f && localVertex.z < selectedLocalVertex)
+            if (localVertex.z < 0f && Mathf.Abs(localVertex.z) > 0.0001f && localVertex.z < selectedLocalVertex)
             {
                 Debug.Log("entra");
                 selectedLocalVertex = localVertex.z;
