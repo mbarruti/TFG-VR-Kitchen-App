@@ -118,13 +118,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outline: {fileID: 4537490476641284104}
+  collisionMaterials: []
+  surfaceObject: {fileID: 0}
+  surfaceNormal: {x: 0, y: 0, z: 0}
+  vertices:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
   _buildingManager: {fileID: 0}
-  canPlace: 1
+  canPlace: 0
   meshRenderer: {fileID: 5301576208806791989}
   boxCollider: {fileID: 559760171093370003}
   objectRigidbody: {fileID: 1381000276489102917}
   isPlaced: 0
   isInLimit: 1
+  detectedColliders: []
 --- !u!54 &1381000276489102917
 Rigidbody:
   m_ObjectHideFlags: 0

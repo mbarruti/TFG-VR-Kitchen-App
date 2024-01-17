@@ -6,7 +6,13 @@ public class WorldMenuManager : MonoBehaviour
 {
     private BuildingObject buildingModel;
 
+    [SerializeField] PlayerManager _playerManager;
+    //[SerializeField] BuildingManager _buildingManager;
+    [SerializeField] WallManager _wallManager;
+
     // -------------------------------------------
+
+    public BuildingState buildingState;
 
     public bool isOpened;
 
@@ -39,10 +45,14 @@ public class WorldMenuManager : MonoBehaviour
 
         // Seleccionar el objeto actual
         selectedModel = modelsList[index];
-        buildingManager.InstantiateModel(selectedModel);
+
+        // (Optional, just for organization) If there is a pending object and another model is selected, the placement of the current selected object is cancelled
+        if (buildingManager.pendingObject != null) buildingManager.CancelObjectPlacement();
+
+        //buildingManager.InstantiateModel(selectedModel);
 
         // Mientras el objeto este seleccionado, el menu estara cerrado
-        hideWorldMenu();
+        //hideWorldMenu();
     }
 
     private void DeselectAllObjects()
@@ -66,5 +76,16 @@ public class WorldMenuManager : MonoBehaviour
     {
         gameObject.SetActive(false);
         isOpened = false;
+    }
+
+    public void FinishBuildingWalls()
+    {
+        //_wallManager.SetCeiling();
+        _wallManager.DeleteAllPoles();
+        _wallManager.gameObject.SetActive(false);
+
+        buildingManager.gameObject.SetActive(true);
+
+        _playerManager.state = PlayerState.isFree;
     }
 }
