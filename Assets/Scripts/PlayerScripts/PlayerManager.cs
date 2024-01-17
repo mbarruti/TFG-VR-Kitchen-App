@@ -203,6 +203,10 @@ public class PlayerManager : MonoBehaviour
                 _wallManager.wall.axisZ = false;
             }
         }
+        else if (state == PlayerState.isFree)
+        {
+            _buildingManager.DestroyObject();
+        }
     }
 
     void OnYAction(InputAction.CallbackContext context)

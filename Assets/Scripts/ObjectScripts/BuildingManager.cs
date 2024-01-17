@@ -93,67 +93,94 @@ public class BuildingManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        //parentObject.transform.position = new Vector3(10f, 0f, 0f);
-        //if (Physics.Raycast(new Vector3(0, 5f, 0), Vector3.forward, out var auxHit))
-        //{
-        //    DrawBoundingBox(auxHit.collider.gameObject.GetComponent<MeshRenderer>().bounds);
-        //    //DrawBoundingBox(auxHit.collider.bounds);
-        //    //cubos[0].transform.position = new Vector3(auxHit.collider.transform.position.x + auxHit.collider.bounds.extents.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z);
-        //    //cubos[1].transform.position = new Vector3(auxHit.collider.transform.position.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z + auxHit.collider.bounds.extents.z);
-        //}
-        //if (selectedBuildingObject != null)
-        //if (ray.TryGetCurrent3DRaycastHit(out hit))
-        //{
-        //    //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
-        //    _hitPos = hit.point;
-        //}
+    //void Update()
+    //{
+    //    //parentObject.transform.position = new Vector3(10f, 0f, 0f);
+    //    //if (Physics.Raycast(new Vector3(0, 1.78f, 0), Vector3.forward, out var auxHit))
+    //    //{
+    //    //    Debug.Log(auxHit.collider.gameObject.name);
+    //    //    //    DrawBoundingBox(auxHit.collider.gameObject.GetComponent<MeshRenderer>().bounds);
+    //    //    //    //DrawBoundingBox(auxHit.collider.bounds);
+    //    //    //    //cubos[0].transform.position = new Vector3(auxHit.collider.transform.position.x + auxHit.collider.bounds.extents.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z);
+    //    //    //    //cubos[1].transform.position = new Vector3(auxHit.collider.transform.position.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z + auxHit.collider.bounds.extents.z);
+    //    //    //}
+    //    //    //if (selectedBuildingObject != null)
+    //    //    //if (ray.TryGetCurrent3DRaycastHit(out hit))
+    //    //    //{
+    //    //    //    //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
+    //    //    //    _hitPos = hit.point;
+    //    //}
 
+    //        if (playerManager.state == PlayerState.isBuilding)
+    //    {
+    //        DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
+    //        if (worldMenuManager.buildingState == BuildingState.withOffset)
+    //        {
+    //            parentObject.transform.position = _hitPos;
+    //            //parentObject.transform.position = SetFirstObjectPosition();
+    //            parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(), 0f);
+
+    //            //if (selectedBuildingObject.canPlace == true)
+    //            //{
+    //            if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+    //            //}
+
+    //            //if (parentObject.canPlace == true)
+    //            //{
+    //            //    if (selectedBuildingObject.canPlace == true)
+    //            //    {
+    //            //        selectedBuildingObject.transform.position = parentObject.transform.position;
+    //            //    }
+    //            //    //Debug.Log("entra");
+    //            //    parentObject.transform.position = _hitPos;
+    //            //    parentObject.transform.position = SetFirstObjectPosition();
+    //            //    parentObject.transform.position = UpdateOffset(hit.point);
+    //            //}
+    //            //else
+    //            //{
+    //            //    //Debug.Log("entra");
+    //            //    if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
+    //            //    parentObject.transform.position = UpdateOffset(hit.point);
+    //            //}
+
+    //            //UpdateOffset(hit.point);
+    //            //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+    //            //if (newPosition == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
+    //            //else selectedBuildingObject.transform.position = newPosition;
+    //            //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+
+    //            //UpdateOffset();
+    //            //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+    //        }
+
+    //        // Actualizar materiales de colision
+    //        //UpdateMaterials();
+    //    }
+    //}
+
+    // Try with mouse
+    private void Update()
+    {
         if (playerManager.state == PlayerState.isBuilding)
         {
             DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
             if (worldMenuManager.buildingState == BuildingState.withOffset)
             {
-                parentObject.transform.position = _hitPos;
-                //parentObject.transform.position = SetFirstObjectPosition();
-                parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(), 0f);
+                if (Input.GetMouseButton(0))
+                {
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit mouseHit;
 
-                //if (selectedBuildingObject.canPlace == true)
-                //{
-                if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-                //}
+                    if (Physics.Raycast(ray, out mouseHit))
+                    {
+                        parentObject.transform.position = mouseHit.point;
+                        //parentObject.transform.position = SetFirstObjectPosition(mouseHit);
+                        parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(mouseHit), 0f);
 
-                //if (parentObject.canPlace == true)
-                //{
-                //    if (selectedBuildingObject.canPlace == true)
-                //    {
-                //        selectedBuildingObject.transform.position = parentObject.transform.position;
-                //    }
-                //    //Debug.Log("entra");
-                //    parentObject.transform.position = _hitPos;
-                //    parentObject.transform.position = SetFirstObjectPosition();
-                //    parentObject.transform.position = UpdateOffset(hit.point);
-                //}
-                //else
-                //{
-                //    //Debug.Log("entra");
-                //    if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
-                //    parentObject.transform.position = UpdateOffset(hit.point);
-                //}
-
-                //UpdateOffset(hit.point);
-                //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
-                //if (newPosition == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
-                //else selectedBuildingObject.transform.position = newPosition;
-                //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-
-                //UpdateOffset();
-                //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+                        if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+                    }
+                }
             }
-
-            // Actualizar materiales de colision
-            //UpdateMaterials();
         }
     }
 
@@ -267,6 +294,44 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
+    //public Vector3 UpdateOffset2(Vector3 parentPos, float counter)
+    //{
+    //    // Limit of the amount of callings of this recursive function
+    //    if (counter > 40) return parentPos; //40 empieza a lagear, 45 lagea un poco, 50 lagea un poco mas, 60 lagea mucho
+
+    //    // Set the first position
+    //    parentObject.transform.position = parentPos;
+
+    //    List<Vector3> directionsList;
+
+    //    // Get the colliders colliding with the object in its position;
+    //    Collider[] colliderList;
+    //    colliderList = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
+
+    //    foreach (Collider collider in colliderList)
+    //    {
+    //        if (/*collider != hit.collider && */collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
+    //        {
+    //            Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
+    //            Vector3 diff = closestPoint - selectedBuildingObject.transform.position;
+    //            Vector3 dir = diff.normalized;
+
+    //            if (Physics.Raycast(selectedBuildingObject.transform.position, dir, out var planeHit))
+    //            {
+    //                Debug.DrawRay(planeHit.point, planeHit.normal, Color.blue);
+
+    //                localPlaneHit.transform.position = planeHit.point;
+    //                Quaternion targetRotation = Quaternion.LookRotation(planeHit.normal, Vector3.up);
+    //                localPlaneHit.transform.rotation = targetRotation;
+
+    //                directionsList.Add(localPlaneHit);
+    //            }
+    //        }
+    //    }
+
+    //    return parentObject.transform.position;
+    //}
+
     public Vector3 UpdateOffset(Vector3 parentPos, float counter)
     {
         // Limit of the amount of callings of this recursive function
@@ -295,7 +360,9 @@ public class BuildingManager : MonoBehaviour
                 Vector3 dir = diff.normalized;
 
                 //if (Physics.BoxCast(selectedBuildingObject.transform.position, parentObject.boxCollider.bounds.extents, dir, out var hitt))
-                if (Physics.Raycast(selectedBuildingObject.transform.position, dir, out var planeHit))
+                //if (Physics.Raycast(selectedBuildingObject.transform.position, dir, out var planeHit))
+                Ray ray = new Ray(selectedBuildingObject.transform.position, dir);
+                if (collider.Raycast(ray, out RaycastHit planeHit, 100f))
                 {
                     //Debug.Log(planeHit.normal);
                     Debug.DrawRay(planeHit.point, planeHit.normal, Color.blue);
@@ -370,10 +437,11 @@ public class BuildingManager : MonoBehaviour
         //Debug.Log(offset);
     }
 
-    private Vector3 SetFirstObjectPosition()
+    private Vector3 SetFirstObjectPosition(RaycastHit auxHit)
     {
-        localPlaneHit.transform.position = _hitPos;
-        Quaternion targetRotation = Quaternion.LookRotation(hit.normal, Vector3.up);
+        //localPlaneHit.transform.position = _hitPos;
+        localPlaneHit.transform.position = auxHit.point;
+        Quaternion targetRotation = Quaternion.LookRotation(auxHit.normal, Vector3.up);
         localPlaneHit.transform.rotation = targetRotation;
 
         float selectedLocalVertex = 0f;
@@ -388,7 +456,7 @@ public class BuildingManager : MonoBehaviour
 
             // If the current vertex is in the other side of the plane and farther than de selected vertex,
             //the new selected vertex is the current one
-            if (localVertex.z < 0 && localVertex.z < selectedLocalVertex)
+            if (localVertex.z < 0f && Mathf.Abs(localVertex.z) > 0.0001f && localVertex.z < selectedLocalVertex)
             {
                 selectedLocalVertex = localVertex.z;
             }
@@ -428,7 +496,6 @@ public class BuildingManager : MonoBehaviour
             //if (localVertex.z < 0f && localVertex.z < selectedLocalVertex)
             if (localVertex.z < 0f && Mathf.Abs(localVertex.z) > 0.0001f && localVertex.z < selectedLocalVertex)
             {
-                Debug.Log("entra");
                 selectedLocalVertex = localVertex.z;
 
                 // Collision manager position in the local coordinates of the plane
@@ -613,6 +680,14 @@ public class BuildingManager : MonoBehaviour
 
             // Match the scale of the colliders
             parentObject.SetScale(selectedBuildingObject);
+        }
+    }
+
+    public void DestroyObject()
+    {
+        if (hitObject != null)
+        {
+            Destroy(hitObject.gameObject);
         }
     }
 
