@@ -353,10 +353,15 @@ public class BuildingManager : MonoBehaviour
         foreach (Collider collider in colliderList)
         //foreach (Collider collider in parentObject.detectedColliders)
         {
-            if (/*collider != hit.collider && */collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
+            if (/*collider != hit.collider &&*/ collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
             {
-                Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
-                Vector3 diff = closestPoint - selectedBuildingObject.transform.position;
+                //Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
+                //Vector3 diff = closestPoint - selectedBuildingObject.transform.position;
+                //Vector3 dir = diff.normalized;
+
+                Vector3 objectCenter = selectedBuildingObject.transform.TransformPoint(selectedBuildingObject.boxCollider.center);
+                Vector3 closestPoint = collider.ClosestPoint(objectCenter);
+                Vector3 diff = closestPoint - objectCenter;
                 Vector3 dir = diff.normalized;
 
                 //if (Physics.BoxCast(selectedBuildingObject.transform.position, parentObject.boxCollider.bounds.extents, dir, out var hitt))
@@ -365,11 +370,11 @@ public class BuildingManager : MonoBehaviour
                 if (collider.Raycast(ray, out RaycastHit planeHit, 100f))
                 {
                     //Debug.Log(planeHit.normal);
-                    Debug.DrawRay(planeHit.point, planeHit.normal, Color.blue);
+                    Debug.DrawRay(closestPoint, planeHit.normal, Color.blue);
 
                     //if (planeHit.normal == -hit.normal) return parentObject.transform.position;
 
-                    localPlaneHit.transform.position = planeHit.point;
+                    localPlaneHit.transform.position = closestPoint;
                     Quaternion targetRotation = Quaternion.LookRotation(planeHit.normal, Vector3.up);
                     //targetRotation = Quaternion.LookRotation(planeHit.normal, Vector3.up);
                     localPlaneHit.transform.rotation = targetRotation;
