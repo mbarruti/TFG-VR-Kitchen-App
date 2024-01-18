@@ -182,10 +182,10 @@ public class PlayerManager : MonoBehaviour
 
         else if (state == PlayerState.isBuildingWalls)
         {
-            if (_wallManager.finish == true)
-                _wallManager.CancelWallPlacement();
-            else if (_worldMenuManager.isOpened == true)
+            if (_worldMenuManager.isOpened == true)
                 _worldMenuManager.hideWorldMenu();
+            else if (_wallManager.finish == true)
+                _wallManager.CancelWallPlacement();
         }
     }
 

@@ -337,7 +337,7 @@ public class WallManager : MonoBehaviour
             // If any of the two poles connected to the selected wall have more than one adjacent pole, it is not destroyed
             if (buildingWall.startPole.adjacentPoles.Count < 2)
             {
-                // If it has only one, its reference is saved in a local variable (to destroy it later) so the next pole doesn't get a null in its list
+                // If it has only one, its reference is saved in a local variable (to destroy it later) so the next pole doesn't get a null/missing in its list
                 auxStartPole = buildingWall.startPole.gameObject;
 
                 poleList.Remove(buildingWall.startPole);
