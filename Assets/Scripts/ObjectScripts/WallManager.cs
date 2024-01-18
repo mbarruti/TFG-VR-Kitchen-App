@@ -373,7 +373,7 @@ public class WallManager : MonoBehaviour
             else
             {
                 // Remove each other from the others adjacent list
-                buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
+                buildingWall.endPole.adjacentPoles.Remove(buildingWall.startPole);
             }
 
             //// Remove each other from the others adjacent list
@@ -390,7 +390,7 @@ public class WallManager : MonoBehaviour
                 Destroy(auxEndPole);
             }
 
-            wallList.Remove(wall);
+            wallList.Remove(buildingWall);
 
             // Destroy the wall
             if (poleList.Count > 2)
