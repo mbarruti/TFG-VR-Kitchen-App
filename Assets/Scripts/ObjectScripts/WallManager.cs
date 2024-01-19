@@ -27,6 +27,9 @@ public class WallManager : MonoBehaviour
     [SerializeField] List<GameObject> previewPoleList;
     [SerializeField] GameObject wallPrefab;
 
+    private Pole hitPole;
+    private GameObject faceHit;
+
     // -------------------------------------------------
 
     public RaycastHit hit;
@@ -61,6 +64,13 @@ public class WallManager : MonoBehaviour
             // Update position for endPole while finish is true
             if (finish == true)
             {
+                //if (faceHit != null)
+                //{
+                //    Pole parentPole = faceHit.GetComponentInParent<Pole>();
+                //    if (faceHit.GetComponent<MeshRenderer>().material.color == parentPole.faceMaterials[1].color) parentPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
+                //    faceHit = null;
+                //}
+
                 //// Set the Z axis pointing at each other so the wall can be adjusted in that axis
                 //startPole.transform.LookAt(endPole.transform.position);
                 //endPole.transform.LookAt(startPole.transform.position);
@@ -94,6 +104,41 @@ public class WallManager : MonoBehaviour
                 // Adjust the width of the wall based on the position of the two poles
                 wall.AdjustWall();
             }
+            // Get the mid point of the face hit
+            else if (hit.collider.gameObject.TryGetComponent(out hitPole))
+            {
+                if (faceHit != null && faceHit != hitPole.GetClosestFace(hit.point))
+                {
+                    hitPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
+                    faceHit = hitPole.GetClosestFace(hit.point);
+                }
+
+                faceHit = hitPole.GetClosestFace(hit.point);
+                //MeshRenderer faceRenderer = faceHit.GetComponent<MeshRenderer>();
+                //faceRenderer.material.color = Color.green;
+                if (faceHit.GetComponent<MeshRenderer>().material.color == hitPole.faceMaterials[0].color) hitPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
+                //Debug.Log(faceHit.transform.position);
+                //Vector3 faceMidpoint = hitPole.GetClosestFace(hit.point);
+
+                //polePlane.transform.position = faceMidpoint;
+                //Quaternion targetRotation = Quaternion.FromToRotation(polePlane.transform.up, hit.normal);
+                //polePlane.transform.rotation = targetRotation;
+
+                //polePlane.SetActive(true);
+            }
+            //else if (faceHit != null)
+            //{
+            //    Pole parentPole = faceHit.GetComponentInParent<Pole>();
+            //    parentPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
+            //    faceHit = null;
+            //}
+        }
+
+        if (faceHit != null)
+        {
+            Pole parentPole = faceHit.GetComponentInParent<Pole>();
+            if (faceHit.GetComponent<MeshRenderer>().material.color == parentPole.faceMaterials[1].color) parentPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
+            faceHit = null;
         }
     }
 

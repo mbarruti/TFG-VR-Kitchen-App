@@ -8,9 +8,17 @@ public class Pole : MonoBehaviour
 
     //[SerializeField] List<Pole> availablePoles;
 
+    //[SerializeField] Material[] faceMaterials;
+
+    [SerializeField] GameObject[] faces = new GameObject[4];
+
+    private Vector3[] vertices = new Vector3[8];
+
     // ------------------------------------
 
     //public List<Pole> availablePoles;
+
+    public Material[] faceMaterials;
 
     public List<GameObject> availablePoles;
 
@@ -26,6 +34,104 @@ public class Pole : MonoBehaviour
     /// Filter the available poles in the world to connect to for this pole
     /// <summary>
     //public List<Pole> FilterAvailablePoles(Vector3 direction, Pole startPole)
+
+    private void Start()
+    {
+        SetBoxVertices();
+    }
+
+    // Set the collider vertices
+    void SetBoxVertices()
+    {
+        Vector3 center = boxCollider.center;
+        Vector3 size = boxCollider.size * 0.5f; // Divide to get half of the collider
+
+        //Vector3[] vertices = new Vector3[8];
+        for (int i = 0; i < 8; i++)
+        {
+            float x = ((i & 1) == 0) ? size.x : -size.x;
+            float y = ((i & 2) == 0) ? size.y : -size.y;
+            float z = ((i & 4) == 0) ? size.z : -size.z;
+
+            vertices[i] = center + new Vector3(x, y, z);
+            //Debug.Log(vertices[i]);
+        }
+    }
+
+    public GameObject GetClosestFace(Vector3 hitPoint)
+    {
+        GameObject nearestFace = null;
+        float nearestDistance = float.MaxValue;
+
+        foreach (GameObject face in faces)
+        {
+            float distance = Vector3.Distance(hitPoint, face.transform.position);
+
+            if (distance < nearestDistance)
+            {
+                nearestDistance = distance;
+                nearestFace = face;
+            }
+        }
+
+        return nearestFace;
+    }
+
+    public void ChangeFaceMaterial(MeshRenderer faceRenderer)
+    {
+        faceRenderer.material = (faceRenderer.material.color == faceMaterials[0].color) ? faceMaterials[1] : faceMaterials[0];
+        //if (faceRenderer.material.color == faceMaterials[0].color) faceRenderer.material = faceMaterials[1];
+        //else faceRenderer.material = faceMaterials[0];
+    }
+
+    //// Get the midpoint of the face hit by the raycast
+    //public Vector3 GetFaceMidpoint(Vector3 hitPoint)
+    //{
+    //    // Encuentra la cara más cercana al punto de impacto
+    //    int nearestFace = FindNearestFace(transform.InverseTransformPoint(hitPoint));
+
+    //    // Suma los vértices de la cara para obtener el punto medio
+    //    Vector3 faceMidpoint = Vector3.zero;
+    //    for (int i = 0; i < 4; i++)
+    //    {
+    //        faceMidpoint += vertices[(nearestFace * 4) + i];
+    //    }
+    //    faceMidpoint /= 4.0f;
+
+    //    return transform.TransformPoint(faceMidpoint);
+    //}
+
+    //// Encuentra la cara más cercana al punto de impacto
+    //int FindNearestFace(Vector3 hitPoint)
+    //{
+    //    float minDistance = float.MaxValue;
+    //    int nearestFace = 0;
+
+    //    for (int i = 0; i < 6; i++)
+    //    {
+    //        // Calcula el punto medio de la cara actual
+    //        Vector3 faceMidpoint = CalculateFaceMidpoint(i);
+
+    //        // Calcula la distancia al punto de impacto
+    //        float distance = Vector3.Distance(hitPoint, faceMidpoint);
+
+    //        // Actualiza si la distancia es menor
+    //        if (distance < minDistance)
+    //        {
+    //            minDistance = distance;
+    //            nearestFace = i;
+    //        }
+    //    }
+
+    //    return nearestFace;
+    //}
+
+    //// Calcula el punto medio de la cara
+    //Vector3 CalculateFaceMidpoint(int faceIndex)
+    //{
+    //    return (vertices[faceIndex * 4] + vertices[faceIndex * 4 + 1] + vertices[faceIndex * 4 + 2] + vertices[faceIndex * 4 + 3]) / 4.0f;
+    //}
+
     public void FilterAvailablePoles(Vector3 direction, Pole startPole)
     {
         RaycastHit[] hitPoles;

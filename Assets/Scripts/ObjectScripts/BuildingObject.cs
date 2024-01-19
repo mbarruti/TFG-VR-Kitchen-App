@@ -9,7 +9,7 @@ public class BuildingObject : MonoBehaviour
 
     [SerializeField] Outline outline;
 
-    [SerializeField] private Material[] collisionMaterials;
+    [SerializeField] Material[] collisionMaterials;
 
     // Aqui se guardan las transformaciones previas a la edicion del objeto seleccionado
     //private Transform lastTransform;
@@ -33,6 +33,7 @@ public class BuildingObject : MonoBehaviour
     public Vector3 surfaceNormal;
 
     public Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
+    public Vector3[] faces = new Vector3[6];
 
     public BuildingManager _buildingManager;
 
@@ -291,6 +292,28 @@ public class BuildingObject : MonoBehaviour
             vertices[i] = center + new Vector3(x, y, z);
             //Debug.Log(vertices[i]);
         }
+    }
+
+    void SetBoxFaces()
+    {
+        Vector3 centerTop = GetFaceMidpoint(vertices[0], vertices[1], vertices[2], vertices[3]);
+        faces[0] = centerTop;
+        Vector3 centerBottom = GetFaceMidpoint(vertices[4], vertices[5], vertices[6], vertices[7]);
+        faces[1] = centerBottom;
+        Vector3 centerFront = GetFaceMidpoint(vertices[0], vertices[1], vertices[5], vertices[4]);
+        faces[2] = centerFront;
+        Vector3 centerBack = GetFaceMidpoint(vertices[2], vertices[3], vertices[7], vertices[6]);
+        faces[3] = centerBack;
+        Vector3 centerLeft = GetFaceMidpoint(vertices[0], vertices[3], vertices[7], vertices[4]);
+        faces[4] = centerLeft;
+        Vector3 centerRight = GetFaceMidpoint(vertices[1], vertices[2], vertices[6], vertices[5]);
+        faces[5] = centerRight;
+    }
+
+    // Calculate the midpoint of a face given its four vertices
+    Vector3 GetFaceMidpoint(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
+    {
+        return (v1 + v2 + v3 + v4) / 4.0f;
     }
 
     public void SetTouchpadValues(float valueX, float valueY)
