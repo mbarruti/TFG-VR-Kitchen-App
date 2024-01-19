@@ -91,7 +91,7 @@ public class PlayerManager : MonoBehaviour
         {
             _buildingManager.PlaceObject();
         }
-        else if (state == PlayerState.isBuildingWalls)
+        else if (state == PlayerState.isBuildingWalls && _wallManager.hit.collider != null)
         {
             if (_wallManager.finish == false) _wallManager.SetStartPole();
             else _wallManager.SetEndPole();

@@ -64,6 +64,11 @@ public class WallManager : MonoBehaviour
             // Update position for endPole while finish is true
             if (finish == true)
             {
+                // Check if there is a green face that has to be red
+                if (hitPole != null)
+                {
+                    hitPole = null;
+                }
                 //if (faceHit != null)
                 //{
                 //    Pole parentPole = faceHit.GetComponentInParent<Pole>();
@@ -110,7 +115,6 @@ public class WallManager : MonoBehaviour
                 if (faceHit != null && faceHit != hitPole.GetClosestFace(hit.point))
                 {
                     hitPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
-                    faceHit = hitPole.GetClosestFace(hit.point);
                 }
 
                 faceHit = hitPole.GetClosestFace(hit.point);
@@ -125,6 +129,7 @@ public class WallManager : MonoBehaviour
                 //polePlane.transform.rotation = targetRotation;
 
                 //polePlane.SetActive(true);
+
             }
             //else if (faceHit != null)
             //{
@@ -133,9 +138,15 @@ public class WallManager : MonoBehaviour
             //    faceHit = null;
             //}
         }
-
-        if (faceHit != null)
+        // Check if there is a green face that has to be red
+        else if (hitPole != null)
         {
+            hitPole = null;
+        }
+
+        if (faceHit != null && hitPole == null)
+        {
+            Debug.Log("entra");
             Pole parentPole = faceHit.GetComponentInParent<Pole>();
             if (faceHit.GetComponent<MeshRenderer>().material.color == parentPole.faceMaterials[1].color) parentPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
             faceHit = null;
@@ -153,6 +164,7 @@ public class WallManager : MonoBehaviour
 
     public void SetStartPole()
     {
+        // If it's the first wall in the world
         if (poleList.Count == 0)
         {
             GameObject auxPole = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
