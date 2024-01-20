@@ -126,7 +126,6 @@ public class WallManager : MonoBehaviour
 
         if (faceHit != null && hitPole == null)
         {
-            Debug.Log("entra");
             Pole parentPole = faceHit.GetComponentInParent<Pole>();
             if (faceHit.GetComponent<MeshRenderer>().material.color == parentPole.faceMaterials[1].color) parentPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
             faceHit = null;
@@ -158,8 +157,6 @@ public class WallManager : MonoBehaviour
             startPole.adjacentPoles.Add(endPole);
             endPole.adjacentPoles.Add(startPole);
 
-            //finish = true;
-
             // Instantiate the wall in the world
             //GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
             //wall = auxWall.GetComponent<BuildingWall>();
@@ -171,7 +168,6 @@ public class WallManager : MonoBehaviour
         else if (hit.collider.tag == "Pole")
         {
             wallHit = hit;
-            //Debug.Log(wallHit.normal);
 
             startPole = wallHit.collider.gameObject.GetComponent<Pole>();
             GameObject auxPole2 = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
@@ -180,12 +176,9 @@ public class WallManager : MonoBehaviour
             startPole.adjacentPoles.Add(endPole);
             endPole.adjacentPoles.Add(startPole);
 
-            planeHit.transform.position = wallHit.point;
+            planeHit.transform.position = wallHit.transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(wallHit.normal, Vector3.up);
             planeHit.transform.rotation = targetRotation;
-
-            //startPole.transform.position = hit.collider.bounds.center;
-            //startPole.transform.rotation = hit.collider.gameObject.transform.rotation;
 
             // Instantiate the wall in the world
             GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
@@ -193,19 +186,9 @@ public class WallManager : MonoBehaviour
             wall.startPole = startPole;
             wall.endPole = endPole;
 
-            //wall.SetActiveAxis(ApproximateNormal(wallHit.normal));
-
             if (poleList.Count >= 3)
             {
-                //List<Pole> currentPoleList = endPole.FilterAvailablePoles(ApproximateNormal(wallHit.normal), startPole);
-
-                // Set preview poles
-                //foreach (Pole pole in currentPoleList)
-                //{
-                //    SetPreviewPole(startPole, pole, hitPoles);
-                //}
-
-                endPole.FilterAvailablePoles(ApproximateNormal(wallHit.normal), startPole);
+                endPole.FilterAvailablePoles(planeHit, startPole);
             }
 
             finish = true;
@@ -267,43 +250,20 @@ public class WallManager : MonoBehaviour
         wallList.Add(wall);
     }
 
-    public void SetPreviewPole(Pole startPole, Pole pole, RaycastHit[] hitPoles)
+    public void SetPreviewPole(Vector3 localStartPolePosition, Vector3 localPolePosition, RaycastHit[] hitPoles, GameObject plane)
     {
-        //Debug.Log(wallHit.normal);
-
         bool isPosAvailable;
 
-        Vector3 normal = ApproximateNormal(wallHit.normal);
-        //// Threshold to approximate the direction with the small errors caused by the rotation
-        //float threshold = 0.01f;
+        Vector3 localPreviewPos = new Vector3(localStartPolePosition.x, localPolePosition.y, localPolePosition.z);
+        Vector3 previewPos = plane.transform.TransformPoint(localPreviewPos);
 
-        //if (Mathf.Abs(wallHit.normal.x - 1f) < threshold || Mathf.Abs(wallHit.normal.x + 1f) < threshold)
-        if (normal.x == 1f || normal.x == -1f)
+        isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
+        if (isPosAvailable == true)
         {
-            //Debug.Log("Dir X");
-            var previewPos = new Vector3(pole.transform.position.x, pole.transform.position.y, startPole.transform.position.z);
-
-            isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
-            if (isPosAvailable == true)
-            {
-                GameObject auxPole = Instantiate(previewPole, previewPos, Quaternion.identity);
-                previewPoleList.Add(auxPole);
-            }
+            GameObject auxPole = Instantiate(previewPole, previewPos, Quaternion.identity);
+            previewPoleList.Add(auxPole);
         }
-        else
-        {
-            //Debug.Log(wallHit.normal.x);
-            //Debug.Log("Dir Z");
-            //Debug.Log(endPole.transform.position.x);
-            var previewPos = new Vector3(startPole.transform.position.x, pole.transform.position.y, pole.transform.position.z);
 
-            isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
-            if (isPosAvailable == true)
-            {
-                GameObject auxPole = Instantiate(previewPole, previewPos, Quaternion.identity);
-                previewPoleList.Add(auxPole);
-            }
-        }
     }
 
     /// <summary>
@@ -313,7 +273,7 @@ public class WallManager : MonoBehaviour
     {
         foreach (RaycastHit hitPole in hitPoles)
         {
-            if (hitPole.transform.position == position)
+            if (ApproximateVector(hitPole.transform.position) == ApproximateVector(position))
                 return false;
         }
 
@@ -480,50 +440,13 @@ public class WallManager : MonoBehaviour
         }
     }
 
-    //private float GetAxis(Vector3 normal, Vector3 vector)
-    //{
-    //    // Encontrar el eje dominante de la normal
-    //    float maxAxis = Mathf.Max(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
-
-    //    if (Mathf.Abs(normal.x) == maxAxis)
-    //    {
-    //        return vector.x;
-    //    }
-    //    else if (Mathf.Abs(normal.y) == maxAxis)
-    //    {
-    //        return vector.y;
-    //    }
-    //    else if (Mathf.Abs(normal.z) == maxAxis)
-    //    {
-    //        return vector.z;
-    //    }
-    //    //Debug.Log("ninguna");
-    //    return 0;
-    //}
-
-    /// <summary>
-    /// Approximate the direction
-    /// </summary>
-    private Vector3 ApproximateNormal(Vector3 normal)
+    public Vector3 ApproximateVector(Vector3 vector)
     {
-        // Threshold to approximate the direction with the small errors (caused by the rotation, for example)
-        float threshold = 0.01f;
+        return new Vector3(Approximate(vector.x), Approximate(vector.y), Approximate(vector.z));
+    }
 
-        if (Mathf.Abs(normal.x - 1f) < threshold)
-            return new Vector3(1f, 0f, 0f);
-        else if (Mathf.Abs(normal.x + 1f) < threshold)
-            return new Vector3(-1f, 0f, 0f);
-        else if (Mathf.Abs(normal.y - 1f) < threshold)
-            return new Vector3(0f, 1f, 0f);
-        else if (Mathf.Abs(normal.y + 1f) < threshold)
-            return new Vector3(0f, -1f, 0f);
-        else if (Mathf.Abs(normal.z - 1f) < threshold)
-            return new Vector3(0f, 0f, 1f);
-        else if (Mathf.Abs(normal.z + 1f) < threshold)
-            return new Vector3(0f, 0f, -1f);
-
-        Debug.Log("Direccion aproximada: " + new Vector3(0f, 0f, 0f));
-        return new Vector3(0f, 0f, 0f);
-
+    public float Approximate(float value)
+    {
+        return Mathf.Round(value * Mathf.Pow(10, 4)) / Mathf.Pow(10, 4);
     }
 }
