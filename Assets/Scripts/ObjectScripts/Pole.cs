@@ -84,54 +84,6 @@ public class Pole : MonoBehaviour
         //else faceRenderer.material = faceMaterials[0];
     }
 
-    //// Get the midpoint of the face hit by the raycast
-    //public Vector3 GetFaceMidpoint(Vector3 hitPoint)
-    //{
-    //    // Encuentra la cara más cercana al punto de impacto
-    //    int nearestFace = FindNearestFace(transform.InverseTransformPoint(hitPoint));
-
-    //    // Suma los vértices de la cara para obtener el punto medio
-    //    Vector3 faceMidpoint = Vector3.zero;
-    //    for (int i = 0; i < 4; i++)
-    //    {
-    //        faceMidpoint += vertices[(nearestFace * 4) + i];
-    //    }
-    //    faceMidpoint /= 4.0f;
-
-    //    return transform.TransformPoint(faceMidpoint);
-    //}
-
-    //// Encuentra la cara más cercana al punto de impacto
-    //int FindNearestFace(Vector3 hitPoint)
-    //{
-    //    float minDistance = float.MaxValue;
-    //    int nearestFace = 0;
-
-    //    for (int i = 0; i < 6; i++)
-    //    {
-    //        // Calcula el punto medio de la cara actual
-    //        Vector3 faceMidpoint = CalculateFaceMidpoint(i);
-
-    //        // Calcula la distancia al punto de impacto
-    //        float distance = Vector3.Distance(hitPoint, faceMidpoint);
-
-    //        // Actualiza si la distancia es menor
-    //        if (distance < minDistance)
-    //        {
-    //            minDistance = distance;
-    //            nearestFace = i;
-    //        }
-    //    }
-
-    //    return nearestFace;
-    //}
-
-    //// Calcula el punto medio de la cara
-    //Vector3 CalculateFaceMidpoint(int faceIndex)
-    //{
-    //    return (vertices[faceIndex * 4] + vertices[faceIndex * 4 + 1] + vertices[faceIndex * 4 + 2] + vertices[faceIndex * 4 + 3]) / 4.0f;
-    //}
-
     public void FilterAvailablePoles(Vector3 direction, Pole startPole)
     {
         RaycastHit[] hitPoles;

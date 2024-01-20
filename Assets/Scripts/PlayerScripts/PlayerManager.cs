@@ -193,14 +193,15 @@ public class PlayerManager : MonoBehaviour
     {
         if (state == PlayerState.isBuildingWalls)
         {
-            if (_wallManager.hit.collider.tag == "Wall")
+            if (_wallManager.poleList.Count == 0)
+            {
+                //_wallManager.wall.axisX = true;
+                //_wallManager.wall.axisZ = false;
+                _wallManager.planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
+            }
+            else if (_wallManager.hit.collider.tag == "Wall")
             {
                 _wallManager.DestroyWall(_wallManager.hit.collider.GetComponent<BuildingWall>());
-            }
-            else if (_wallManager.poleList.Count == 0)
-            {
-                _wallManager.wall.axisX = true;
-                _wallManager.wall.axisZ = false;
             }
         }
         else if (state == PlayerState.isFree)
@@ -223,8 +224,9 @@ public class PlayerManager : MonoBehaviour
             }
             else
             {
-                _wallManager.wall.axisX = false;
-                _wallManager.wall.axisZ = true;
+                //_wallManager.wall.axisX = false;
+                //_wallManager.wall.axisZ = true;
+                _wallManager.planeHit.transform.eulerAngles = new Vector3(0f, 0f, 0f);
             }
         }
     }

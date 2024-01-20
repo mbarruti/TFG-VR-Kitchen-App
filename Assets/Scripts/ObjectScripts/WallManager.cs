@@ -44,6 +44,8 @@ public class WallManager : MonoBehaviour
 
     public List<Pole> poleList;
 
+    public GameObject planeHit;
+
     // Mandos de realidad virtual
     public GameObject rightController;
     public GameObject leftController;
@@ -69,12 +71,6 @@ public class WallManager : MonoBehaviour
                 {
                     hitPole = null;
                 }
-                //if (faceHit != null)
-                //{
-                //    Pole parentPole = faceHit.GetComponentInParent<Pole>();
-                //    if (faceHit.GetComponent<MeshRenderer>().material.color == parentPole.faceMaterials[1].color) parentPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
-                //    faceHit = null;
-                //}
 
                 //// Set the Z axis pointing at each other so the wall can be adjusted in that axis
                 //startPole.transform.LookAt(endPole.transform.position);
@@ -88,7 +84,7 @@ public class WallManager : MonoBehaviour
                     {
                         Vector3 sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
 
-                        wall.SetEndPolePosition(sum);
+                        wall.SetEndPolePosition(sum, planeHit);
 
                     }
                     // If the hit is an available pole
@@ -118,25 +114,9 @@ public class WallManager : MonoBehaviour
                 }
 
                 faceHit = hitPole.GetClosestFace(hit.point);
-                //MeshRenderer faceRenderer = faceHit.GetComponent<MeshRenderer>();
-                //faceRenderer.material.color = Color.green;
                 if (faceHit.GetComponent<MeshRenderer>().material.color == hitPole.faceMaterials[0].color) hitPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
-                //Debug.Log(faceHit.transform.position);
-                //Vector3 faceMidpoint = hitPole.GetClosestFace(hit.point);
-
-                //polePlane.transform.position = faceMidpoint;
-                //Quaternion targetRotation = Quaternion.FromToRotation(polePlane.transform.up, hit.normal);
-                //polePlane.transform.rotation = targetRotation;
-
-                //polePlane.SetActive(true);
 
             }
-            //else if (faceHit != null)
-            //{
-            //    Pole parentPole = faceHit.GetComponentInParent<Pole>();
-            //    parentPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
-            //    faceHit = null;
-            //}
         }
         // Check if there is a green face that has to be red
         else if (hitPole != null)
@@ -173,6 +153,7 @@ public class WallManager : MonoBehaviour
             endPole = auxPole2.GetComponent<Pole>();
 
             startPole.transform.position = _hitPos + hit.normal * startPole.boxCollider.bounds.extents.y;
+            planeHit.transform.position = _hitPos + hit.normal * startPole.boxCollider.bounds.extents.y;
 
             startPole.adjacentPoles.Add(endPole);
             endPole.adjacentPoles.Add(startPole);
@@ -199,6 +180,10 @@ public class WallManager : MonoBehaviour
             startPole.adjacentPoles.Add(endPole);
             endPole.adjacentPoles.Add(startPole);
 
+            planeHit.transform.position = wallHit.point;
+            Quaternion targetRotation = Quaternion.LookRotation(wallHit.normal, Vector3.up);
+            planeHit.transform.rotation = targetRotation;
+
             //startPole.transform.position = hit.collider.bounds.center;
             //startPole.transform.rotation = hit.collider.gameObject.transform.rotation;
 
@@ -208,7 +193,7 @@ public class WallManager : MonoBehaviour
             wall.startPole = startPole;
             wall.endPole = endPole;
 
-            wall.SetActiveAxis(ApproximateNormal(wallHit.normal));
+            //wall.SetActiveAxis(ApproximateNormal(wallHit.normal));
 
             if (poleList.Count >= 3)
             {

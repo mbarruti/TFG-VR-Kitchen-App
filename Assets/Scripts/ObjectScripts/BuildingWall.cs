@@ -46,28 +46,41 @@ public class BuildingWall : MonoBehaviour
         endPole.SetActiveAxisSign(this, normal);
     }
 
-    public void SetEndPolePosition(Vector3 sum)
-    {
-        if (axisX == true)
-        {
-            //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
+    //public void SetEndPolePosition(Vector3 sum)
+    //{
+    //    if (axisX == true)
+    //    {
+    //        //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
 
-            if (endPole.activeAxis > 0)
-                endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, startPole.transform.position.x + startPole.transform.localScale.x, Mathf.Infinity), startPole.transform.position.y, startPole.transform.position.z);
-            else if (endPole.activeAxis < 0)
-                endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, Mathf.NegativeInfinity, startPole.transform.position.x - startPole.transform.localScale.x), startPole.transform.position.y, startPole.transform.position.z);
-            else
-                endPole.transform.position = new Vector3(sum.x, startPole.transform.position.y, startPole.transform.position.z);
-        }
-        else
-        {
-            //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
-            if (endPole.activeAxis > 0)
-                endPole.transform.position = new Vector3(startPole.transform.position.x, startPole.transform.position.y, Mathf.Clamp(sum.z, startPole.transform.position.z + startPole.transform.localScale.z, Mathf.Infinity));
-            else if (endPole.activeAxis < 0)
-                endPole.transform.position = new Vector3(startPole.transform.position.x, startPole.transform.position.y, Mathf.Clamp(sum.z, Mathf.NegativeInfinity, startPole.transform.position.z - startPole.transform.localScale.z));
-            else
-                endPole.transform.position = new Vector3(startPole.transform.position.x, startPole.transform.position.y, sum.z);
-        }
+    //        if (endPole.activeAxis > 0)
+    //            endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, startPole.transform.position.x + startPole.transform.localScale.x, Mathf.Infinity), startPole.transform.position.y, startPole.transform.position.z);
+    //        else if (endPole.activeAxis < 0)
+    //            endPole.transform.position = new Vector3(Mathf.Clamp(sum.x, Mathf.NegativeInfinity, startPole.transform.position.x - startPole.transform.localScale.x), startPole.transform.position.y, startPole.transform.position.z);
+    //        else
+    //            endPole.transform.position = new Vector3(sum.x, startPole.transform.position.y, startPole.transform.position.z);
+    //    }
+    //    else
+    //    {
+    //        //var sum = _hitPos + GetOffset(hit.normal, endPole.GetComponent<BoxCollider>());
+    //        if (endPole.activeAxis > 0)
+    //            endPole.transform.position = new Vector3(startPole.transform.position.x, startPole.transform.position.y, Mathf.Clamp(sum.z, startPole.transform.position.z + startPole.transform.localScale.z, Mathf.Infinity));
+    //        else if (endPole.activeAxis < 0)
+    //            endPole.transform.position = new Vector3(startPole.transform.position.x, startPole.transform.position.y, Mathf.Clamp(sum.z, Mathf.NegativeInfinity, startPole.transform.position.z - startPole.transform.localScale.z));
+    //        else
+    //            endPole.transform.position = new Vector3(startPole.transform.position.x, startPole.transform.position.y, sum.z);
+    //    }
+    //}
+
+    public void SetEndPolePosition(Vector3 sum, GameObject plane)
+    {
+        // Start pole position in local coordinates of the plane hit
+        Vector3 localStartPolePosition = plane.transform.InverseTransformPoint(startPole.transform.position);
+
+        Vector3 localSum = plane.transform.InverseTransformPoint(sum);
+
+        Vector3 localEndPolePosition = new Vector3(localStartPolePosition.x, localStartPolePosition.y, Mathf.Clamp(localSum.z, localStartPolePosition.z + startPole.transform.localScale.z, Mathf.Infinity));
+        //Vector3 localEndPolePosition = new Vector3(localStartPolePosition.x, localStartPolePosition.y, Mathf.Clamp(localSum.z, localStartPolePosition.z + plane.transform.localPosition.z, Mathf.Infinity));
+
+        endPole.transform.position = plane.transform.TransformPoint(localEndPolePosition);
     }
 }

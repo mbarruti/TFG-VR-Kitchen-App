@@ -10150,6 +10150,7 @@ MonoBehaviour:
   finish: 0
   freePlacement: 0
   poleList: []
+  planeHit: {fileID: 1738041706}
   rightController: {fileID: 1758346702}
   leftController: {fileID: 1264172314}
 --- !u!4 &2032544279
