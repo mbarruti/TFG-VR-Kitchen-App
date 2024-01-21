@@ -421,7 +421,7 @@ public class WallManager : MonoBehaviour
     public void SetCeiling()
     {
         ceiling.SetActive(true);
-        ceiling.transform.position = new Vector3(0, 0, wall.boxCollider.bounds.extents.y + 0.05f);
+        ceiling.transform.position = new Vector3(0, wall.transform.localScale.y + 1.0f, 0f);
     }
 
     public void DeleteAllPoles()

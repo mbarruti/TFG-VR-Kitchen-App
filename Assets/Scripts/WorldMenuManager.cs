@@ -80,7 +80,7 @@ public class WorldMenuManager : MonoBehaviour
 
     public void FinishBuildingWalls()
     {
-        //_wallManager.SetCeiling();
+        _wallManager.SetCeiling();
         _wallManager.DeleteAllPoles();
         _wallManager.gameObject.SetActive(false);
 
