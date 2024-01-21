@@ -61,7 +61,7 @@ public class WallManager : MonoBehaviour
     {
         if (rightRay.TryGetCurrent3DRaycastHit(out hit))
         {
-            _hitPos = hit.point;
+            if (hit.collider.gameObject.CompareTag("Floor")) _hitPos = hit.point;
 
             // Update position for endPole while finish is true
             if (finish == true)
@@ -170,7 +170,7 @@ public class WallManager : MonoBehaviour
             wallHit = hit;
 
             startPole = wallHit.collider.gameObject.GetComponent<Pole>();
-            GameObject auxPole2 = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
+            GameObject auxPole2 = Instantiate(originPole, startPole.transform.position, Quaternion.identity);
             endPole = auxPole2.GetComponent<Pole>();
 
             startPole.adjacentPoles.Add(endPole);
@@ -179,6 +179,8 @@ public class WallManager : MonoBehaviour
             planeHit.transform.position = wallHit.transform.position;
             Quaternion targetRotation = Quaternion.LookRotation(wallHit.normal, Vector3.up);
             planeHit.transform.rotation = targetRotation;
+
+            endPole.transform.position += Vector3.Scale(planeHit.transform.forward, startPole.transform.localScale);
 
             // Instantiate the wall in the world
             GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
