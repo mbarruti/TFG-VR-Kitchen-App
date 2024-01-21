@@ -27,6 +27,9 @@ public class WallManager : MonoBehaviour
     [SerializeField] List<GameObject> previewPoleList;
     [SerializeField] GameObject wallPrefab;
 
+    private Pole hitPole;
+    private GameObject faceHit;
+
     // -------------------------------------------------
 
     public RaycastHit hit;
@@ -40,6 +43,8 @@ public class WallManager : MonoBehaviour
     public bool freePlacement;
 
     public List<Pole> poleList;
+
+    public GameObject planeHit;
 
     // Mandos de realidad virtual
     public GameObject rightController;
@@ -56,11 +61,17 @@ public class WallManager : MonoBehaviour
     {
         if (rightRay.TryGetCurrent3DRaycastHit(out hit))
         {
-            _hitPos = hit.point;
+            if (hit.collider.gameObject.CompareTag("Floor")) _hitPos = hit.point;
 
             // Update position for endPole while finish is true
             if (finish == true)
             {
+                // Check if there is a green face that has to be red
+                if (hitPole != null)
+                {
+                    hitPole = null;
+                }
+
                 //// Set the Z axis pointing at each other so the wall can be adjusted in that axis
                 //startPole.transform.LookAt(endPole.transform.position);
                 //endPole.transform.LookAt(startPole.transform.position);
@@ -73,7 +84,7 @@ public class WallManager : MonoBehaviour
                     {
                         Vector3 sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
 
-                        wall.SetEndPolePosition(sum);
+                        wall.SetEndPolePosition(sum, planeHit);
 
                     }
                     // If the hit is an available pole
@@ -94,6 +105,30 @@ public class WallManager : MonoBehaviour
                 // Adjust the width of the wall based on the position of the two poles
                 wall.AdjustWall();
             }
+            // Get the mid point of the face hit
+            else if (hit.collider.gameObject.TryGetComponent(out hitPole))
+            {
+                if (faceHit != null && faceHit != hitPole.GetClosestFace(hit.point))
+                {
+                    hitPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
+                }
+
+                faceHit = hitPole.GetClosestFace(hit.point);
+                if (faceHit.GetComponent<MeshRenderer>().material.color == hitPole.faceMaterials[0].color) hitPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
+
+            }
+        }
+        // Check if there is a green face that has to be red
+        else if (hitPole != null)
+        {
+            hitPole = null;
+        }
+
+        if (faceHit != null && hitPole == null)
+        {
+            Pole parentPole = faceHit.GetComponentInParent<Pole>();
+            if (faceHit.GetComponent<MeshRenderer>().material.color == parentPole.faceMaterials[1].color) parentPole.ChangeFaceMaterial(faceHit.GetComponent<MeshRenderer>());
+            faceHit = null;
         }
     }
 
@@ -108,6 +143,7 @@ public class WallManager : MonoBehaviour
 
     public void SetStartPole()
     {
+        // If it's the first wall in the world
         if (poleList.Count == 0)
         {
             GameObject auxPole = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
@@ -116,11 +152,10 @@ public class WallManager : MonoBehaviour
             endPole = auxPole2.GetComponent<Pole>();
 
             startPole.transform.position = _hitPos + hit.normal * startPole.boxCollider.bounds.extents.y;
+            planeHit.transform.position = _hitPos + hit.normal * startPole.boxCollider.bounds.extents.y;
 
             startPole.adjacentPoles.Add(endPole);
             endPole.adjacentPoles.Add(startPole);
-
-            //finish = true;
 
             // Instantiate the wall in the world
             //GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
@@ -133,17 +168,19 @@ public class WallManager : MonoBehaviour
         else if (hit.collider.tag == "Pole")
         {
             wallHit = hit;
-            //Debug.Log(wallHit.normal);
 
             startPole = wallHit.collider.gameObject.GetComponent<Pole>();
-            GameObject auxPole2 = Instantiate(originPole, originPole.transform.position, originPole.transform.rotation);
+            GameObject auxPole2 = Instantiate(originPole, startPole.transform.position, Quaternion.identity);
             endPole = auxPole2.GetComponent<Pole>();
 
             startPole.adjacentPoles.Add(endPole);
             endPole.adjacentPoles.Add(startPole);
 
-            //startPole.transform.position = hit.collider.bounds.center;
-            //startPole.transform.rotation = hit.collider.gameObject.transform.rotation;
+            planeHit.transform.position = wallHit.transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(wallHit.normal, Vector3.up);
+            planeHit.transform.rotation = targetRotation;
+
+            endPole.transform.position += Vector3.Scale(planeHit.transform.forward, startPole.transform.localScale);
 
             // Instantiate the wall in the world
             GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
@@ -151,19 +188,9 @@ public class WallManager : MonoBehaviour
             wall.startPole = startPole;
             wall.endPole = endPole;
 
-            wall.SetActiveAxis(ApproximateNormal(wallHit.normal));
-
             if (poleList.Count >= 3)
             {
-                //List<Pole> currentPoleList = endPole.FilterAvailablePoles(ApproximateNormal(wallHit.normal), startPole);
-
-                // Set preview poles
-                //foreach (Pole pole in currentPoleList)
-                //{
-                //    SetPreviewPole(startPole, pole, hitPoles);
-                //}
-
-                endPole.FilterAvailablePoles(ApproximateNormal(wallHit.normal), startPole);
+                endPole.FilterAvailablePoles(planeHit, startPole);
             }
 
             finish = true;
@@ -225,43 +252,20 @@ public class WallManager : MonoBehaviour
         wallList.Add(wall);
     }
 
-    public void SetPreviewPole(Pole startPole, Pole pole, RaycastHit[] hitPoles)
+    public void SetPreviewPole(Vector3 localStartPolePosition, Vector3 localPolePosition, RaycastHit[] hitPoles, GameObject plane)
     {
-        //Debug.Log(wallHit.normal);
-
         bool isPosAvailable;
 
-        Vector3 normal = ApproximateNormal(wallHit.normal);
-        //// Threshold to approximate the direction with the small errors caused by the rotation
-        //float threshold = 0.01f;
+        Vector3 localPreviewPos = new Vector3(localStartPolePosition.x, localPolePosition.y, localPolePosition.z);
+        Vector3 previewPos = plane.transform.TransformPoint(localPreviewPos);
 
-        //if (Mathf.Abs(wallHit.normal.x - 1f) < threshold || Mathf.Abs(wallHit.normal.x + 1f) < threshold)
-        if (normal.x == 1f || normal.x == -1f)
+        isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
+        if (isPosAvailable == true)
         {
-            //Debug.Log("Dir X");
-            var previewPos = new Vector3(pole.transform.position.x, pole.transform.position.y, startPole.transform.position.z);
-
-            isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
-            if (isPosAvailable == true)
-            {
-                GameObject auxPole = Instantiate(previewPole, previewPos, Quaternion.identity);
-                previewPoleList.Add(auxPole);
-            }
+            GameObject auxPole = Instantiate(previewPole, previewPos, Quaternion.identity);
+            previewPoleList.Add(auxPole);
         }
-        else
-        {
-            //Debug.Log(wallHit.normal.x);
-            //Debug.Log("Dir Z");
-            //Debug.Log(endPole.transform.position.x);
-            var previewPos = new Vector3(startPole.transform.position.x, pole.transform.position.y, pole.transform.position.z);
 
-            isPosAvailable = CheckHitPolesPositions(hitPoles, previewPos);
-            if (isPosAvailable == true)
-            {
-                GameObject auxPole = Instantiate(previewPole, previewPos, Quaternion.identity);
-                previewPoleList.Add(auxPole);
-            }
-        }
     }
 
     /// <summary>
@@ -271,7 +275,7 @@ public class WallManager : MonoBehaviour
     {
         foreach (RaycastHit hitPole in hitPoles)
         {
-            if (hitPole.transform.position == position)
+            if (ApproximateVector(hitPole.transform.position) == ApproximateVector(position))
                 return false;
         }
 
@@ -337,24 +341,24 @@ public class WallManager : MonoBehaviour
             // If any of the two poles connected to the selected wall have more than one adjacent pole, it is not destroyed
             if (buildingWall.startPole.adjacentPoles.Count < 2)
             {
-                // If it has only one, its reference is saved in a local variable (to destroy it later) so the next pole doesn't get a null in its list
+                // If it has only one, its reference is saved in a local variable (to destroy it later) so the next pole doesn't get a null/missing in its list
                 auxStartPole = buildingWall.startPole.gameObject;
 
                 poleList.Remove(buildingWall.startPole);
 
                 foreach (Pole pole in buildingWall.startPole.adjacentPoles)
                 {
-                    pole.adjacentPoles.Remove(buildingWall.startPole);
+                    if (pole != buildingWall.endPole) pole.adjacentPoles.Remove(buildingWall.startPole);
                 }
 
                 if (startPole == buildingWall.startPole)
                     startPole = null;
             }
-            else
-            {
-                // Remove each other from the others adjacent list
-                buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
-            }
+            //else
+            //{
+            //    // Remove each other from the others adjacent list
+            //    buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
+            //}
 
             if (buildingWall.endPole.adjacentPoles.Count < 2)
             {
@@ -373,6 +377,7 @@ public class WallManager : MonoBehaviour
             else
             {
                 // Remove each other from the others adjacent list
+                buildingWall.endPole.adjacentPoles.Remove(buildingWall.startPole);
                 buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
             }
 
@@ -390,10 +395,8 @@ public class WallManager : MonoBehaviour
                 Destroy(auxEndPole);
             }
 
-            wallList.Remove(wall);
-
             // Destroy the wall
-            if (poleList.Count > 2)
+            if (wallList.Count > 1)
                 Destroy(buildingWall.gameObject);
             else
             {
@@ -406,6 +409,9 @@ public class WallManager : MonoBehaviour
 
                 wall = buildingWall;
             }
+            wallList.Remove(buildingWall);
+
+            planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
         }
     }
 
@@ -415,7 +421,7 @@ public class WallManager : MonoBehaviour
     public void SetCeiling()
     {
         ceiling.SetActive(true);
-        ceiling.transform.position = new Vector3(0, 0, wall.boxCollider.bounds.extents.y + 0.05f);
+        ceiling.transform.position = new Vector3(0, wall.transform.localScale.y + 1.0f, 0f);
     }
 
     public void DeleteAllPoles()
@@ -438,50 +444,13 @@ public class WallManager : MonoBehaviour
         }
     }
 
-    //private float GetAxis(Vector3 normal, Vector3 vector)
-    //{
-    //    // Encontrar el eje dominante de la normal
-    //    float maxAxis = Mathf.Max(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
-
-    //    if (Mathf.Abs(normal.x) == maxAxis)
-    //    {
-    //        return vector.x;
-    //    }
-    //    else if (Mathf.Abs(normal.y) == maxAxis)
-    //    {
-    //        return vector.y;
-    //    }
-    //    else if (Mathf.Abs(normal.z) == maxAxis)
-    //    {
-    //        return vector.z;
-    //    }
-    //    //Debug.Log("ninguna");
-    //    return 0;
-    //}
-
-    /// <summary>
-    /// Approximate the direction
-    /// </summary>
-    private Vector3 ApproximateNormal(Vector3 normal)
+    public Vector3 ApproximateVector(Vector3 vector)
     {
-        // Threshold to approximate the direction with the small errors (caused by the rotation, for example)
-        float threshold = 0.01f;
+        return new Vector3(Approximate(vector.x), Approximate(vector.y), Approximate(vector.z));
+    }
 
-        if (Mathf.Abs(normal.x - 1f) < threshold)
-            return new Vector3(1f, 0f, 0f);
-        else if (Mathf.Abs(normal.x + 1f) < threshold)
-            return new Vector3(-1f, 0f, 0f);
-        else if (Mathf.Abs(normal.y - 1f) < threshold)
-            return new Vector3(0f, 1f, 0f);
-        else if (Mathf.Abs(normal.y + 1f) < threshold)
-            return new Vector3(0f, -1f, 0f);
-        else if (Mathf.Abs(normal.z - 1f) < threshold)
-            return new Vector3(0f, 0f, 1f);
-        else if (Mathf.Abs(normal.z + 1f) < threshold)
-            return new Vector3(0f, 0f, -1f);
-
-        Debug.Log("Direccion aproximada: " + new Vector3(0f, 0f, 0f));
-        return new Vector3(0f, 0f, 0f);
-
+    public float Approximate(float value)
+    {
+        return Mathf.Round(value * Mathf.Pow(10, 4)) / Mathf.Pow(10, 4);
     }
 }

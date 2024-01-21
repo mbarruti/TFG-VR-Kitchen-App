@@ -93,96 +93,96 @@ public class BuildingManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    //void Update()
-    //{
-    //    //parentObject.transform.position = new Vector3(10f, 0f, 0f);
-    //    //if (Physics.Raycast(new Vector3(0, 1.78f, 0), Vector3.forward, out var auxHit))
-    //    //{
-    //    //    Debug.Log(auxHit.collider.gameObject.name);
-    //    //    //    DrawBoundingBox(auxHit.collider.gameObject.GetComponent<MeshRenderer>().bounds);
-    //    //    //    //DrawBoundingBox(auxHit.collider.bounds);
-    //    //    //    //cubos[0].transform.position = new Vector3(auxHit.collider.transform.position.x + auxHit.collider.bounds.extents.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z);
-    //    //    //    //cubos[1].transform.position = new Vector3(auxHit.collider.transform.position.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z + auxHit.collider.bounds.extents.z);
-    //    //    //}
-    //    //    //if (selectedBuildingObject != null)
-    //    //    //if (ray.TryGetCurrent3DRaycastHit(out hit))
-    //    //    //{
-    //    //    //    //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
-    //    //    //    _hitPos = hit.point;
-    //    //}
-
-    //        if (playerManager.state == PlayerState.isBuilding)
-    //    {
-    //        DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
-    //        if (worldMenuManager.buildingState == BuildingState.withOffset)
-    //        {
-    //            parentObject.transform.position = _hitPos;
-    //            //parentObject.transform.position = SetFirstObjectPosition();
-    //            parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(), 0f);
-
-    //            //if (selectedBuildingObject.canPlace == true)
-    //            //{
-    //            if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-    //            //}
-
-    //            //if (parentObject.canPlace == true)
-    //            //{
-    //            //    if (selectedBuildingObject.canPlace == true)
-    //            //    {
-    //            //        selectedBuildingObject.transform.position = parentObject.transform.position;
-    //            //    }
-    //            //    //Debug.Log("entra");
-    //            //    parentObject.transform.position = _hitPos;
-    //            //    parentObject.transform.position = SetFirstObjectPosition();
-    //            //    parentObject.transform.position = UpdateOffset(hit.point);
-    //            //}
-    //            //else
-    //            //{
-    //            //    //Debug.Log("entra");
-    //            //    if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
-    //            //    parentObject.transform.position = UpdateOffset(hit.point);
-    //            //}
-
-    //            //UpdateOffset(hit.point);
-    //            //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
-    //            //if (newPosition == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
-    //            //else selectedBuildingObject.transform.position = newPosition;
-    //            //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-
-    //            //UpdateOffset();
-    //            //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
-    //        }
-
-    //        // Actualizar materiales de colision
-    //        //UpdateMaterials();
-    //    }
-    //}
-
-    // Try with mouse
-    private void Update()
+    void Update()
     {
+        //parentObject.transform.position = new Vector3(10f, 0f, 0f);
+        //if (Physics.Raycast(new Vector3(0, 1.78f, 0), Vector3.forward, out var auxHit))
+        //{
+        //    Debug.Log(auxHit.collider.gameObject.name);
+        //    //    DrawBoundingBox(auxHit.collider.gameObject.GetComponent<MeshRenderer>().bounds);
+        //    //    //DrawBoundingBox(auxHit.collider.bounds);
+        //    //    //cubos[0].transform.position = new Vector3(auxHit.collider.transform.position.x + auxHit.collider.bounds.extents.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z);
+        //    //    //cubos[1].transform.position = new Vector3(auxHit.collider.transform.position.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z + auxHit.collider.bounds.extents.z);
+        //    //}
+        //    //if (selectedBuildingObject != null)
+        //    //if (ray.TryGetCurrent3DRaycastHit(out hit))
+        //    //{
+        //    //    //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
+        //    //    _hitPos = hit.point;
+        //}
+
         if (playerManager.state == PlayerState.isBuilding)
         {
             DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
             if (worldMenuManager.buildingState == BuildingState.withOffset)
             {
-                if (Input.GetMouseButton(0))
-                {
-                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    RaycastHit mouseHit;
+                parentObject.transform.position = _hitPos;
+                //parentObject.transform.position = SetFirstObjectPosition();
+                parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(hit), 0f);
 
-                    if (Physics.Raycast(ray, out mouseHit))
-                    {
-                        parentObject.transform.position = mouseHit.point;
-                        //parentObject.transform.position = SetFirstObjectPosition(mouseHit);
-                        parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(mouseHit), 0f);
+                //if (selectedBuildingObject.canPlace == true)
+                //{
+                if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+                //}
 
-                        if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-                    }
-                }
+                //if (parentObject.canPlace == true)
+                //{
+                //    if (selectedBuildingObject.canPlace == true)
+                //    {
+                //        selectedBuildingObject.transform.position = parentObject.transform.position;
+                //    }
+                //    //Debug.Log("entra");
+                //    parentObject.transform.position = _hitPos;
+                //    parentObject.transform.position = SetFirstObjectPosition();
+                //    parentObject.transform.position = UpdateOffset(hit.point);
+                //}
+                //else
+                //{
+                //    //Debug.Log("entra");
+                //    if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
+                //    parentObject.transform.position = UpdateOffset(hit.point);
+                //}
+
+                //UpdateOffset(hit.point);
+                //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+                //if (newPosition == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
+                //else selectedBuildingObject.transform.position = newPosition;
+                //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+
+                //UpdateOffset();
+                //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
             }
+
+            // Actualizar materiales de colision
+            //UpdateMaterials();
         }
     }
+
+    // Try with mouse
+    //private void Update()
+    //{
+    //    if (playerManager.state == PlayerState.isBuilding)
+    //    {
+    //        DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
+    //        if (worldMenuManager.buildingState == BuildingState.withOffset)
+    //        {
+    //            if (Input.GetMouseButton(0))
+    //            {
+    //                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+    //                RaycastHit mouseHit;
+
+    //                if (Physics.Raycast(ray, out mouseHit))
+    //                {
+    //                    parentObject.transform.position = mouseHit.point;
+    //                    //parentObject.transform.position = SetFirstObjectPosition(mouseHit);
+    //                    parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(mouseHit), 0f);
+
+    //                    if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     private void FixedUpdate()
     {
