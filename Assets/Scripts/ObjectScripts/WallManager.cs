@@ -346,17 +346,17 @@ public class WallManager : MonoBehaviour
 
                 foreach (Pole pole in buildingWall.startPole.adjacentPoles)
                 {
-                    pole.adjacentPoles.Remove(buildingWall.startPole);
+                    if (pole != buildingWall.endPole) pole.adjacentPoles.Remove(buildingWall.startPole);
                 }
 
                 if (startPole == buildingWall.startPole)
                     startPole = null;
             }
-            else
-            {
-                // Remove each other from the others adjacent list
-                buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
-            }
+            //else
+            //{
+            //    // Remove each other from the others adjacent list
+            //    buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
+            //}
 
             if (buildingWall.endPole.adjacentPoles.Count < 2)
             {
@@ -376,6 +376,7 @@ public class WallManager : MonoBehaviour
             {
                 // Remove each other from the others adjacent list
                 buildingWall.endPole.adjacentPoles.Remove(buildingWall.startPole);
+                buildingWall.startPole.adjacentPoles.Remove(buildingWall.endPole);
             }
 
             //// Remove each other from the others adjacent list
@@ -392,10 +393,8 @@ public class WallManager : MonoBehaviour
                 Destroy(auxEndPole);
             }
 
-            wallList.Remove(buildingWall);
-
             // Destroy the wall
-            if (poleList.Count > 2)
+            if (wallList.Count > 1)
                 Destroy(buildingWall.gameObject);
             else
             {
@@ -408,6 +407,9 @@ public class WallManager : MonoBehaviour
 
                 wall = buildingWall;
             }
+            wallList.Remove(buildingWall);
+
+            planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
         }
     }
 
