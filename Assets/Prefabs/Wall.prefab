@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boxCollider: {fileID: 3429215769117897165}
+  renderer: {fileID: 3429215769117897164}
   startPole: {fileID: 0}
   endPole: {fileID: 0}
   axisX: 1

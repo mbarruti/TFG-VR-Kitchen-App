@@ -6,6 +6,8 @@ public class BuildingWall : MonoBehaviour
 {
     public BoxCollider boxCollider;
 
+    public Renderer renderer;
+
     public Pole startPole;
     public Pole endPole;
 

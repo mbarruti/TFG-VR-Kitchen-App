@@ -16,7 +16,7 @@ public class WallManager : MonoBehaviour
 
     [SerializeField] PlayerManager playerManager;
 
-    [SerializeField] List<BuildingWall> wallList;
+    //[SerializeField] List<BuildingWall> wallList;
 
     //[SerializeField] List<GameObject> poleList;
 
@@ -31,6 +31,8 @@ public class WallManager : MonoBehaviour
     private GameObject faceHit;
 
     // -------------------------------------------------
+
+    public List<BuildingWall> wallList;
 
     public RaycastHit hit;
 
