@@ -6,7 +6,7 @@ public class BuildingWall : MonoBehaviour
 {
     public BoxCollider boxCollider;
 
-    public Renderer renderer;
+    public Renderer wallRenderer;
 
     public Pole startPole;
     public Pole endPole;
@@ -29,7 +29,7 @@ public class BuildingWall : MonoBehaviour
         float distance = Vector3.Distance(startPole.transform.position, endPole.transform.position);
         transform.position = startPole.transform.position + distance / 2 * startPole.transform.forward;
         transform.rotation = startPole.transform.rotation;
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distance - 0.1f);
+        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distance/* - 0.1f*/);
     }
 
     public void SetEndPolePosition(Vector3 sum, GameObject plane)

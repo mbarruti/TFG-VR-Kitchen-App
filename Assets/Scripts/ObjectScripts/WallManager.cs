@@ -418,12 +418,42 @@ public class WallManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the height of the ceiling when before finishing building walls
+    /// Sets the height of the ceiling before finishing building all the walls
     /// 
     public void SetCeiling()
     {
+        Vector3 bottomLeftFront = wallList[0].transform.position;
+        Vector3 topRightBack = wallList[0].transform.position;
+
+        foreach (BuildingWall currentWall in wallList)
+        {
+            Vector3 wallPosition = currentWall.transform.position;
+
+            // Calculate the first two corners
+            bottomLeftFront = Vector3.Min(bottomLeftFront, wallPosition);
+            topRightBack = Vector3.Max(topRightBack, wallPosition);
+        }
+
+        // Calculate the other two corners
+        Vector3 bottomRightFront = new Vector3(topRightBack.x, bottomLeftFront.y, bottomLeftFront.z);
+        Vector3 topLeftBack = new Vector3(bottomLeftFront.x, topRightBack.y, topRightBack.z);
+
+        // Calculate the center point of the four corners
+        //Vector3 centerPoint = Vector3.zero;
+        Vector3 centerPoint = (bottomLeftFront + topRightBack + bottomRightFront + topLeftBack) / 4f;
+
+        Vector3 ceilingSize = new Vector3(
+            Mathf.Abs(topRightBack.x - bottomLeftFront.x),
+            Mathf.Abs(topRightBack.y - bottomLeftFront.y),
+            Mathf.Abs(topRightBack.z - bottomLeftFront.z)
+        );
+
         ceiling.SetActive(true);
-        ceiling.transform.position = new Vector3(0, wall.transform.localScale.y + 1.0f, 0f);
+
+        // Set the ceiling position with the height of the walls and the center point X and Z coordinates
+        ceiling.transform.position = new Vector3(centerPoint.x, wall.transform.localScale.y + 0.1f, centerPoint.z);
+
+        ceiling.transform.localScale = new Vector3(ceilingSize.x, ceiling.transform.localScale.y, ceilingSize.z);
     }
 
     public void DeleteAllPoles()
@@ -442,7 +472,7 @@ public class WallManager : MonoBehaviour
             buildingWall.startPole = null;
             buildingWall.endPole = null;
 
-            buildingWall.transform.localScale = new Vector3(buildingWall.transform.localScale.x, buildingWall.transform.localScale.y, distance + 0.1f);
+            buildingWall.transform.localScale = new Vector3(buildingWall.transform.localScale.x, buildingWall.transform.localScale.y, distance/* + 0.1f*/);
         }
     }
 

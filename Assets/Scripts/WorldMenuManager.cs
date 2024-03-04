@@ -103,9 +103,9 @@ public class WorldMenuManager : MonoBehaviour
 
         foreach (BuildingWall wall in wallList)
         {
-            wall.renderer.material = wallMaterial;
+            wall.wallRenderer.material = wallMaterial;
 
-            wall.renderer.material.mainTextureScale = new Vector2(wall.transform.localScale.z / 2f, wall.transform.localScale.y / 2f);
+            wall.wallRenderer.material.mainTextureScale = new Vector2(wall.transform.localScale.z / 2f, wall.transform.localScale.y / 2f);
         }
     }
 }
