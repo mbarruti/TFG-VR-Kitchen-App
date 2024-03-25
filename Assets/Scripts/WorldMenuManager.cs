@@ -22,6 +22,12 @@ public class WorldMenuManager : MonoBehaviour
     // Lista de todos los modelos que se pueden utilizar
     public List<GameObject> modelsList = new List<GameObject>();
 
+    // List of all walls
+    public List<BuildingWall> wallList = new List<BuildingWall>();
+
+    // List of all wall materials
+    public List<Material> wallMaterials = new List<Material>();
+
     public BuildingManager buildingManager;
 
     // Start is called before the first frame update
@@ -78,6 +84,7 @@ public class WorldMenuManager : MonoBehaviour
         isOpened = false;
     }
 
+    // Finish the process of building every wall in the scene
     public void FinishBuildingWalls()
     {
         _wallManager.SetCeiling();
@@ -86,6 +93,20 @@ public class WorldMenuManager : MonoBehaviour
 
         buildingManager.gameObject.SetActive(true);
 
+        wallList = _wallManager.wallList;
+
         _playerManager.state = PlayerState.isFree;
+    }
+
+    public void SelectWallMaterial(int index)
+    {
+        Material wallMaterial = wallMaterials[index];
+
+        foreach (BuildingWall wall in wallList)
+        {
+            wall.wallRenderer.material = wallMaterial;
+
+            wall.wallRenderer.material.mainTextureScale = new Vector2(wall.transform.localScale.z / 2f, wall.transform.localScale.y / 2f);
+        }
     }
 }
