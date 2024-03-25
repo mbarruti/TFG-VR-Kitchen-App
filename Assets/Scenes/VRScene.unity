@@ -923,6 +923,37 @@ MonoBehaviour:
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
   m_CancelButton: Cancel
+--- !u!1 &261219209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 261219210}
+  m_Layer: 0
+  m_Name: PoleParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &261219210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261219209}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -20, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 32
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &278466151
 GameObject:
   m_ObjectHideFlags: 0
@@ -5187,11 +5218,15 @@ MonoBehaviour:
   _yAction: {fileID: -4812716223392962645, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _xAction: {fileID: -7402621703403294580, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _startAction: {fileID: -225514386239928840, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  _leftGripAction: {fileID: -9217038794599622816, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _rightTriggerAction: {fileID: -7311183585213682401, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _bAction: {fileID: -17521217019696666, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _aAction: {fileID: 3839885547706215300, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   _rightTouchpadAction: {fileID: 9128630439557688778, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  _rightGripAction: {fileID: 1446046145677870698, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   state: 3
+  rightGripPressed: 0
+  leftGripPressed: 0
 --- !u!1 &839937542
 GameObject:
   m_ObjectHideFlags: 0
@@ -11428,6 +11463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ceiling: {fileID: 1201833058}
   playerManager: {fileID: 830296140}
+  poleParent: {fileID: 261219209}
   originPole: {fileID: 710120084}
   startPole: {fileID: 0}
   endPole: {fileID: 0}

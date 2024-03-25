@@ -16,12 +16,14 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] InputActionReference _yAction;
     [SerializeField] InputActionReference _xAction;
     [SerializeField] InputActionReference _startAction;
+    [SerializeField] InputActionReference _leftGripAction;
 
     // Referencias a botones del mando derecho
     [SerializeField] InputActionReference _rightTriggerAction;
     [SerializeField] InputActionReference _bAction;
     [SerializeField] InputActionReference _aAction;
     [SerializeField] InputActionReference _rightTouchpadAction;
+    [SerializeField] InputActionReference _rightGripAction;
 
     //private PlayerState previousState;
 
@@ -33,17 +35,22 @@ public class PlayerManager : MonoBehaviour
 
     public PlayerState state;
 
+    public bool rightGripPressed;
+    public bool leftGripPressed;
+
     void Awake()
     {
         _startAction.action.performed += OnStartAction;
         _leftTriggerAction.action.performed += OnLeftTriggerAction;
         _xAction.action.performed += OnXAction;
         _yAction.action.performed += OnYAction;
+        _leftGripAction.action.performed += OnLeftGripAction;
 
         _rightTriggerAction.action.performed += OnRightTriggerAction;
         _bAction.action.performed += OnBAction;
         _aAction.action.performed += OnAAction;
         _rightTouchpadAction.action.performed += OnRightTouchpadAction;
+        _rightGripAction.action.performed += OnRightGripAction;
     }
 
     private void Update()
@@ -57,11 +64,13 @@ public class PlayerManager : MonoBehaviour
         _leftTriggerAction.action.performed -= OnLeftTriggerAction;
         _xAction.action.performed += OnXAction;
         _yAction.action.performed -= OnYAction;
+        _leftGripAction.action.performed -= OnLeftGripAction;
 
         _rightTriggerAction.action.performed -= OnRightTriggerAction;
         _bAction.action.performed -= OnBAction;
         _aAction.action.performed -= OnAAction;
         _rightTouchpadAction.action.performed -= OnRightTouchpadAction;
+        _rightGripAction.action.performed -= OnRightGripAction;
     }
 
     // Actualiza el estado del jugador, dependiendo de la situacion
@@ -247,10 +256,17 @@ public class PlayerManager : MonoBehaviour
             //    _buildingManager.parentObject.ScaleCollider(context.action.ReadValue<Vector2>().y);
             //}
         }
-        //else
-        //{
-        //    Debug.Log("No hay objeto seleccionado para escalar");
-        //}
+        else if (state == PlayerState.isBuildingWalls)
+        {
+            if (_wallManager.wallList.Count == 0)
+            {
+                _wallManager.wall.SetHeight(context.action.ReadValue<Vector2>().y);
+                _wallManager.wall.startPole.transform.position = new Vector3(_wallManager.wall.startPole.transform.position.x, _wallManager.hit.point.y + _wallManager.wall.startPole.boxCollider.bounds.extents.y, _wallManager.wall.startPole.transform.position.z);
+                _wallManager.wall.endPole.transform.position = new Vector3(_wallManager.wall.endPole.transform.position.x, _wallManager.hit.point.y + _wallManager.wall.endPole.boxCollider.bounds.extents.y, _wallManager.wall.endPole.transform.position.z);
+
+                _wallManager.wall.transform.position = new Vector3(_wallManager.wall.transform.position.x, _wallManager.wall.transform.position.y + _wallManager.wall.endPole.boxCollider.bounds.extents.y, _wallManager.wall.transform.position.z);
+            }
+        }
     }
 
     void OnAAction(InputAction.CallbackContext context)
@@ -261,6 +277,33 @@ public class PlayerManager : MonoBehaviour
             {
                 _buildingManager.InstantiateModel(_worldMenuManager.selectedModel);
             }
+        }
+    }
+
+    void OnRightGripAction(InputAction.CallbackContext context)
+    {
+        if (context.action.IsPressed() && leftGripPressed == false)
+        {
+            /*rightGripPressed = (rightGripPressed == true) ? false : true;*/
+            rightGripPressed = true;
+        }
+        else
+        {
+            rightGripPressed = false;
+        }
+        
+    }
+
+    void OnLeftGripAction(InputAction.CallbackContext context)
+    {
+        if (context.action.IsPressed() && rightGripPressed == false)
+        {
+            /*leftGripPressed = (leftGripPressed == true) ? false : true;*/
+            leftGripPressed = true;
+        }
+        else
+        {
+            leftGripPressed = false;
         }
     }
 }

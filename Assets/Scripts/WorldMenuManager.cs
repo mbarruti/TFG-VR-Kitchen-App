@@ -84,6 +84,7 @@ public class WorldMenuManager : MonoBehaviour
         isOpened = false;
     }
 
+    // Finish the process of building every wall in the scene
     public void FinishBuildingWalls()
     {
         _wallManager.SetCeiling();
