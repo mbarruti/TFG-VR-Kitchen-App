@@ -22,7 +22,6 @@ public class WallManager : MonoBehaviour
 
     //[SerializeField] List<GameObject> poleList;
 
-    [SerializeField] GameObject originPole;
     [SerializeField] Pole startPole;
     [SerializeField] Pole endPole;
     [SerializeField] GameObject previewPole;
@@ -47,6 +46,8 @@ public class WallManager : MonoBehaviour
     public bool freePlacement;
 
     public List<Pole> poleList;
+
+    public GameObject originPole;
 
     public GameObject planeHit;
 
@@ -187,7 +188,7 @@ public class WallManager : MonoBehaviour
             wallHit = hit;
 
             startPole = wallHit.collider.gameObject.GetComponent<Pole>();
-            GameObject auxPole2 = Instantiate(startPole.gameObject, startPole.transform.position, Quaternion.identity);
+            GameObject auxPole2 = Instantiate(originPole, startPole.transform.position, Quaternion.identity);
             endPole = auxPole2.GetComponent<Pole>();
 
             startPole.adjacentPoles.Add(endPole);
