@@ -265,6 +265,7 @@ public class PlayerManager : MonoBehaviour
                 // Set the same height for the originPole in the world so every new pole gets the same height (even if it's the first one again)
                 _wallManager.originPole.transform.localScale = _wallManager.wall.startPole.transform.localScale;
 
+                // Replace the active poles and wall so they stick to the floor
                 _wallManager.wall.startPole.transform.position = new Vector3(_wallManager.wall.startPole.transform.position.x, _wallManager.hit.point.y + _wallManager.wall.startPole.boxCollider.bounds.extents.y, _wallManager.wall.startPole.transform.position.z);
                 _wallManager.wall.endPole.transform.position = new Vector3(_wallManager.wall.endPole.transform.position.x, _wallManager.hit.point.y + _wallManager.wall.endPole.boxCollider.bounds.extents.y, _wallManager.wall.endPole.transform.position.z);
 
