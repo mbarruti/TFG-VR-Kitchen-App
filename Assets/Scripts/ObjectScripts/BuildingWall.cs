@@ -6,6 +6,8 @@ public class BuildingWall : MonoBehaviour
 {
     public BoxCollider boxCollider;
 
+    public Renderer wallRenderer;
+
     public Pole startPole;
     public Pole endPole;
 
@@ -27,7 +29,25 @@ public class BuildingWall : MonoBehaviour
         float distance = Vector3.Distance(startPole.transform.position, endPole.transform.position);
         transform.position = startPole.transform.position + distance / 2 * startPole.transform.forward;
         transform.rotation = startPole.transform.rotation;
-        transform.localScale = new Vector3(transform.localScale.x, transform.localScale.y, distance - 0.1f);
+        transform.localScale = new Vector3(transform.localScale.x, startPole.transform.localScale.y, distance/* - 0.1f*/);
+    }
+
+    public void SetHeight(float padValue)
+    {
+        // Limit the minimum height of the wall to 2.5 meters and maximum to 6 meters
+        float heightOffset = Mathf.Clamp(startPole.transform.localScale.y + (padValue * 0.05f), 2.5f, 6f);
+        Debug.Log(heightOffset);
+
+        startPole.transform.localScale = new Vector3(startPole.transform.localScale.x, heightOffset, startPole.transform.localScale.z);
+        endPole.transform.localScale = new Vector3(endPole.transform.localScale.x, heightOffset, endPole.transform.localScale.z);
+
+        transform.localScale = new Vector3(transform.localScale.x, startPole.transform.localScale.y, transform.localScale.z);
+    }
+
+    public void SetRotation(float rotationValue)
+    {
+        //startPole.transform.parent.eulerAngles = new Vector3(startPole.transform.parent.eulerAngles.x, startPole.transform.parent.eulerAngles.y + rotationValue, startPole.transform.parent.eulerAngles.z);
+        startPole.transform.eulerAngles = new Vector3(startPole.transform.eulerAngles.x, startPole.transform.eulerAngles.y + rotationValue, startPole.transform.eulerAngles.z);
     }
 
     public void SetEndPolePosition(Vector3 sum, GameObject plane)

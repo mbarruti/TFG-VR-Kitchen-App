@@ -12,15 +12,18 @@ public class WallManager : MonoBehaviour
     // Raycast from right controller
     XRRayInteractor rightRay;
 
+    [SerializeField] GameObject auxiliarLight;
+
     [SerializeField] GameObject ceiling;
 
     [SerializeField] PlayerManager playerManager;
 
-    [SerializeField] List<BuildingWall> wallList;
+    [SerializeField] GameObject poleParent;
+
+    //[SerializeField] List<BuildingWall> wallList;
 
     //[SerializeField] List<GameObject> poleList;
 
-    [SerializeField] GameObject originPole;
     [SerializeField] Pole startPole;
     [SerializeField] Pole endPole;
     [SerializeField] GameObject previewPole;
@@ -31,6 +34,8 @@ public class WallManager : MonoBehaviour
     private GameObject faceHit;
 
     // -------------------------------------------------
+
+    public List<BuildingWall> wallList;
 
     public RaycastHit hit;
 
@@ -43,6 +48,8 @@ public class WallManager : MonoBehaviour
     public bool freePlacement;
 
     public List<Pole> poleList;
+
+    public GameObject originPole;
 
     public GameObject planeHit;
 
@@ -72,12 +79,17 @@ public class WallManager : MonoBehaviour
                     hitPole = null;
                 }
 
+                //if (playerManager.gripPressed == true)
+                //{
+                //    wall.SetRotation(1f);
+                //}
+
                 //// Set the Z axis pointing at each other so the wall can be adjusted in that axis
                 //startPole.transform.LookAt(endPole.transform.position);
                 //endPole.transform.LookAt(startPole.transform.position);
                 //var sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
 
-                if (freePlacement == false)
+                if (/*freePlacement == false*/ playerManager.rightGripPressed == false && playerManager.leftGripPressed == false)
                 {
                     // If the hit is the floor
                     if (hit.collider.name == "Floor")
@@ -85,7 +97,6 @@ public class WallManager : MonoBehaviour
                         Vector3 sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
 
                         wall.SetEndPolePosition(sum, planeHit);
-
                     }
                     // If the hit is an available pole
                     else if ((endPole.availablePoles.Count > 0 && endPole.availablePoles.Contains(hit.collider.gameObject)) || (previewPoleList.Count > 0 && previewPoleList.Contains(hit.collider.gameObject)))
@@ -95,7 +106,16 @@ public class WallManager : MonoBehaviour
                 }
                 else
                 {
-                    endPole.transform.position = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
+                    //endPole.transform.position = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
+                    if (playerManager.rightGripPressed == true) wall.SetRotation(1f);
+                    else wall.SetRotation(-1f);
+
+                    // Set the same rotation for the object acting as the plane
+                    planeHit.transform.eulerAngles = startPole.transform.eulerAngles;
+
+                    Vector3 sum = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
+
+                    wall.SetEndPolePosition(sum, planeHit);
                 }
 
                 // Set the Z axis pointing at each other so the wall can be adjusted in that axis
@@ -195,6 +215,11 @@ public class WallManager : MonoBehaviour
 
             finish = true;
         }
+
+        //poleParent.transform.position = startPole.transform.position;
+
+        //startPole.transform.SetParent(poleParent.transform, true);
+        //endPole.transform.SetParent(poleParent.transform, true);
     }
 
     public void SetEndPole()
@@ -248,6 +273,9 @@ public class WallManager : MonoBehaviour
             // Clear every element in the list
             endPole.availablePoles.Clear();
         }
+
+        //startPole.transform.SetParent(null, true);
+        //endPole.transform.SetParent(null, true);
 
         wallList.Add(wall);
     }
@@ -325,6 +353,8 @@ public class WallManager : MonoBehaviour
             }
             // Clear every element in the preview list
             previewPoleList.Clear();
+
+            planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
         }
     }
 
@@ -408,20 +438,53 @@ public class WallManager : MonoBehaviour
                 buildingWall.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
                 wall = buildingWall;
+
+                planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
             }
             wallList.Remove(buildingWall);
 
-            planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
+            //planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
         }
     }
 
     /// <summary>
-    /// Sets the height of the ceiling when before finishing building walls
+    /// Sets the height of the ceiling before finishing building all the walls
     /// 
     public void SetCeiling()
     {
+        Vector3 bottomLeftFront = wallList[0].transform.position;
+        Vector3 topRightBack = wallList[0].transform.position;
+
+        foreach (BuildingWall currentWall in wallList)
+        {
+            Vector3 wallPosition = currentWall.transform.position;
+
+            // Calculate the first two corners
+            bottomLeftFront = Vector3.Min(bottomLeftFront, wallPosition);
+            topRightBack = Vector3.Max(topRightBack, wallPosition);
+        }
+
+        // Calculate the other two corners
+        Vector3 bottomRightFront = new Vector3(topRightBack.x, bottomLeftFront.y, bottomLeftFront.z);
+        Vector3 topLeftBack = new Vector3(bottomLeftFront.x, topRightBack.y, topRightBack.z);
+
+        // Calculate the center point of the four corners
+        //Vector3 centerPoint = Vector3.zero;
+        Vector3 centerPoint = (bottomLeftFront + topRightBack + bottomRightFront + topLeftBack) / 4f;
+
+        Vector3 ceilingSize = new Vector3(
+            Mathf.Abs(topRightBack.x - bottomLeftFront.x),
+            Mathf.Abs(topRightBack.y - bottomLeftFront.y),
+            Mathf.Abs(topRightBack.z - bottomLeftFront.z)
+        );
+
         ceiling.SetActive(true);
-        ceiling.transform.position = new Vector3(0, wall.transform.localScale.y + 1.0f, 0f);
+        auxiliarLight.SetActive(false);
+
+        // Set the ceiling position with the height of the walls and the center point X and Z coordinates
+        ceiling.transform.position = new Vector3(centerPoint.x, wall.transform.localScale.y + 0.1f, centerPoint.z);
+
+        ceiling.transform.localScale = new Vector3(ceilingSize.x, ceiling.transform.localScale.y, ceilingSize.z);
     }
 
     public void DeleteAllPoles()
@@ -440,7 +503,7 @@ public class WallManager : MonoBehaviour
             buildingWall.startPole = null;
             buildingWall.endPole = null;
 
-            buildingWall.transform.localScale = new Vector3(buildingWall.transform.localScale.x, buildingWall.transform.localScale.y, distance + 0.1f);
+            buildingWall.transform.localScale = new Vector3(buildingWall.transform.localScale.x, buildingWall.transform.localScale.y, distance/* + 0.1f*/);
         }
     }
 

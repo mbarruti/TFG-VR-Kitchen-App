@@ -2180,6 +2180,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Right Grip Action",
+                    "type": "Button",
+                    "id": "5ed36b36-ec0a-4d32-b84e-ace103c5458e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.8,behavior=2)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Left Grip Action",
+                    "type": "Button",
+                    "id": "8f83f130-0ac9-42c8-a18b-ec839b541b90",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(pressPoint=0.8,behavior=2)",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2268,6 +2286,28 @@
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "X Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7df43c3f-c84c-474c-903b-881e449d7de9",
+                    "path": "<XRController>{RightHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Right Grip Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4911fea9-7666-4512-b892-ab08cf9ee7e4",
+                    "path": "<XRController>{LeftHand}/gripPressed",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Left Grip Action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
