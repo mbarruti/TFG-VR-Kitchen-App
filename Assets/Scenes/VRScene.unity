@@ -11461,10 +11461,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2156334f23696648b2fc4dd8c3e0880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  auxiliarLight: {fileID: 705507993}
   ceiling: {fileID: 1201833058}
   playerManager: {fileID: 830296140}
-  poleParent: {fileID: 261219209}
-  originPole: {fileID: 710120084}
+  poleParent: {fileID: 0}
   startPole: {fileID: 0}
   endPole: {fileID: 0}
   previewPole: {fileID: 933466863}
@@ -11475,6 +11475,7 @@ MonoBehaviour:
   finish: 0
   freePlacement: 0
   poleList: []
+  originPole: {fileID: 710120084}
   planeHit: {fileID: 1738041706}
   rightController: {fileID: 1758346702}
   leftController: {fileID: 1264172314}

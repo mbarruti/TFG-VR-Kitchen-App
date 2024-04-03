@@ -12,6 +12,8 @@ public class WallManager : MonoBehaviour
     // Raycast from right controller
     XRRayInteractor rightRay;
 
+    [SerializeField] GameObject auxiliarLight;
+
     [SerializeField] GameObject ceiling;
 
     [SerializeField] PlayerManager playerManager;
@@ -477,6 +479,7 @@ public class WallManager : MonoBehaviour
         );
 
         ceiling.SetActive(true);
+        auxiliarLight.SetActive(false);
 
         // Set the ceiling position with the height of the walls and the center point X and Z coordinates
         ceiling.transform.position = new Vector3(centerPoint.x, wall.transform.localScale.y + 0.1f, centerPoint.z);

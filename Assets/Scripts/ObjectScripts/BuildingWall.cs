@@ -29,7 +29,7 @@ public class BuildingWall : MonoBehaviour
         float distance = Vector3.Distance(startPole.transform.position, endPole.transform.position);
         transform.position = startPole.transform.position + distance / 2 * startPole.transform.forward;
         transform.rotation = startPole.transform.rotation;
-        transform.localScale = new Vector3(startPole.transform.localScale.x, startPole.transform.localScale.y, distance/* - 0.1f*/);
+        transform.localScale = new Vector3(transform.localScale.x, startPole.transform.localScale.y, distance/* - 0.1f*/);
     }
 
     public void SetHeight(float padValue)
