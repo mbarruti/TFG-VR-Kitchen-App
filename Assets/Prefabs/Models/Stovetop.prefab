@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 377830221924368073}
   - component: {fileID: 3643844208847647084}
   - component: {fileID: 1546280900934403494}
-  - component: {fileID: 357541004742874564}
   - component: {fileID: 4607914203500862788}
   m_Layer: 2
   m_Name: Stovetop
@@ -85,20 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &357541004742874564
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1041882071632782451}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2387404562578014406, guid: a458eddf41afe1a4793dca03fc1105be, type: 3}
 --- !u!65 &4607914203500862788
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -121,6 +106,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2304961528507690930}
+  - component: {fileID: -6374265001547052957}
   - component: {fileID: 3559662875293773088}
   m_Layer: 2
   m_Name: Stovetop
@@ -145,6 +131,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &-6374265001547052957
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6340338396616188966}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &3559662875293773088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -180,8 +182,8 @@ MonoBehaviour:
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
-  boxCollider: {fileID: 0}
-  objectRigidbody: {fileID: 0}
+  boxCollider: {fileID: 4607914203500862788}
+  objectRigidbody: {fileID: -6374265001547052957}
   isPlaced: 0
-  isInLimit: 0
+  isInLimit: 1
   detectedColliders: []

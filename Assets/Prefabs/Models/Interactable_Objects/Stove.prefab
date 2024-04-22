@@ -179,6 +179,7 @@ GameObject:
   - component: {fileID: 6588325840019030281}
   - component: {fileID: 312079311948438050}
   - component: {fileID: 1770553908391867014}
+  - component: {fileID: -8328371555899794188}
   - component: {fileID: 6640303703559518580}
   m_Layer: 2
   m_Name: Stove
@@ -287,6 +288,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.59999996, y: 0.8541146, z: 0.64926815}
   m_Center: {x: 0, y: 0.09792516, z: 0.005365908}
+--- !u!54 &-8328371555899794188
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4642809902001234140}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!114 &6640303703559518580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,9 +340,9 @@ MonoBehaviour:
   canPlace: 0
   meshRenderer: {fileID: 0}
   boxCollider: {fileID: 0}
-  objectRigidbody: {fileID: 0}
+  objectRigidbody: {fileID: -8328371555899794188}
   isPlaced: 0
-  isInLimit: 0
+  isInLimit: 1
   detectedColliders: []
 --- !u!1 &4858046151804292245
 GameObject:
