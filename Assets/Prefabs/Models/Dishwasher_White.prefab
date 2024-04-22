@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 9095120030141485955}
   - component: {fileID: 9095120030147591487}
   - component: {fileID: 9095120030147591486}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Dishwasher_White
-  m_TagString: Untagged
+  m_TagString: Object
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,6 +134,13 @@ MonoBehaviour:
   vertices:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  faces:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
