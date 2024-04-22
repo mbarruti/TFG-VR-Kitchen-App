@@ -85,7 +85,7 @@ MonoBehaviour:
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
-  boxCollider: {fileID: 0}
+  boxCollider: {fileID: 3387055328190870635}
   objectRigidbody: {fileID: 1663827950936273098}
   isPlaced: 0
   isInLimit: 1
@@ -101,6 +101,7 @@ GameObject:
   - component: {fileID: 5303644909356321698}
   - component: {fileID: 8258553945621563466}
   - component: {fileID: 7427528999967407729}
+  - component: {fileID: 3387055328190870635}
   m_Layer: 2
   m_Name: bowl_01
   m_TagString: Untagged
@@ -173,3 +174,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3387055328190870635
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2855414546173495938}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3084259, y: 0.30842593, z: 0.1899442}
+  m_Center: {x: -0.0000009536743, y: -0.000000461936, z: 0.008127906}

@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3166044456920772745}
   - component: {fileID: 7383772212336020485}
-  m_Layer: 0
-  m_Name: BoxCollider
+  m_Layer: 2
+  m_Name: CornerCabinet1Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -350,7 +350,7 @@ MonoBehaviour:
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
-  boxCollider: {fileID: 0}
+  boxCollider: {fileID: 7383772212336020485}
   objectRigidbody: {fileID: -7857465844534586503}
   isPlaced: 0
   isInLimit: 1

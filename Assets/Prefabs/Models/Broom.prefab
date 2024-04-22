@@ -172,7 +172,7 @@ MonoBehaviour:
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
-  boxCollider: {fileID: 0}
+  boxCollider: {fileID: 1505580011480936374}
   objectRigidbody: {fileID: -1693177914888033808}
   isPlaced: 0
   isInLimit: 1
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 5615373598778865610}
   - component: {fileID: 1505580011480936374}
   m_Layer: 2
-  m_Name: BoxCollider
+  m_Name: BroomCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -402,7 +402,7 @@ MonoBehaviour:
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
-  boxCollider: {fileID: 0}
+  boxCollider: {fileID: 797038125462215695}
   objectRigidbody: {fileID: 416712718807970876}
   isPlaced: 0
   isInLimit: 1

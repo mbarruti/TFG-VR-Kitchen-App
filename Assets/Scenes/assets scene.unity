@@ -617,10 +617,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1564737514150043503, guid: 29df03a140bc2494b8f68dc4d35b0006, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1693138891563193168, guid: 29df03a140bc2494b8f68dc4d35b0006, type: 3}
       propertyPath: m_Name
       value: Fridge
@@ -1568,10 +1564,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 801168242967161392, guid: ed4cb5d47c72af748aa7514b1c54bfa1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4642809902001234140, guid: ed4cb5d47c72af748aa7514b1c54bfa1, type: 3}
       propertyPath: m_Name
       value: Stove
