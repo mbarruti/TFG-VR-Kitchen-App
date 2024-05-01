@@ -53,7 +53,7 @@ public class WallManager : MonoBehaviour
 
     public GameObject planeHit;
 
-    // Mandos de realidad virtual
+    // VR Controllers
     public GameObject rightController;
     public GameObject leftController;
 
@@ -298,7 +298,7 @@ public class WallManager : MonoBehaviour
 
     /// <summary>
     /// Check if there are any of the Poles hit in the corresponding direction in that position
-    /// <summary>
+    /// </summary>
     private bool CheckHitPolesPositions(RaycastHit[] hitPoles, Vector3 position)
     {
         foreach (RaycastHit hitPole in hitPoles)
@@ -312,7 +312,7 @@ public class WallManager : MonoBehaviour
 
     /// <summary>
     /// Cancel the placement of a wall by destroying it and the corresponding poles
-    /// <summary>
+    /// </summary>
     public void CancelWallPlacement()
     {
         if (finish == true)
@@ -360,7 +360,7 @@ public class WallManager : MonoBehaviour
 
     /// <summary>
     /// Destroy the selected wall
-    /// <summary>
+    /// </summary>
     public void DestroyWall(BuildingWall buildingWall)
     {
         if (finish == false)
@@ -449,7 +449,7 @@ public class WallManager : MonoBehaviour
 
     /// <summary>
     /// Sets the height of the ceiling before finishing building all the walls
-    /// 
+    /// </summary>
     public void SetCeiling()
     {
         Vector3 bottomLeftFront = wallList[0].transform.position;
