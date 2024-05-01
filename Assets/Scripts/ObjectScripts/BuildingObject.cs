@@ -310,7 +310,9 @@ public class BuildingObject : MonoBehaviour
         faces[5] = centerRight;
     }
 
-    // Calculate the midpoint of a face given its four vertices
+    /// <summary>
+    /// Calculate the midpoint of a face given its four vertices
+    /// </summary>
     Vector3 GetFaceMidpoint(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
     {
         return (v1 + v2 + v3 + v4) / 4.0f;
@@ -383,11 +385,13 @@ public class BuildingObject : MonoBehaviour
         //objectRigidbody.MovePosition(worldMovement);
     }
 
-    //Con el trigger izquierdo se rota el objeto en el eje Y (30 grados)
-    public void RotateObject()
+    /// <summary>
+    /// Rotate the object in the Y axis
+    /// </summary>
+    public void RotateObject(float value)
     {
         //Debug.Log(transform.TransformPoint(boxCollider.bounds.extents));
-        gameObject.transform.Rotate(Vector3.up, 30);
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + value, transform.eulerAngles.z);
     }
 
     // Escala según el valor del eje Y del mando derecho (falta prohibir que se escale a menor o igual que 0)

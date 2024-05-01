@@ -114,6 +114,10 @@ public class BuildingManager : MonoBehaviour
         if (playerManager.state == PlayerState.isBuilding)
         {
             DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
+
+            if (playerManager.rightGripPressed == true) selectedBuildingObject.RotateObject(1f);
+            else selectedBuildingObject.RotateObject(-1f);
+
             if (worldMenuManager.buildingState == BuildingState.withOffset)
             {
                 parentObject.transform.position = _hitPos;
@@ -203,71 +207,6 @@ public class BuildingManager : MonoBehaviour
         {
             //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
             _hitPos = hit.point;
-
-            //if (playerManager.state == PlayerState.isBuilding)
-            //{
-            //    DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
-            //    if (worldMenuManager.buildingState == BuildingState.withOffset)
-            //    {
-            //        //selectedBuildingObject.transform.position = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
-
-            //        //parentObject.transform.position = _hitPos + Vector3.Scale(hit.normal, parentObject.boxCollider.bounds.extents);
-            //        if (parentObject.canPlace == true)
-            //        {
-            //            if (selectedBuildingObject.canPlace == true)
-            //            {
-            //                selectedBuildingObject.transform.position = parentObject.transform.position;
-            //            }
-            //            //Debug.Log("entra");
-            //            parentObject.transform.position = _hitPos;
-            //            parentObject.transform.position = SetFirstObjectPosition();
-            //            parentObject.transform.position = UpdateOffset(hit.point);
-            //        }
-            //        else
-            //        {
-            //            //Debug.Log("entra");
-            //            if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
-            //            parentObject.transform.position = UpdateOffset(hit.point);
-            //        }
-            //        //UpdateOffset(hit.point);
-            //        //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
-            //        //if (newPosition == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
-            //        //else selectedBuildingObject.transform.position = newPosition;
-            //        //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-
-            //        //UpdateOffset();
-            //        //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
-            //    }
-
-            //    // Actualizar materiales de colision
-            //    //UpdateMaterials();
-            //}
-
-            //Debug.Log(hit.collider.transform.InverseTransformDirection(hit.normal));
-            //movementDirection = Vector3.Cross(hit.normal, Vector3.left);
-            //Debug.DrawRay(hit.point, movementDirection, Color.blue);
-            //Debug.Log("Vector perpendicular: " + movementDirection);
-
-            //if (playerManager.state == PlayerState.isBuilding) selectedBuildingObject.transform.position = _hitPos;
-
-            //if (playerManager.state == PlayerState.isBuilding)
-            //{
-            //    Vector3 hitOffset = _hitPos + Vector3.Scale(hit.normal, selectedBuildingObject.boxCollider.bounds.extents);
-            //    Vector3 direction = hitOffset - selectedBuildingObject.transform.position;
-            //    direction.Normalize();
-            //    Vector3 nextPosition = selectedBuildingObject.transform.position + direction * 5f * Time.deltaTime;
-            //    selectedBuildingObject.objectRigidbody.MovePosition(nextPosition);
-            //}
-            //cubos[0].transform.position = hit.collider.bounds.max;
-            //cubos[1].transform.position = hit.collider.bounds.min;
-            //Debug.Log(hit.collider.gameObject.name);
-            //Debug.Log("Nombre de objeto que choca con rayo: " + hit.collider.gameObject.name);
-            // Ajustar la posicion para que el centro del objeto este en el punto de colision
-            //if (playerManager.state == PlayerState.isBuilding)
-            //{
-            //    _hitPos = hit.point /*+ GetOffset(hit.normal)*/;
-            //    //parentObject.transform.position = _hitPos + GetOffset(hit.normal);
-            //}
 
             // Activar el outline del objeto si esta siendo apuntado con el mando
             // If a BuildingObject is hit, we can select it

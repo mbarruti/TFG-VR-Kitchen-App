@@ -109,11 +109,11 @@ public class PlayerManager : MonoBehaviour
 
     void OnLeftTriggerAction(InputAction.CallbackContext context)
     {
-        if (state == PlayerState.isBuilding)
-        {
-            _buildingManager.selectedBuildingObject.RotateObject();
-            _buildingManager.parentObject.RotateObject();
-        }
+        //if (state == PlayerState.isBuilding)
+        //{
+        //    _buildingManager.selectedBuildingObject.RotateObject();
+        //    _buildingManager.parentObject.RotateObject();
+        //}
     }
 
     void OnStartAction(InputAction.CallbackContext context)
@@ -295,8 +295,7 @@ public class PlayerManager : MonoBehaviour
         else
         {
             rightGripPressed = false;
-        }
-        
+        }   
     }
 
     void OnLeftGripAction(InputAction.CallbackContext context)
