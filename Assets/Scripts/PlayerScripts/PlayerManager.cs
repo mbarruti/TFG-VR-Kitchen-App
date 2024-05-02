@@ -25,6 +25,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] InputActionReference _rightTouchpadAction;
     [SerializeField] InputActionReference _rightGripAction;
 
+    [SerializeField] bool rightHandedControls;
+    [SerializeField] bool leftHandedControls;
+
     //private PlayerState previousState;
 
     // Mandos de realidad virtual
@@ -40,17 +43,31 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
-        _startAction.action.performed += OnStartAction;
-        _leftTriggerAction.action.performed += OnLeftTriggerAction;
-        _xAction.action.performed += OnXAction;
-        _yAction.action.performed += OnYAction;
-        _leftGripAction.action.performed += OnLeftGripAction;
+        if (rightHandedControls == true)
+        {
+            // Left Controller
+            _startAction.action.performed += OnStartAction;
+            _leftTriggerAction.action.performed += OnLeftTriggerAction;
+            _xAction.action.performed += OnXAction;
+            _yAction.action.performed += OnYAction;
+            _leftGripAction.action.performed += OnLeftGripAction;
 
-        _rightTriggerAction.action.performed += OnRightTriggerAction;
-        _bAction.action.performed += OnBAction;
-        _aAction.action.performed += OnAAction;
-        _rightTouchpadAction.action.performed += OnRightTouchpadAction;
-        _rightGripAction.action.performed += OnRightGripAction;
+            // Right Controller
+            _rightTriggerAction.action.performed += OnRightTriggerAction;
+            _bAction.action.performed += OnBAction;
+            _aAction.action.performed += OnAAction;
+            _rightTouchpadAction.action.performed += OnRightTouchpadAction;
+            _rightGripAction.action.performed += OnRightGripAction;
+        }
+        //else
+        //{
+        //    // Left Controller
+        //    _startAction.action.performed += OnStartAction;
+        //    _xAction.action.performed += OnBAction;
+        //    _yAction.action.performed += OnAAction;
+        //    _leftGripAction.action.performed += OnRightGripAction;
+
+        //}
     }
 
     private void Update()
