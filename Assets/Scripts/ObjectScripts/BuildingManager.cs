@@ -515,7 +515,7 @@ public class BuildingManager : MonoBehaviour
         //if (pendingObject != null) Destroy(pendingObject);
 
         // Instancia para el objeto indicador que se proyecta en el mundo
-        pendingObject = Instantiate(selectedModel, _hitPos, transform.rotation);
+        pendingObject = Instantiate(selectedModel, _hitPos, selectedModel.transform.rotation);
         //pendingObject = Instantiate(selectedModel, Vector3.zero, transform.rotation, parentObject.transform);
 
         selectedBuildingObject = pendingObject.GetComponent<BuildingObject>();

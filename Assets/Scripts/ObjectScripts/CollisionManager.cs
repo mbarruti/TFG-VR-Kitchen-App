@@ -159,10 +159,12 @@ public class CollisionManager : MonoBehaviour
     //    }
     //}
 
-    //Con el trigger izquierdo se rota el objeto en el eje Y (30 grados)
-    public void RotateObject()
+    /// <summary>
+    /// Rotate the object in the Y axis
+    /// </summary>
+    public void RotateObject(float value)
     {
-        gameObject.transform.Rotate(Vector3.up, 30);
+        transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + value, transform.eulerAngles.z);
     }
 
     // Escala el collider según el valor del eje Y del mando derecho

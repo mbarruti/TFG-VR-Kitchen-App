@@ -392,6 +392,7 @@ public class BuildingObject : MonoBehaviour
     {
         //Debug.Log(transform.TransformPoint(boxCollider.bounds.extents));
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + value, transform.eulerAngles.z);
+        _buildingManager.parentObject.RotateObject(value);
     }
 
     // Escala según el valor del eje Y del mando derecho (falta prohibir que se escale a menor o igual que 0)
