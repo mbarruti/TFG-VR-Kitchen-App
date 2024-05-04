@@ -115,8 +115,12 @@ public class BuildingManager : MonoBehaviour
         {
             DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
 
-            if (playerManager.rightGripPressed == true) selectedBuildingObject.RotateObject(1f);
-            else if (playerManager.leftGripPressed == true) selectedBuildingObject.RotateObject(-1f);
+            // Check for rotations if not locked
+            if (selectedBuildingObject.rotationLocked == false)
+            {
+                if (playerManager.rightGripPressed == true) selectedBuildingObject.RotateObject(1f);
+                else if (playerManager.leftGripPressed == true) selectedBuildingObject.RotateObject(-1f);
+            }
 
             if (worldMenuManager.buildingState == BuildingState.withOffset)
             {
@@ -527,7 +531,7 @@ public class BuildingManager : MonoBehaviour
             // Set the rotation of the object so its local Z axis points at the same direction as the normal hit
             selectedBuildingObject.surfaceNormal = hit.normal;
             selectedBuildingObject.surfaceObject = hit.collider.gameObject;
-            selectedBuildingObject.SetObjectRotation();
+            selectedBuildingObject.SetForwardAxisDirection();
 
             selectedBuildingObject.objectRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
         }

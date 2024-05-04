@@ -7229,7 +7229,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerManager: {fileID: 830296140}
   _wallManager: {fileID: 2032544278}
-  buildingState: 1
+  buildingState: 0
   isOpened: 1
   selectedModel: {fileID: 1910349313623022167, guid: e6f0fe6660397e247812ce69733a3201, type: 3}
   modelsList:

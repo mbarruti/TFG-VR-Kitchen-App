@@ -32,6 +32,8 @@ public class BuildingObject : MonoBehaviour
     public GameObject surfaceObject;
     public Vector3 surfaceNormal;
 
+    public bool rotationLocked;
+
     public Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
     public Vector3[] faces = new Vector3[6];
 
@@ -318,6 +320,26 @@ public class BuildingObject : MonoBehaviour
         return (v1 + v2 + v3 + v4) / 4.0f;
     }
 
+    /// <summary>
+    /// Rotate the objects forward vector so its direction is the same as the perpendicular vector of the surface
+    /// </summary>
+    public void SetForwardAxisDirection()
+    {
+        if (surfaceObject.CompareTag("Wall")) 
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(surfaceNormal, Vector3.up);
+            transform.rotation = targetRotation;
+
+            rotationLocked = true;
+        }
+        else if (surfaceObject.CompareTag("Floor") || surfaceObject.CompareTag("Ceiling"))
+        {
+            transform.eulerAngles = new Vector3(0f, 180f, 0f);
+
+            rotationLocked = false;
+        }
+    }
+
     public void SetTouchpadValues(float valueX, float valueY)
     {
         touchpadValueX = valueX;
@@ -325,64 +347,34 @@ public class BuildingObject : MonoBehaviour
     }
 
     /// <summary>
-    /// Rotate the objects forward vector so its direction is the same as the perpendicular vector of the surface
+    /// Move the physics based object with the touchpad
     /// </summary>
-    public void SetObjectRotation()
-    {
-        if (surfaceObject.CompareTag("Wall")) 
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(surfaceNormal, Vector3.up);
-            transform.rotation = targetRotation;
-        }
-        else if (surfaceObject.CompareTag("Floor"))
-        {
-            transform.eulerAngles = new Vector3(0f, 180f, 0f);
-        }
-    }
-
     public void MoveWithTouchpad()
     {
-        Vector3 localMovement = Vector3.zero;
+        Vector3 worldMovement = Vector3.zero;
 
-        if (surfaceObject.CompareTag("Wall")) localMovement = new Vector3(-touchpadValueX, touchpadValueY, 0f);
-        else if (surfaceObject.CompareTag("Floor")) localMovement = new Vector3(-touchpadValueX, 0f, -touchpadValueY);
+        if (surfaceObject.CompareTag("Wall"))
+        {
+            //Vector3 localMovement = Vector3.zero;
 
-        // Convertir el desplazamiento local a coordenadas globales
-        Vector3 worldMovement = transform.TransformDirection(localMovement);
+            Vector3 localMovement = new Vector3(-touchpadValueX, touchpadValueY, 0f);
 
-        // Calcular la nueva posición sumando el desplazamiento a la posición actual
-        Vector3 nextPosition = transform.position + worldMovement * 5f * Time.deltaTime;
+            // Convertir el desplazamiento local a coordenadas globales
+            worldMovement = transform.TransformDirection(localMovement);
 
-        // Mover el objeto utilizando Rigidbody.MovePosition
+            // Calcular la nueva posición sumando el desplazamiento a la posición actual
+            // nextPosition = 5f * Time.deltaTime * worldMovement + transform.position;
+
+            // Mover el objeto utilizando Rigidbody.MovePosition
+            //objectRigidbody.MovePosition(nextPosition);
+        }
+        else if (surfaceObject.CompareTag("Floor") || surfaceObject.CompareTag("Ceiling"))
+            worldMovement = new Vector3(touchpadValueX, 0f, touchpadValueY);
+
+        Vector3 nextPosition = 5f * Time.deltaTime * worldMovement + transform.position;
+
+        // Mover el objeto utilizando el rigidbody
         objectRigidbody.MovePosition(nextPosition);
-
-
-        ////movement.Normalize();
-
-        //Vector3 surfaceLocalMovement = Vector3.zero;
-
-        ////Transformar surface normal a
-
-        //if (surfaceNormal.x != 0)
-        //{
-        //    surfaceLocalMovement = new Vector3(0f, valueY, valueX);
-        //}
-        //else if (surfaceNormal.y != 0)
-        //{
-        //    surfaceLocalMovement = new Vector3(valueX, 0f, valueY);
-        //}
-        //else if (surfaceNormal.z != 0)
-        //{
-        //    surfaceLocalMovement = new Vector3(valueX, valueY, 0f);
-        //}
-
-        //Vector3 objectInSurfaceLocalPosition = surfaceObject.transform.InverseTransformPoint(transform.position);
-        //Vector3 nextLocalPosition = objectInSurfaceLocalPosition + surfaceLocalMovement * 2f * Time.deltaTime;
-        ////Vector3 worldMovement = surfaceObject.transform.TransformPoint(nextLocalPosition) * 5f * Time.deltaTime;
-        ////Vector3 nextPosition = movement * 5f * Time.deltaTime;
-
-        //objectRigidbody.MovePosition(surfaceObject.transform.TransformPoint(nextLocalPosition));
-        //objectRigidbody.MovePosition(worldMovement);
     }
 
     /// <summary>
