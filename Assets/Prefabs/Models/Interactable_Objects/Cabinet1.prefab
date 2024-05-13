@@ -303,6 +303,7 @@ MonoBehaviour:
   collisionMaterials: []
   surfaceObject: {fileID: 0}
   surfaceNormal: {x: 0, y: 0, z: 0}
+  rotationLocked: 0
   vertices:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -319,11 +320,19 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
+  interactables:
+  - {fileID: 453747258839117107}
+  - {fileID: 5695983710681467069}
+  - {fileID: 2522108489571915466}
+  - {fileID: 3629486916154953507}
+  - {fileID: 586182988191266442}
+  - {fileID: 3301535704930731734}
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
   boxCollider: {fileID: 8669347927596913859}
   objectRigidbody: {fileID: -7362144863875903069}
+  isInteractable: 1
   isPlaced: 0
   isInLimit: 1
   detectedColliders: []

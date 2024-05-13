@@ -66,6 +66,7 @@ MonoBehaviour:
   collisionMaterials: []
   surfaceObject: {fileID: 0}
   surfaceNormal: {x: 0, y: 0, z: 0}
+  rotationLocked: 0
   vertices:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -82,11 +83,14 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
+  interactables:
+  - {fileID: 4130686801301505966}
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
   boxCollider: {fileID: 3285654823681728050}
   objectRigidbody: {fileID: -8759775816436947591}
+  isInteractable: 1
   isPlaced: 0
   isInLimit: 1
   detectedColliders: []
@@ -207,3 +211,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.0379643, y: 2.242473, z: 2.0568178}
   m_Center: {x: 0, y: 0.15830424, z: -0.00048017502}
+--- !u!1 &4130686801301505966 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5839591289282458647, guid: fbfe382c29a4ab547a520eb7084a534c, type: 3}
+  m_PrefabInstance: {fileID: 7519112057856062393}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1200966619806934262
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4130686801301505966}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.3533745, y: 1.1584773, z: 1.6154333}
+  m_Center: {x: 0, y: -0.22258177, z: 0.597387}

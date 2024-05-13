@@ -37,6 +37,8 @@ public class BuildingObject : MonoBehaviour
     public Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
     public Vector3[] faces = new Vector3[6];
 
+    public GameObject[] interactables;
+
     public BuildingManager _buildingManager;
 
     // Indica si se puede colocar el objeto o no
@@ -47,6 +49,8 @@ public class BuildingObject : MonoBehaviour
     public BoxCollider boxCollider;
 
     public Rigidbody objectRigidbody;
+
+    public bool isInteractable;
 
     public bool isPlaced;
 

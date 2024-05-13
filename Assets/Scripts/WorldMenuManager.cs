@@ -10,6 +10,14 @@ public class WorldMenuManager : MonoBehaviour
     //[SerializeField] BuildingManager _buildingManager;
     [SerializeField] WallManager _wallManager;
 
+    [SerializeField] List<ButtonAnimationToggler> mainButtonsList = new List<ButtonAnimationToggler>();
+
+    [SerializeField] List<ButtonAnimationToggler> modelsButtonsList = new List<ButtonAnimationToggler>();
+
+    [SerializeField] List<ButtonAnimationToggler> wallsButtonsList = new List<ButtonAnimationToggler>();
+
+    [SerializeField] List<ButtonAnimationToggler> viewsButtonsList = new List<ButtonAnimationToggler>();
+
     // -------------------------------------------
 
     public BuildingState buildingState;
@@ -70,17 +78,19 @@ public class WorldMenuManager : MonoBehaviour
         selectedModel = null;
     }
 
-    // Funciones de input que dependen del usuario (llamadas en PlayerActions)
+    // Open menu
     public void showWorldMenu()
     {
-        gameObject.SetActive(true);
+        //gameObject.SetActive(true);
+        transform.position = new Vector3(0f, 1.9f, 0f);
         isOpened = true;
     }
 
-    // Cerrar el menu
+    // Close menu
     public void hideWorldMenu()
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
+        transform.position = new Vector3(0f, -30f, 0f);
         isOpened = false;
     }
 
@@ -95,6 +105,7 @@ public class WorldMenuManager : MonoBehaviour
 
         wallList = _wallManager.wallList;
 
+        hideWorldMenu();
         _playerManager.state = PlayerState.isFree;
     }
 
@@ -107,6 +118,47 @@ public class WorldMenuManager : MonoBehaviour
             wall.wallRenderer.material = wallMaterial;
 
             wall.wallRenderer.material.mainTextureScale = new Vector2(wall.transform.localScale.z / 2f, wall.transform.localScale.y / 2f);
+        }
+    }
+
+    /// <summary>
+    /// Deselect all main buttons
+    /// </summary>
+    public void DeselectMainButtons()
+    {
+        foreach (ButtonAnimationToggler button in mainButtonsList)
+        {
+            button.DeactivateIsSelected();
+        }
+    }
+
+    /// <summary>
+    /// Deselect all secondary buttons depending on the selected main button
+    /// </summary>
+    public void DeselectSecondaryButtons(int number)
+    {
+        switch (number)
+        {
+            case 1:
+                foreach (ButtonAnimationToggler button in modelsButtonsList)
+                {
+                    button.DeactivateIsSelected();
+                }
+                break;
+
+            case 2:
+                foreach (ButtonAnimationToggler button in wallsButtonsList)
+                {
+                    button.DeactivateIsSelected();
+                }
+                break;
+
+            case 3:
+                foreach (ButtonAnimationToggler button in viewsButtonsList)
+                {
+                    button.DeactivateIsSelected();
+                }
+                break;
         }
     }
 }
