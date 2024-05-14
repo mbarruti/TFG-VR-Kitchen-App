@@ -37,7 +37,7 @@ public class BuildingObject : MonoBehaviour
     public Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
     public Vector3[] faces = new Vector3[6];
 
-    public GameObject[] interactables;
+    public BoxCollider[] interactables;
 
     public BuildingManager _buildingManager;
 
@@ -389,6 +389,16 @@ public class BuildingObject : MonoBehaviour
         //Debug.Log(transform.TransformPoint(boxCollider.bounds.extents));
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + value, transform.eulerAngles.z);
         _buildingManager.parentObject.RotateObject(value);
+    }
+
+    public void SetInteraction()
+    {
+
+    }
+
+    public void Interact(GameObject interactable)
+    {
+
     }
 
     // Escala según el valor del eje Y del mando derecho (falta prohibir que se escale a menor o igual que 0)

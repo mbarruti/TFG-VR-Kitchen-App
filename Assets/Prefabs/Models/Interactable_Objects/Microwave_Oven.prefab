@@ -255,6 +255,8 @@ GameObject:
   - component: {fileID: 624122333652496998}
   - component: {fileID: 5194473070379086033}
   - component: {fileID: 4346709754722349909}
+  - component: {fileID: 1307872087936196012}
+  - component: {fileID: 6018751007165340410}
   m_Layer: 2
   m_Name: Microwave_Oven-Door
   m_TagString: Untagged
@@ -327,3 +329,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1307872087936196012
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644730169012191478}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.47953954, y: 0.3021835, z: 0.0656256}
+  m_Center: {x: -0.23976977, y: 0, z: 0.028663114}
+--- !u!114 &6018751007165340410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8644730169012191478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 5
+  limit: 120
+  rotationInteractable: 1
+  axis: 1
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}

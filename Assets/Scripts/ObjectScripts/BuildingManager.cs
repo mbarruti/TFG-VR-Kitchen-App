@@ -55,7 +55,7 @@ public class BuildingManager : MonoBehaviour
 
     private void Start()
     {
-        ray = rightController.GetComponent<XRRayInteractor>();
+        ray = playerManager.mainController.GetComponent<XRRayInteractor>();
     }
 
     // Para dibujar el bounding box del objeto elegido (o de su collider)
@@ -163,6 +163,22 @@ public class BuildingManager : MonoBehaviour
 
             // Actualizar materiales de colision
             //UpdateMaterials();
+        }
+
+        if (playerManager.state == PlayerState.isFree)
+        {
+            // If there is an interactable selected, the interaction happens
+            if (playerManager.selectedInteractable != null)
+            {
+                if (playerManager.selectedInteractable.rotationInteractable == true)
+                {
+                    playerManager.selectedInteractable.RotateInteraction(playerManager.mainController);
+                }
+                else
+                {
+                    playerManager.selectedInteractable.MoveInteraction(playerManager.mainController);
+                }
+            }
         }
     }
 

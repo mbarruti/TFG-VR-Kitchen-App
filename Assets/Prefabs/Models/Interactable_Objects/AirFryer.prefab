@@ -83,8 +83,7 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  interactables:
-  - {fileID: 4130686801301505966}
+  interactables: []
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
@@ -229,3 +228,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.3533745, y: 1.1584773, z: 1.6154333}
   m_Center: {x: 0, y: -0.22258177, z: 0.597387}
+--- !u!114 &1944470342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4130686801301505966}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 2
+  limit: 0.8
+  rotationInteractable: 0
+  axis: 2
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}

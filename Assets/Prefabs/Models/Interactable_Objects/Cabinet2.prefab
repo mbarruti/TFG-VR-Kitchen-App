@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 6621369332489987893}
   - component: {fileID: 3428017196188571841}
   - component: {fileID: 4016503071984537804}
+  - component: {fileID: 1791982652}
+  - component: {fileID: 1791982648}
   m_Layer: 2
   m_Name: Cabinet2-D3
   m_TagString: Untagged
@@ -83,6 +85,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1791982652
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098956919114218662}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.60001695, y: 0.25432277, z: 0.5183518}
+  m_Center: {x: -0.000008419156, y: 0.2380459, z: 0.0928963}
+--- !u!114 &1791982648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1098956919114218662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0.1
+  limit: 0.3
+  rotationInteractable: 0
+  axis: 2
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &2547586299947599877
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +127,8 @@ GameObject:
   - component: {fileID: 1800994297272612843}
   - component: {fileID: 3472780662903421718}
   - component: {fileID: 606480890116158064}
+  - component: {fileID: 296679528}
+  - component: {fileID: 296679524}
   m_Layer: 2
   m_Name: Cabinet2-D1
   m_TagString: Untagged
@@ -166,6 +201,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &296679528
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2547586299947599877}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.60001695, y: 0.10124558, z: 0.5183518}
+  m_Center: {x: -0.000008419156, y: 0.666708, z: 0.0928963}
+--- !u!114 &296679524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2547586299947599877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0.1
+  limit: 0.3
+  rotationInteractable: 0
+  axis: 2
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &4481800581356645950
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +243,8 @@ GameObject:
   - component: {fileID: 4665051294607456301}
   - component: {fileID: 8561460083336043057}
   - component: {fileID: 1710372451667651636}
+  - component: {fileID: 1260709145}
+  - component: {fileID: 1260709141}
   m_Layer: 2
   m_Name: Cabinet2-D2
   m_TagString: Untagged
@@ -249,6 +317,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1260709145
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4481800581356645950}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.60001695, y: 0.25432277, z: 0.5183518}
+  m_Center: {x: -0.000008419156, y: 0.48804593, z: 0.0928963}
+--- !u!114 &1260709141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4481800581356645950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0.1
+  limit: 0.3
+  rotationInteractable: 0
+  axis: 2
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &7694650322816292170
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,6 +360,7 @@ GameObject:
   - component: {fileID: 6209593667904077909}
   - component: {fileID: 8198838045833753759}
   - component: {fileID: 797038125462215695}
+  - component: {fileID: 1003482878573537092}
   - component: {fileID: 416712718807970876}
   - component: {fileID: 805620765307268625}
   m_Layer: 2
@@ -349,8 +449,21 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.60001695, y: 0.82352555, z: 0.67332}
-  m_Center: {x: -0.000008508563, y: 0.41176277, z: 0.036660016}
+  m_Size: {x: 0.60001695, y: 0.82352555, z: 0.6123216}
+  m_Center: {x: -0.000008523464, y: 0.41176277, z: 0.0061608553}
+--- !u!65 &1003482878573537092
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7694650322816292170}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.60001695, y: 0.04676938, z: 0.060748935}
+  m_Center: {x: -0.000008523464, y: 0.80014086, z: 0.34294552}
 --- !u!54 &416712718807970876
 Rigidbody:
   m_ObjectHideFlags: 0

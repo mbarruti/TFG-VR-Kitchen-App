@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4453410349090502118}
   - component: {fileID: 5351488750951899476}
   - component: {fileID: 8354648322336459841}
+  - component: {fileID: 1704826707}
+  - component: {fileID: 1704826708}
   m_Layer: 2
   m_Name: Washer-Door
   m_TagString: Untagged
@@ -83,6 +85,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1704826707
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3410466761917106451}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.6362337, y: 0.64604867, z: 0.0381224}
+  m_Center: {x: -0.31811696, y: 0.000000059604645, z: 0.0013500378}
+--- !u!114 &1704826708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3410466761917106451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 5
+  limit: 120
+  rotationInteractable: 1
+  axis: 1
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &5554637453779410800
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,8 +214,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.72909385, y: 1.0105008, z: 0.71072656}
-  m_Center: {x: 0.016461134, y: -0.19585676, z: -0.2885768}
+  m_Size: {x: 0.72909385, y: 1.0105008, z: 0.6883199}
+  m_Center: {x: 0.016461134, y: -0.19585675, z: -0.29978013}
 --- !u!54 &5670782299145292127
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -232,8 +265,7 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  interactables:
-  - {fileID: 3410466761917106451}
+  interactables: []
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}

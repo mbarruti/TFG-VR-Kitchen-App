@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5879343725137886992}
   - component: {fileID: 2291214235467297800}
   - component: {fileID: 6655755046760755735}
+  - component: {fileID: 1275215761}
+  - component: {fileID: 1275215760}
   m_Layer: 2
   m_Name: Fridge_SBS_DoorL
   m_TagString: Untagged
@@ -83,6 +85,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1275215761
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321965051923950174}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.39366317, y: 1.7352507, z: 0.106729895}
+  m_Center: {x: -0.19683161, y: 0.86762536, z: 0.053364947}
+--- !u!114 &1275215760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321965051923950174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 5
+  limit: 120
+  rotationInteractable: 1
+  axis: 1
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1349948443731635154
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,6 +127,8 @@ GameObject:
   - component: {fileID: 6223929218001133266}
   - component: {fileID: 3423013006800169896}
   - component: {fileID: 3719881521098928999}
+  - component: {fileID: 2027601618}
+  - component: {fileID: 2027601617}
   m_Layer: 2
   m_Name: Fridge_SBS_DoorRUpper
   m_TagString: Untagged
@@ -166,6 +201,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2027601618
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349948443731635154}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5070382, y: 1.0649233, z: 0.081951514}
+  m_Center: {x: 0.25351933, y: 1.2027888, z: 0.052827857}
+--- !u!114 &2027601617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1349948443731635154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 5
+  limit: 120
+  rotationInteractable: 1
+  axis: 1
+  sign: -1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3400470312936993510
 GameObject:
   m_ObjectHideFlags: 0
@@ -177,6 +243,8 @@ GameObject:
   - component: {fileID: 3348341821567011676}
   - component: {fileID: 6134787215444846072}
   - component: {fileID: 2220223904864957838}
+  - component: {fileID: 2141839814}
+  - component: {fileID: 2141839813}
   m_Layer: 2
   m_Name: Fridge_SBS_DrawerUpperR
   m_TagString: Untagged
@@ -249,6 +317,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2141839814
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400470312936993510}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.41038603, y: 0.13525093, z: 0.36792463}
+  m_Center: {x: -0.25479332, y: -0.009677311, z: -0.07955292}
+--- !u!114 &2141839813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400470312936993510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0.1
+  limit: 0.3
+  rotationInteractable: 0
+  axis: 2
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &3871657386883061693
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,6 +359,8 @@ GameObject:
   - component: {fileID: 8921027545911651031}
   - component: {fileID: 8344808285941814359}
   - component: {fileID: 8597051475909107624}
+  - component: {fileID: 861102478}
+  - component: {fileID: 861102477}
   m_Layer: 2
   m_Name: Fridge_SBS_DrawerUpperL
   m_TagString: Untagged
@@ -332,6 +433,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &861102478
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3871657386883061693}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.29701108, y: 0.13525099, z: 0.3679246}
+  m_Center: {x: 0.20973751, y: -0.2921638, z: -0.07955299}
+--- !u!114 &861102477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3871657386883061693}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0.1
+  limit: 0.3
+  rotationInteractable: 0
+  axis: 2
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &4043044886733577874
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +642,8 @@ GameObject:
   - component: {fileID: 6145127772196984969}
   - component: {fileID: 826325671158898269}
   - component: {fileID: 581771309779593335}
+  - component: {fileID: 508726781}
+  - component: {fileID: 508726780}
   m_Layer: 2
   m_Name: Fridge_SBS_DrawerLowerR
   m_TagString: Untagged
@@ -582,6 +716,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &508726781
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4266947619814997415}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.41038603, y: 0.13525075, z: 0.36792463}
+  m_Center: {x: -0.25479332, y: -0.67185223, z: -0.07955292}
+--- !u!114 &508726780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4266947619814997415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0.1
+  limit: 0.3
+  rotationInteractable: 0
+  axis: 2
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &8447197966039939984
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,6 +758,8 @@ GameObject:
   - component: {fileID: 3618567672207020283}
   - component: {fileID: 2291841977078399152}
   - component: {fileID: 2472264603854792820}
+  - component: {fileID: 1944484268}
+  - component: {fileID: 1944484267}
   m_Layer: 2
   m_Name: Fridge_SBS_DoorR
   m_TagString: Untagged
@@ -665,6 +832,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1944484268
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8447197966039939984}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5070382, y: 0.6570494, z: 0.05670012}
+  m_Center: {x: 0.25351933, y: 0.3285247, z: 0.028349986}
+--- !u!114 &1944484267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8447197966039939984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 5
+  limit: 120
+  rotationInteractable: 1
+  axis: 1
+  sign: -1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &8641631251492194408
 GameObject:
   m_ObjectHideFlags: 0
@@ -676,6 +874,8 @@ GameObject:
   - component: {fileID: 5705584844192314022}
   - component: {fileID: 3419053179435859790}
   - component: {fileID: 5268034916992147487}
+  - component: {fileID: 1131495398}
+  - component: {fileID: 1131495397}
   m_Layer: 2
   m_Name: Fridge_SBS_DrawerLowerL
   m_TagString: Untagged
@@ -748,3 +948,34 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1131495398
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641631251492194408}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.29701108, y: 0.13525087, z: 0.3679246}
+  m_Center: {x: 0.20973751, y: -0.6720209, z: -0.07955299}
+--- !u!114 &1131495397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641631251492194408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: 0.1
+  limit: 0.3
+  rotationInteractable: 0
+  axis: 2
+  sign: 1
+  interactingControllerPosition: {x: 0, y: 0, z: 0}

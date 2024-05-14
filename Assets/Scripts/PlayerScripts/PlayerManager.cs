@@ -28,6 +28,13 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] bool rightHandedControls;
     [SerializeField] bool leftHandedControls;
 
+    // VR Controllers
+    [SerializeField] GameObject rightController;
+    [SerializeField] GameObject leftController;
+
+    XRRayInteractor rightControllerRay;
+    XRRayInteractor leftControllerRay;
+
     //private PlayerState previousState;
 
     // Mandos de realidad virtual
@@ -38,11 +45,18 @@ public class PlayerManager : MonoBehaviour
 
     public PlayerState state;
 
+    public GameObject mainController;
+
     public bool rightGripPressed;
     public bool leftGripPressed;
 
+    public Interactable selectedInteractable;
+
     void Awake()
     {
+        rightControllerRay = rightController.GetComponent<XRRayInteractor>();
+        leftControllerRay = leftController.GetComponent<XRRayInteractor>();
+
         if (rightHandedControls == true)
         {
             // Left Controller
@@ -306,21 +320,49 @@ public class PlayerManager : MonoBehaviour
     {
         if (context.action.IsPressed() && leftGripPressed == false)
         {
-            /*rightGripPressed = (rightGripPressed == true) ? false : true;*/
             rightGripPressed = true;
+
+            if (state == PlayerState.isFree && mainController.Equals(rightController))
+            {
+                // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
+                if (selectedInteractable == null && rightControllerRay.TryGetCurrent3DRaycastHit(out RaycastHit hit) && hit.collider.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
+                {
+                    selectedInteractable = interactable;
+                    selectedInteractable.interactingControllerPosition = rightController.transform.localPosition;
+                }
+            }
+        }
+        else if (rightGripPressed == true && selectedInteractable != null)
+        {
+            selectedInteractable = null;
+            rightGripPressed = false;
         }
         else
         {
             rightGripPressed = false;
-        }   
+        }
     }
 
     void OnLeftGripAction(InputAction.CallbackContext context)
     {
         if (context.action.IsPressed() && rightGripPressed == false)
         {
-            /*leftGripPressed = (leftGripPressed == true) ? false : true;*/
             leftGripPressed = true;
+
+            if (state == PlayerState.isFree && mainController.Equals(leftController))
+            {
+                // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
+                if (selectedInteractable == null && leftControllerRay.TryGetCurrent3DRaycastHit(out RaycastHit hit) && hit.collider.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
+                {
+                    selectedInteractable = interactable;
+                    selectedInteractable.interactingControllerPosition = leftController.transform.localPosition;
+                }
+            }
+        }
+        else if (leftGripPressed == true && selectedInteractable != null)
+        {
+            selectedInteractable = null;
+            leftGripPressed = false;
         }
         else
         {
