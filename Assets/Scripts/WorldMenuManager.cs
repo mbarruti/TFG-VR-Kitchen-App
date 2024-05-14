@@ -11,12 +11,10 @@ public class WorldMenuManager : MonoBehaviour
     [SerializeField] WallManager _wallManager;
 
     [SerializeField] List<ButtonAnimationToggler> mainButtonsList = new List<ButtonAnimationToggler>();
-
     [SerializeField] List<ButtonAnimationToggler> modelsButtonsList = new List<ButtonAnimationToggler>();
-
     [SerializeField] List<ButtonAnimationToggler> wallsButtonsList = new List<ButtonAnimationToggler>();
-
     [SerializeField] List<ButtonAnimationToggler> viewsButtonsList = new List<ButtonAnimationToggler>();
+    [SerializeField] List<GameObject> secondaryButtonsSections = new List<GameObject>();
 
     // -------------------------------------------
 
@@ -41,6 +39,8 @@ public class WorldMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        ShowSecondaryButtons(3);
+
         foreach (GameObject model in modelsList)
         {
             buildingModel = model.GetComponent<BuildingObject>();
@@ -48,7 +48,7 @@ public class WorldMenuManager : MonoBehaviour
             buildingModel._buildingManager = buildingManager;
         }
         // Deseleccionar todos los objetos en el inicio
-        DeselectAllObjects();
+        //DeselectAllObjects();
     }
 
     // Sin terminar, igual hay que hacerlo con tags o algo
@@ -159,6 +159,40 @@ public class WorldMenuManager : MonoBehaviour
                     button.DeactivateIsSelected();
                 }
                 break;
+        }
+    }
+
+    /// <summary>
+    /// Show the secondary buttons depending on the selected main button
+    /// </summary>
+    public void ShowSecondaryButtons(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                secondaryButtonsSections[0].transform.localPosition = new Vector3(0f, 0f, 0f);
+                secondaryButtonsSections[1].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, -30f, 0f);
+                break;
+
+            case 1:
+                secondaryButtonsSections[0].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[1].transform.localPosition = new Vector3(0f, 0f, 0f);
+                secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, -30f, 0f);
+                break;
+
+            case 2:
+                secondaryButtonsSections[0].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[1].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, 0f, 0f);
+                break;
+
+            case 3:
+                secondaryButtonsSections[0].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[1].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, -30f, 0f);
+                break;
+
         }
     }
 }

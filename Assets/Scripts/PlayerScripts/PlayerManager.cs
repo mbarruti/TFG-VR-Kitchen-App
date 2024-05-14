@@ -281,11 +281,11 @@ public class PlayerManager : MonoBehaviour
                 _buildingManager.selectedBuildingObject.SetTouchpadValues(context.action.ReadValue<Vector2>().x, context.action.ReadValue<Vector2>().y);
                 _buildingManager.selectedBuildingObject.MoveWithTouchpad();
             }
-            //else
-            //{
-            //    _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
-            //    _buildingManager.parentObject.ScaleCollider(context.action.ReadValue<Vector2>().y);
-            //}
+            else if (_worldMenuManager.buildingState == BuildingState.withOffset)
+            {
+                _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
+                _buildingManager.parentObject.SetScale(_buildingManager.selectedBuildingObject);
+            }
         }
         else if (state == PlayerState.isBuildingWalls)
         {

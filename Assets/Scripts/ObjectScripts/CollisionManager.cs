@@ -20,6 +20,8 @@ public class CollisionManager : MonoBehaviour
 
     public BoxCollider boxCollider;
 
+    public Vector3 globalColliderSize;
+
     public List<Collider> detectedColliders;
 
     private void Start()
@@ -85,79 +87,12 @@ public class CollisionManager : MonoBehaviour
             float z = ((i & 4) == 0) ? size.z : -size.z;
 
             vertices[i] = center + new Vector3(x, y, z);
+
             //Debug.Log(vertices[i]);
         }
+
+
     }
-
-    public bool IsInLimit(Collider collider, ContactPoint contactPoint)
-    {
-        //bool allSameSide = false;
-
-        Vector3 auxVertex;
-        //BoxCollider auxCollider = collider as BoxCollider;
-        //auxCollider.center = 
-        //Vector3[] directions = { Vector3.up };
-
-        //Vector3[] vertices = GetBoxVertices();
-        float previousNum = 0;
-        float num = 0;
-        foreach (Vector3 vertex in vertices)
-        {
-            Vector3 closestPoint = collider.ClosestPoint(transform.position);
-            Vector3 diff = closestPoint - transform.position;
-            Vector3 dir = diff.normalized;
-
-            if (Physics.Raycast(transform.position, dir, out var planeHit))
-            {
-                // (A, B, C) vector perpendicular al plano del objeto que esta quieto
-                //Vector3 normal = contactPoint.normal;
-                Vector3 normal = planeHit.normal;
-
-                // (x, y, z) un punto del plano del objeto que esta quieto /*+ Vector3.Dot(planeHit.normal, collider.bounds.extents);*/
-                //Vector3 point = contactPoint.point;
-                Vector3 offset = Vector3.Scale(planeHit.normal, collider.bounds.extents);
-                Vector3 point = collider.transform.position + offset;
-                Debug.DrawRay(point, normal, Color.blue);
-
-                // (x2, y2, z2) punto del vertice del objeto que pretendes mover
-                auxVertex = transform.TransformPoint(vertex);
-
-                // A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
-                // D = -A*x - B*y - C*z Calculo la D de esta forma
-                float d = Vector3.Dot(-normal, point);
-
-                // A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
-                num = Vector3.Dot(normal, auxVertex) + d;
-                if (num != 0 && previousNum == 0) previousNum = num;
-
-                // Si la siguiente operacion es negativa, significa que el vertice asociado al valor num esta al otro lado del plano
-                if (num * previousNum < 0) return false;
-
-                // Si algun valor tiene signo distinto a los demas, esta al otro lado del plano
-                //if (num > 0 && previousNum < 0)
-                //{
-                //    //Debug.Log(vertex);
-                //    return false;
-                //}
-                //if (num < 0 && previousNum > 0)
-                //{
-                //    //Debug.Log(vertex);
-                //    return false;
-                //}
-            }
-        }
-        return true;
-    }
-
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    Collider collider = collision.collider;
-    //    //Debug.Log("sale");
-    //    if (detectedColliders.Contains(collider))
-    //    {
-    //        detectedColliders.Remove(collider);
-    //    }
-    //}
 
     /// <summary>
     /// Rotate the object in the Y axis
@@ -168,10 +103,10 @@ public class CollisionManager : MonoBehaviour
     }
 
     // Escala el collider según el valor del eje Y del mando derecho
-    public void ScaleCollider(float value)
+    public void ScaleColliderManager(float value)
     {
         float scaleAmount = value * Time.deltaTime;
-        boxCollider.size += Vector3.one * scaleAmount;
+        transform.localScale += Vector3.one * scaleAmount;
     }
 
     //public void SavePreviousTransform()
@@ -214,9 +149,12 @@ public class CollisionManager : MonoBehaviour
 
         // Por ahora funciona, pero hay que probar con objetos de cocina con distintas formas por si acaso
         //boxCollider.size = new Vector3(selectedObject.transform.localScale.x, selectedObject.transform.localScale.y, selectedObject.transform.localScale.z);
+        transform.localScale = new Vector3(selectedObject.transform.localScale.x, selectedObject.transform.localScale.y, selectedObject.transform.localScale.z);
         boxCollider.size = new Vector3(selectedObject.boxCollider.size.x, selectedObject.boxCollider.size.y, selectedObject.boxCollider.size.z);
 
         // Update the vertices of the collider
         SetBoxVertices();
+
+        globalColliderSize = Vector3.Scale(boxCollider.size, transform.lossyScale);
     }
 }

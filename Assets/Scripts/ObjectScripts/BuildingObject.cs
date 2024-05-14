@@ -48,6 +48,8 @@ public class BuildingObject : MonoBehaviour
 
     public BoxCollider boxCollider;
 
+    public List<BoxCollider> colliderList = new List<BoxCollider>();
+
     public Rigidbody objectRigidbody;
 
     public bool isInteractable;
@@ -391,22 +393,11 @@ public class BuildingObject : MonoBehaviour
         _buildingManager.parentObject.RotateObject(value);
     }
 
-    public void SetInteraction()
-    {
-
-    }
-
-    public void Interact(GameObject interactable)
-    {
-
-    }
-
     // Escala según el valor del eje Y del mando derecho (falta prohibir que se escale a menor o igual que 0)
     public void ScaleObject(float value)
     {
         float scaleAmount = value * Time.deltaTime;
         transform.localScale += Vector3.one * scaleAmount;
-        Debug.Log(transform.TransformVector(boxCollider.size));
     }
 
     public void AssignMaterial(Material material)
@@ -431,5 +422,13 @@ public class BuildingObject : MonoBehaviour
         gameObject.transform.position = new Vector3(_lastPos.x, _lastPos.y, _lastPos.z);
         gameObject.transform.eulerAngles = new Vector3(_lastRot.x, _lastRot.y, _lastRot.z);
         gameObject.transform.localScale = new Vector3(_lastScale.x, _lastScale.y, _lastScale.z);
+    }
+
+    public void DisableColliders()
+    {
+        foreach(BoxCollider subCollider in colliderList)
+        {
+            subCollider.enabled = false;
+        }
     }
 }

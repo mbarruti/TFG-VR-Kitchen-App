@@ -12,6 +12,13 @@ GameObject:
   - component: {fileID: 7162634214157828333}
   - component: {fileID: 8913631792129083293}
   - component: {fileID: 3938643006532308315}
+  - component: {fileID: 1575977206878566669}
+  - component: {fileID: 2884526407094074464}
+  - component: {fileID: 713870310604176790}
+  - component: {fileID: 7138941438194807749}
+  - component: {fileID: 6057424401967736752}
+  - component: {fileID: 3527472830754029618}
+  - component: {fileID: 4319258967626092095}
   m_Layer: 2
   m_Name: shelf_03
   m_TagString: Untagged
@@ -93,10 +100,101 @@ BoxCollider:
   m_GameObject: {fileID: 1739430440014336029}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.80224586, y: 0.5986434, z: 3.2776256}
   m_Center: {x: -0.00000011920929, y: 0, z: 0.43272445}
+--- !u!65 &1575977206878566669
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739430440014336029}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.80224586, y: 0.5986434, z: 0.0591297}
+  m_Center: {x: -0.00000011920929, y: 2.5085558e-15, z: -1.1765237}
+--- !u!65 &2884526407094074464
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739430440014336029}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.80224586, y: 0.5986434, z: 0.0591297}
+  m_Center: {x: -0.00000011920929, y: -1.2710543e-15, z: -0.4105574}
+--- !u!65 &713870310604176790
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739430440014336029}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.80224586, y: 0.5986434, z: 0.07351388}
+  m_Center: {x: -0.00000011920929, y: 1.4926271e-15, z: 0.3949656}
+--- !u!65 &7138941438194807749
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739430440014336029}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.80224586, y: 0.5986434, z: 0.06272589}
+  m_Center: {x: -0.00000011920929, y: -3.3346027e-15, z: 1.2346516}
+--- !u!65 &6057424401967736752
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739430440014336029}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.80224586, y: 0.5986434, z: 0.06272553}
+  m_Center: {x: -0.00000011920929, y: -5.709239e-16, z: 2.0401747}
+--- !u!65 &3527472830754029618
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739430440014336029}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.068644404, y: 0.5986434, z: 3.2776253}
+  m_Center: {x: -0.36680084, y: 9.56041e-16, z: 0.43272448}
+--- !u!65 &4319258967626092095
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1739430440014336029}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.06504834, y: 0.5986434, z: 3.2776253}
+  m_Center: {x: 0.36859864, y: 9.56041e-16, z: 0.43272448}
 --- !u!1 &2051026869031950669
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,6 +261,7 @@ MonoBehaviour:
   collisionMaterials: []
   surfaceObject: {fileID: 0}
   surfaceNormal: {x: 0, y: 0, z: 0}
+  rotationLocked: 0
   vertices:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
@@ -179,11 +278,21 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
+  interactables: []
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
   boxCollider: {fileID: 3938643006532308315}
+  colliderList:
+  - {fileID: 1575977206878566669}
+  - {fileID: 2884526407094074464}
+  - {fileID: 713870310604176790}
+  - {fileID: 7138941438194807749}
+  - {fileID: 6057424401967736752}
+  - {fileID: 3527472830754029618}
+  - {fileID: 4319258967626092095}
   objectRigidbody: {fileID: -6769167583213491866}
+  isInteractable: 0
   isPlaced: 0
   isInLimit: 1
   detectedColliders: []

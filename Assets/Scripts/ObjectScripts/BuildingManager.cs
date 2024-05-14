@@ -308,11 +308,11 @@ public class BuildingManager : MonoBehaviour
 
         //parentObject.transform.position = SetFirstObjectPosition();
         Collider[] colliderList;
-        colliderList = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
+        colliderList = Physics.OverlapBox(parentObject.transform.position, parentObject.globalColliderSize / 2, parentObject.transform.rotation);
         foreach (Collider collider in colliderList)
         //foreach (Collider collider in parentObject.detectedColliders)
         {
-            if (/*collider != hit.collider &&*/ collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
+            if (collider != hit.collider && collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
             {
                 //Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
                 //Vector3 diff = closestPoint - selectedBuildingObject.transform.position;
@@ -328,7 +328,6 @@ public class BuildingManager : MonoBehaviour
                 Ray ray = new Ray(selectedBuildingObject.transform.position, dir);
                 if (collider.Raycast(ray, out RaycastHit planeHit, 100f))
                 {
-                    //Debug.Log(planeHit.normal);
                     Debug.DrawRay(closestPoint, planeHit.normal, Color.blue);
 
                     //if (planeHit.normal == -hit.normal) return parentObject.transform.position;
@@ -542,7 +541,11 @@ public class BuildingManager : MonoBehaviour
         //selectedBuildingObject.transform.position = new Vector3(0, 50f, 0);
         selectedBuildingObject._buildingManager = this;
 
-        if (worldMenuManager.buildingState == BuildingState.withPhysics)
+        if (worldMenuManager.buildingState == BuildingState.withOffset)
+        {
+            selectedBuildingObject.DisableColliders();
+        }
+        else if (worldMenuManager.buildingState == BuildingState.withPhysics)
         {
             // Set the rotation of the object so its local Z axis points at the same direction as the normal hit
             selectedBuildingObject.surfaceNormal = hit.normal;
