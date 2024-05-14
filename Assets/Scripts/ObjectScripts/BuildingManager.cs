@@ -312,7 +312,7 @@ public class BuildingManager : MonoBehaviour
         foreach (Collider collider in colliderList)
         //foreach (Collider collider in parentObject.detectedColliders)
         {
-            if (collider != hit.collider && collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
+            if (/*collider != hit.collider &&   If not ignored, doesn't work in small angles*/ collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
             {
                 //Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
                 //Vector3 diff = closestPoint - selectedBuildingObject.transform.position;

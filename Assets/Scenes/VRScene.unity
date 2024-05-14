@@ -1671,7 +1671,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 238887255}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.05, y: 2.05, z: 0}
+  m_LocalPosition: {x: 8.35, y: 2.05, z: 1.3699999}
   m_LocalScale: {x: 0.1, y: 4, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4270,6 +4270,7 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   canPlace: 0
   boxCollider: {fileID: 503942688}
+  globalColliderSize: {x: 0, y: 0, z: 0}
   detectedColliders: []
 --- !u!54 &503942691
 Rigidbody:
@@ -9689,7 +9690,7 @@ MonoBehaviour:
   - {fileID: 203794091}
   buildingState: 1
   isOpened: 0
-  selectedModel: {fileID: 7560832673869584609, guid: 80c8fc64d03caf549ac06802862d8722, type: 3}
+  selectedModel: {fileID: 389367885133257743, guid: 827e594115c6c5c49ad572a008d463cc, type: 3}
   modelsList:
   - {fileID: 389367885133257743, guid: 827e594115c6c5c49ad572a008d463cc, type: 3}
   - {fileID: 4814529330157832166, guid: 31da3b57cb7e09b4eb35b5de5094b535, type: 3}
@@ -10142,7 +10143,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1181183513
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10214,7 +10215,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1181183512}
   m_LocalRotation: {x: 0, y: 0.39418256, z: 0, w: 0.9190322}
-  m_LocalPosition: {x: 1.13, y: 2.05, z: 1.24}
+  m_LocalPosition: {x: 5.4300003, y: 2.05, z: 2.61}
   m_LocalScale: {x: 0.1, y: 4, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15399,7 +15400,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1846049966}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.05, z: 4.05}
+  m_LocalPosition: {x: 4.3, y: 2.05, z: 5.42}
   m_LocalScale: {x: 0.1, y: 4, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
