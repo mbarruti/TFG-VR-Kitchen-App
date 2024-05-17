@@ -34,7 +34,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1739430440014336029}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4344234, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -205,6 +205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6202517011760102702}
   - component: {fileID: -6769167583213491866}
+  - component: {fileID: 5110798951755875571}
   - component: {fileID: 4516716724861262925}
   m_Layer: 2
   m_Name: Shelf_Type3
@@ -245,6 +246,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!65 &5110798951755875571
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2051026869031950669}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.8020818, y: 3.2784357, z: 0.5989084}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4516716724861262925
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +273,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outline: {fileID: 0}
   collisionMaterials: []
+  twoAxisScalling: 1
   surfaceObject: {fileID: 0}
   surfaceNormal: {x: 0, y: 0, z: 0}
   rotationLocked: 0
@@ -282,7 +297,7 @@ MonoBehaviour:
   _buildingManager: {fileID: 0}
   canPlace: 0
   meshRenderer: {fileID: 0}
-  boxCollider: {fileID: 3938643006532308315}
+  boxCollider: {fileID: 5110798951755875571}
   colliderList:
   - {fileID: 1575977206878566669}
   - {fileID: 2884526407094074464}

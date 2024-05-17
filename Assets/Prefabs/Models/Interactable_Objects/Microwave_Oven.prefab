@@ -239,6 +239,8 @@ MonoBehaviour:
   canPlace: 0
   meshRenderer: {fileID: 0}
   boxCollider: {fileID: 4201744035964574198}
+  colliderList:
+  - {fileID: 1307872087936196012}
   objectRigidbody: {fileID: 7291188383024674668}
   isInteractable: 1
   isPlaced: 0

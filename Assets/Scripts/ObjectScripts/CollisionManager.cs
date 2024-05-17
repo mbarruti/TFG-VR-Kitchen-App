@@ -157,4 +157,9 @@ public class CollisionManager : MonoBehaviour
 
         globalColliderSize = Vector3.Scale(boxCollider.size, transform.lossyScale);
     }
+
+    public void SetRotation(BuildingObject selectedObject)
+    {
+        transform.rotation = selectedObject.transform.rotation;
+    }
 }

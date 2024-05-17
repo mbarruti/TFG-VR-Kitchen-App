@@ -11,6 +11,8 @@ public class BuildingObject : MonoBehaviour
 
     [SerializeField] Material[] collisionMaterials;
 
+    [SerializeField] bool twoAxisScalling;
+
     // Aqui se guardan las transformaciones previas a la edicion del objeto seleccionado
     //private Transform lastTransform;
     private Vector3 _lastPos;
@@ -393,11 +395,49 @@ public class BuildingObject : MonoBehaviour
         _buildingManager.parentObject.RotateObject(value);
     }
 
-    // Escala según el valor del eje Y del mando derecho (falta prohibir que se escale a menor o igual que 0)
-    public void ScaleObject(float value)
+    // Scale object
+    public void ScaleObject(Vector2 value, bool leftTriggerPressed)
     {
-        float scaleAmount = value * Time.deltaTime;
-        transform.localScale += Vector3.one * scaleAmount;
+        //float scaleAmountY = 0f;
+        //float scaleAmountX = 0f;
+
+        Vector3 scaleAmount = Vector3.zero;
+
+        if (twoAxisScalling == true && leftTriggerPressed)
+        {
+            // Y axis scaling depends on Y value of the touchpad
+            if (value.y >= 0.8f || value.y <= -0.8f)
+            {
+                Debug.Log(value.y);
+                //if (transform.localScale.y - scaleAmount.y >= 0.15f) scaleAmount.y = value.y * Time.deltaTime;
+                //else scaleAmount.y += 0.15f - transform.localScale.y;
+                scaleAmount.y = value.y * Time.deltaTime;
+            }
+            // X axis scaling depends on X value of the touchpad
+            if (value.x >= 0.8f || value.x <= -0.8f)
+            {
+                //if (transform.localScale.x - scaleAmount.x >= 0.15f) scaleAmount.x = value.x * Time.deltaTime;
+                //else scaleAmount.x += 0.15f - transform.localScale.x;
+                scaleAmount.x = value.x * Time.deltaTime;
+            }
+        }
+        else // Every axis is scaled depending on the Y value of the touchpad
+        {
+            //if (transform.localScale.x - scaleAmount.x >= 0.15f) scaleAmount.x = value.y * Time.deltaTime;
+            //else scaleAmount.x += 0.15f - transform.localScale.x;
+
+            //if (transform.localScale.y - scaleAmount.y >= 0.15f) scaleAmount.y = value.y * Time.deltaTime;
+            //else scaleAmount.y += 0.15f - transform.localScale.y;
+
+            //if (transform.localScale.z - scaleAmount.z >= 0.15f) scaleAmount.z = value.y * Time.deltaTime;
+            //else scaleAmount.z += 0.15f - transform.localScale.z;
+
+            scaleAmount.x = value.y * Time.deltaTime;
+            scaleAmount.y = value.y * Time.deltaTime;
+            scaleAmount.z = value.y * Time.deltaTime;
+        }
+
+        transform.localScale = new Vector3(Mathf.Clamp(transform.localScale.x + scaleAmount.x, 0.15f, 2f), Mathf.Clamp(transform.localScale.y + scaleAmount.y, 0.15f, 2f), Mathf.Clamp(transform.localScale.z + scaleAmount.z, 0.15f, 2f));
     }
 
     public void AssignMaterial(Material material)

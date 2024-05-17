@@ -35,6 +35,8 @@ public class PlayerManager : MonoBehaviour
     XRRayInteractor rightControllerRay;
     XRRayInteractor leftControllerRay;
 
+    public bool leftTriggerPressed = false;
+
     //private PlayerState previousState;
 
     // Mandos de realidad virtual
@@ -86,7 +88,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
-        updateStates();
+        UpdateStates();
     }
 
     private void OnDestroy()
@@ -105,7 +107,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     // Actualiza el estado del jugador, dependiendo de la situacion
-    public void updateStates()
+    public void UpdateStates()
     {
         if (state != PlayerState.isBuildingWalls)
         {
@@ -140,11 +142,8 @@ public class PlayerManager : MonoBehaviour
 
     void OnLeftTriggerAction(InputAction.CallbackContext context)
     {
-        //if (state == PlayerState.isBuilding)
-        //{
-        //    _buildingManager.selectedBuildingObject.RotateObject();
-        //    _buildingManager.parentObject.RotateObject();
-        //}
+        if (context.action.IsPressed()) leftTriggerPressed = true;
+        else leftTriggerPressed = false;
     }
 
     void OnStartAction(InputAction.CallbackContext context)
@@ -258,11 +257,11 @@ public class PlayerManager : MonoBehaviour
         }
         else if (state == PlayerState.isBuildingWalls)
         {
-            if (_wallManager.poleList.Count > 0)
-            {
-                Debug.Log("TO-DO");
-            }
-            else
+            //if (_wallManager.poleList.Count > 0)
+            //{
+            //    Debug.Log("TO-DO");
+            //}
+            /*else*/ if (_wallManager.poleList.Count <= 0)
             {
                 //_wallManager.wall.axisX = false;
                 //_wallManager.wall.axisZ = true;
@@ -278,12 +277,20 @@ public class PlayerManager : MonoBehaviour
         {
             if (_worldMenuManager.buildingState == BuildingState.withPhysics)
             {
-                _buildingManager.selectedBuildingObject.SetTouchpadValues(context.action.ReadValue<Vector2>().x, context.action.ReadValue<Vector2>().y);
-                _buildingManager.selectedBuildingObject.MoveWithTouchpad();
+                if (leftTriggerPressed)
+                {
+                    _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>(), leftTriggerPressed);
+                    _buildingManager.parentObject.SetScale(_buildingManager.selectedBuildingObject);
+                }
+                else
+                {
+                    _buildingManager.selectedBuildingObject.SetTouchpadValues(context.action.ReadValue<Vector2>().x, context.action.ReadValue<Vector2>().y);
+                    _buildingManager.selectedBuildingObject.MoveWithTouchpad();
+                }
             }
             else if (_worldMenuManager.buildingState == BuildingState.withOffset)
             {
-                _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>().y);
+                _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>(), leftTriggerPressed);
                 _buildingManager.parentObject.SetScale(_buildingManager.selectedBuildingObject);
             }
         }

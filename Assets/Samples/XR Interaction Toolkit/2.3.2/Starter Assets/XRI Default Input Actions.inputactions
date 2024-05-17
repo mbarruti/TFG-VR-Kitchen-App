@@ -2142,7 +2142,7 @@
                     "id": "c3e0dafb-4d4a-41e4-b2cb-2b6fcb85ddc2",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
@@ -2238,7 +2238,7 @@
                     "name": "",
                     "id": "563d1180-bb12-4eb7-8beb-277fec6558ce",
                     "path": "<XRController>{LeftHand}/triggerPressed",
-                    "interactions": "",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "Left Trigger Action",

@@ -118,8 +118,8 @@ public class BuildingManager : MonoBehaviour
             // Check for rotations if not locked
             if (selectedBuildingObject.rotationLocked == false)
             {
-                if (playerManager.rightGripPressed == true) selectedBuildingObject.RotateObject(1f);
-                else if (playerManager.leftGripPressed == true) selectedBuildingObject.RotateObject(-1f);
+                if (playerManager.rightGripPressed == true) selectedBuildingObject.RotateObject(-1f);
+                else if (playerManager.leftGripPressed == true) selectedBuildingObject.RotateObject(1f);
             }
 
             if (worldMenuManager.buildingState == BuildingState.withOffset)
@@ -560,6 +560,7 @@ public class BuildingManager : MonoBehaviour
 
         // Match the scale of the colliders
         parentObject.SetScale(selectedBuildingObject);
+        parentObject.SetRotation(selectedBuildingObject);
     }
 
     // FUNCIONES LLAMADAS EN PlayerActions
@@ -649,6 +650,7 @@ public class BuildingManager : MonoBehaviour
 
             // Match the scale of the colliders
             parentObject.SetScale(selectedBuildingObject);
+            parentObject.SetRotation(selectedBuildingObject);
         }
     }
 
