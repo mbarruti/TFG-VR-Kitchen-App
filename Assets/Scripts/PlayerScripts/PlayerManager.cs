@@ -131,7 +131,8 @@ public class PlayerManager : MonoBehaviour
     {
         if (state == PlayerState.isBuilding /*&& _buildingManager.selectedBuildingObject.canPlace == true*/)
         {
-            _buildingManager.PlaceObject();
+            if (_worldMenuManager.buildingState == BuildingState.withTrigger && _buildingManager.parentObject.detectedColliders.Count == 2) _buildingManager.PlaceObject();
+            else if (_worldMenuManager.buildingState == BuildingState.withOffset || _worldMenuManager.buildingState == BuildingState.withPhysics) _buildingManager.PlaceObject();
         }
         else if (state == PlayerState.isBuildingWalls && _wallManager.hit.collider != null)
         {
@@ -329,6 +330,7 @@ public class PlayerManager : MonoBehaviour
         {
             rightGripPressed = true;
 
+            // TO-DO: cuando se quiera interactuar con objetos, el raycast ignore los colliders que no tengan component Interactable
             if (state == PlayerState.isFree && mainController.Equals(rightController))
             {
                 // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
@@ -356,6 +358,7 @@ public class PlayerManager : MonoBehaviour
         {
             leftGripPressed = true;
 
+            // TO-DO: cuando se quiera interactuar con objetos, el raycast ignore los colliders que no tengan component Interactable
             if (state == PlayerState.isFree && mainController.Equals(leftController))
             {
                 // If there is not an interactable selected and one is hit while the grip is pressed, it is selected

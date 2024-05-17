@@ -101,6 +101,7 @@ MonoBehaviour:
   interactables: []
   _buildingManager: {fileID: 0}
   canPlace: 0
+  canBePlaced: 0
   meshRenderer: {fileID: 0}
   boxCollider: {fileID: 7822235047046860139}
   colliderList:

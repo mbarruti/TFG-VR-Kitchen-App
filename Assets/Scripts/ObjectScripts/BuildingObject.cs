@@ -43,8 +43,11 @@ public class BuildingObject : MonoBehaviour
 
     public BuildingManager _buildingManager;
 
-    // Indica si se puede colocar el objeto o no
+    // Indica si se puede posicionar donde este el CollisionManager
     public bool canPlace;
+
+    // If it can be placed in the world (por ahora solo con withTrigger)
+    public bool canBePlaced;
 
     public MeshRenderer meshRenderer;
 
@@ -72,6 +75,23 @@ public class BuildingObject : MonoBehaviour
 
         SetBoxVertices();
     }
+
+    //private void OnCollisionStay(Collision collision)
+    //{
+    //    if (collision.collider != _buildingManager.hit.collider)
+    //    {
+    //        //Debug.Log("No se puede");
+    //        canBePlaced = false;
+    //    }
+    //}
+
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.collider != _buildingManager.hit.collider)
+    //    {
+    //        canBePlaced = true;
+    //    }
+    //}
 
     //private void Update()
     //{
@@ -469,6 +489,14 @@ public class BuildingObject : MonoBehaviour
         foreach(BoxCollider subCollider in colliderList)
         {
             subCollider.enabled = false;
+        }
+    }
+
+    public void EnableColliders()
+    {
+        foreach (BoxCollider subCollider in colliderList)
+        {
+            subCollider.enabled = true;
         }
     }
 }

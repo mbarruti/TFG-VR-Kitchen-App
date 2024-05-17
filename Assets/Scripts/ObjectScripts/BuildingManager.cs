@@ -126,7 +126,7 @@ public class BuildingManager : MonoBehaviour
             {
                 parentObject.transform.position = _hitPos;
                 //parentObject.transform.position = SetFirstObjectPosition();
-                parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(hit), 0f);
+                parentObject.transform.position = UpdateOffset(SetHitObjectOffset(hit), 0f);
 
                 //if (selectedBuildingObject.canPlace == true)
                 //{
@@ -159,6 +159,12 @@ public class BuildingManager : MonoBehaviour
 
                 //UpdateOffset();
                 //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
+            }
+            else if (worldMenuManager.buildingState == BuildingState.withTrigger)
+            {
+                parentObject.transform.position = _hitPos;
+
+                selectedBuildingObject.transform.position = SetHitObjectOffset(hit);
             }
 
             // Actualizar materiales de colision
@@ -400,7 +406,7 @@ public class BuildingManager : MonoBehaviour
         //Debug.Log(offset);
     }
 
-    private Vector3 SetFirstObjectPosition(RaycastHit auxHit)
+    private Vector3 SetHitObjectOffset(RaycastHit auxHit)
     {
         //localPlaneHit.transform.position = _hitPos;
         localPlaneHit.transform.position = auxHit.point;
@@ -545,6 +551,11 @@ public class BuildingManager : MonoBehaviour
         {
             selectedBuildingObject.DisableColliders();
         }
+        else if (worldMenuManager.buildingState == BuildingState.withTrigger)
+        {
+            //selectedBuildingObject.boxCollider.isTrigger = true;
+            selectedBuildingObject.DisableColliders();
+        }
         else if (worldMenuManager.buildingState == BuildingState.withPhysics)
         {
             // Set the rotation of the object so its local Z axis points at the same direction as the normal hit
@@ -563,8 +574,6 @@ public class BuildingManager : MonoBehaviour
         parentObject.SetRotation(selectedBuildingObject);
     }
 
-    // FUNCIONES LLAMADAS EN PlayerActions
-
     // Colocar el objeto pendiente en la posicion indicada
     public void PlaceObject()
     {
@@ -581,28 +590,29 @@ public class BuildingManager : MonoBehaviour
         //else 
         //{
         //selectedBuildingObject.boxCollider.isTrigger = false;
+        
+        //if (selectedBuildingObject.canBePlaced) // Por ahora este if solo es para el estado withTrigger
+        //{
+            // Change the layer to Default so the Raycast can interact with the object
+            selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Default");
 
-        // Change the layer to Default so the Raycast can interact with the object
-        selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Default");
+            // Change to kinematic rigidbody so OnCollisionStay isn't called
+            selectedBuildingObject.objectRigidbody.isKinematic = true;
+            selectedBuildingObject.isPlaced = true;
 
-        // Change to kinematic rigidbody so OnCollisionStay isn't called
-        selectedBuildingObject.objectRigidbody.isKinematic = true;
-        selectedBuildingObject.isPlaced = true;
+            if (worldMenuManager.buildingState == BuildingState.withPhysics)
+                selectedBuildingObject.objectRigidbody.constraints = RigidbodyConstraints.FreezePosition;
 
-        if (worldMenuManager.buildingState == BuildingState.withPhysics)
-            selectedBuildingObject.objectRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+            // "Soltamos" el objeto seleccionado
+            selectedBuildingObject = null;
+            //}
 
-        // "Soltamos" el objeto seleccionado
-        selectedBuildingObject = null;
+            pendingObject = null;
+            //offset = new Vector3(0, 0, 0);
+
+            // Reset the transform of the collision manager
+            parentObject.Reset();
         //}
-
-        pendingObject = null;
-        //offset = new Vector3(0, 0, 0);
-
-        Debug.Log(parentObject.boxCollider.bounds.extents);
-
-        // Reset the transform of the collision manager
-        parentObject.Reset();
     }
 
     // Cancelar la colocacion del objeto pendiente
@@ -645,7 +655,18 @@ public class BuildingManager : MonoBehaviour
             selectedBuildingObject.objectRigidbody.isKinematic = false;
             selectedBuildingObject.isPlaced = false;
 
-            if (worldMenuManager.buildingState == BuildingState.withPhysics)
+            if (worldMenuManager.buildingState == BuildingState.withOffset)
+            {
+                selectedBuildingObject.boxCollider.enabled = true;
+                selectedBuildingObject.DisableColliders();
+            }
+            else if (worldMenuManager.buildingState == BuildingState.withTrigger)
+            {
+                //selectedBuildingObject.boxCollider.enabled = true;
+                //selectedBuildingObject.boxCollider.isTrigger = true;
+                selectedBuildingObject.DisableColliders();
+            }
+            else if (worldMenuManager.buildingState == BuildingState.withPhysics)
                 selectedBuildingObject.objectRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
 
             // Match the scale of the colliders
@@ -654,17 +675,20 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public void DestroyObject()
-    {
-        if (hitObject != null)
-        {
-            Destroy(hitObject.gameObject);
-        }
-    }
-
     // Cancelar la transformacion del objeto del mundo seleccionado
     public void CancelObjectTransform()
     {
+        if (worldMenuManager.buildingState == BuildingState.withOffset)
+        {
+            selectedBuildingObject.boxCollider.enabled = false;
+            selectedBuildingObject.EnableColliders();
+        }
+        else if (worldMenuManager.buildingState == BuildingState.withTrigger)
+        {
+            //selectedBuildingObject.boxCollider.enabled = false;
+            //selectedBuildingObject.boxCollider.isTrigger = false;
+            selectedBuildingObject.EnableColliders();
+        }
         if (worldMenuManager.buildingState == BuildingState.withPhysics)
             selectedBuildingObject.objectRigidbody.constraints = RigidbodyConstraints.FreezePosition;
 
@@ -687,5 +711,16 @@ public class BuildingManager : MonoBehaviour
 
         // Reset the transform of the collision manager
         parentObject.Reset();
+    }
+
+    /// <summary>
+    /// Destroy the object from the world
+    /// </summary>
+    public void DestroyObject()
+    {
+        if (hitObject != null)
+        {
+            Destroy(hitObject.gameObject);
+        }
     }
 }
