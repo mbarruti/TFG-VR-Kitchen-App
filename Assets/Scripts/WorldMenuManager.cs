@@ -47,7 +47,7 @@ public class WorldMenuManager : MonoBehaviour
         }
         else
         {
-            mainButtonsList[4].gameObject.SetActive(false);
+            mainButtonsList[4].transform.localPosition = new Vector3(0, -100f, 0);
         }
 
         foreach (GameObject model in modelsList)
@@ -114,8 +114,8 @@ public class WorldMenuManager : MonoBehaviour
 
         wallList = _wallManager.wallList;
 
-        mainButtonsList[0].transform.localPosition = new Vector3(0, 0f, 0);
-        mainButtonsList[1].transform.localPosition = new Vector3(0, 0f, 0);
+        mainButtonsList[0].transform.localPosition = new Vector3(-1.6f, 1.2f, 0);
+        mainButtonsList[1].transform.localPosition = new Vector3(-1.7f, 1.2f, 0);
         mainButtonsList[4].transform.localPosition = new Vector3(0, -100f, 0);
         hideWorldMenu();
 
