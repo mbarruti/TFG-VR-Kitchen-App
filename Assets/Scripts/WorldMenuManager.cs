@@ -39,7 +39,16 @@ public class WorldMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        ShowSecondaryButtons(3);
+        if (_playerManager.state == PlayerState.isBuildingWalls)
+        {
+            mainButtonsList[0].transform.localPosition = new Vector3(0, -100f, 0);
+            mainButtonsList[1].transform.localPosition = new Vector3(0, -100f, 0);
+            ShowSecondaryButtons(3);
+        }
+        else
+        {
+            mainButtonsList[4].gameObject.SetActive(false);
+        }
 
         foreach (GameObject model in modelsList)
         {

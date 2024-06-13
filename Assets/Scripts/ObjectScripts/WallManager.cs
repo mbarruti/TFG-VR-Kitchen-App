@@ -18,7 +18,11 @@ public class WallManager : MonoBehaviour
 
     [SerializeField] PlayerManager playerManager;
 
+    [SerializeField] WorldMenuManager worldMenuManager;
+
     [SerializeField] GameObject poleParent;
+
+    [SerializeField] Views viewsCamera;
 
     //[SerializeField] List<BuildingWall> wallList;
 
@@ -472,6 +476,9 @@ public class WallManager : MonoBehaviour
         // Calculate the center point of the four corners
         //Vector3 centerPoint = Vector3.zero;
         Vector3 centerPoint = (bottomLeftFront + topRightBack + bottomRightFront + topLeftBack) / 4f;
+
+        // Add the value to the menu variable
+        viewsCamera.wallsCenterPoint = centerPoint;
 
         Vector3 ceilingSize = new Vector3(
             Mathf.Abs(topRightBack.x - bottomLeftFront.x),
