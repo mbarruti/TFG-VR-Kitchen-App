@@ -134,10 +134,13 @@ public class PlayerManager : MonoBehaviour
             if (_worldMenuManager.buildingState == BuildingState.withTrigger && _buildingManager.parentObject.detectedColliders.Count == 2) _buildingManager.PlaceObject();
             else if (_worldMenuManager.buildingState == BuildingState.withOffset || _worldMenuManager.buildingState == BuildingState.withPhysics) _buildingManager.PlaceObject();
         }
-        else if (state == PlayerState.isBuildingWalls && _wallManager.hit.collider != null)
+        else if (state == PlayerState.isBuildingWalls)
         {
-            if (_wallManager.finish == false) _wallManager.SetStartPole();
-            else _wallManager.SetEndPole();
+            if (!_worldMenuManager.isOpened && _wallManager.hit.collider != null)
+            {
+                if (_wallManager.finish == false) _wallManager.SetStartPole();
+                else _wallManager.SetEndPole();
+            }
         }
     }
 

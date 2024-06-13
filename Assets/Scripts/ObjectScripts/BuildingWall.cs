@@ -41,6 +41,7 @@ public class BuildingWall : MonoBehaviour
         startPole.transform.localScale = new Vector3(startPole.transform.localScale.x, heightOffset, startPole.transform.localScale.z);
         endPole.transform.localScale = new Vector3(endPole.transform.localScale.x, heightOffset, endPole.transform.localScale.z);
 
+        // TO-DO: probar sin esta ultima linea
         transform.localScale = new Vector3(transform.localScale.x, startPole.transform.localScale.y, transform.localScale.z);
     }
 

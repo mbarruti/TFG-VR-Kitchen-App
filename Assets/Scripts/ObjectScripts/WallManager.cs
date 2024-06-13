@@ -104,6 +104,7 @@ public class WallManager : MonoBehaviour
                         endPole.transform.position = hit.collider.transform.position;
                     }
                 }
+                // If wall will be rotated
                 else
                 {
                     //endPole.transform.position = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;

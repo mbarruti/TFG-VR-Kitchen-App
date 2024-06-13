@@ -1603,7 +1603,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &238887256
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11388,7 +11388,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1338761590
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12908,7 +12908,7 @@ MonoBehaviour:
   rightController: {fileID: 1758346702}
   leftController: {fileID: 1264172314}
   leftTriggerPressed: 0
-  state: 0
+  state: 3
   mainController: {fileID: 1758346702}
   rightGripPressed: 0
   leftGripPressed: 0
@@ -15179,7 +15179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1846049967
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15725,7 +15725,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1925298033
 RectTransform:
   m_ObjectHideFlags: 0
