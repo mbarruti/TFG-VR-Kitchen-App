@@ -15,6 +15,7 @@ public class WallManager : MonoBehaviour
     [SerializeField] GameObject auxiliarLight;
 
     [SerializeField] GameObject ceiling;
+    [SerializeField] GameObject floor;
 
     [SerializeField] PlayerManager playerManager;
 
@@ -453,9 +454,9 @@ public class WallManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets the height of the ceiling before finishing building all the walls
+    /// Sets the height, position and dimensions of the ceiling and floor before finishing building all the walls
     /// </summary>
-    public void SetCeiling()
+    public void SetCeilingAndFloor()
     {
         Vector3 bottomLeftFront = wallList[0].transform.position;
         Vector3 topRightBack = wallList[0].transform.position;
@@ -489,10 +490,16 @@ public class WallManager : MonoBehaviour
         ceiling.SetActive(true);
         auxiliarLight.SetActive(false);
 
-        // Set the ceiling position with the height of the walls and the center point X and Z coordinates
+        // Set the ceiling position with the height of the walls and the center point X and Z coordinates, also the dimensions
         ceiling.transform.position = new Vector3(centerPoint.x, wall.transform.localScale.y + 0.1f, centerPoint.z);
-
         ceiling.transform.localScale = new Vector3(ceilingSize.x, ceiling.transform.localScale.y, ceilingSize.z);
+
+        // Set the dimensions and position of the floor
+        floor.transform.position = new Vector3(centerPoint.x, floor.transform.position.y, centerPoint.z);
+        floor.transform.localScale = new Vector3(ceilingSize.x, floor.transform.localScale.y, ceilingSize.z);
+
+        // Set player to center of room
+        playerManager.transform.position = new Vector3(centerPoint.x, playerManager.transform.position.y, centerPoint.z);
     }
 
     public void DeleteAllPoles()

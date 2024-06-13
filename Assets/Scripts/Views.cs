@@ -38,8 +38,8 @@ public class Views : MonoBehaviour
 
     public void FrontView()
     {
-        transform.position = new Vector3(wallsCenterPoint.x, wallsCenterPoint.y, 30);
-        transform.eulerAngles = new Vector3(0, 180, 0);
+        transform.position = new Vector3(wallsCenterPoint.x, wallsCenterPoint.y, -30);
+        transform.eulerAngles = new Vector3(0, -180, 0);
     }
 
     //public void ZNegAxisView()

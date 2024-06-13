@@ -43,6 +43,7 @@ public class WorldMenuManager : MonoBehaviour
         {
             mainButtonsList[0].transform.localPosition = new Vector3(0, -100f, 0);
             mainButtonsList[1].transform.localPosition = new Vector3(0, -100f, 0);
+            mainButtonsList[3].transform.localPosition = new Vector3(0, -100f, 0);
             ShowSecondaryButtons(3);
         }
         else
@@ -106,7 +107,7 @@ public class WorldMenuManager : MonoBehaviour
     // Finish the process of building every wall in the scene
     public void FinishBuildingWalls()
     {
-        _wallManager.SetCeiling();
+        _wallManager.SetCeilingAndFloor();
         _wallManager.DeleteAllPoles();
         _wallManager.gameObject.SetActive(false);
 
@@ -115,9 +116,13 @@ public class WorldMenuManager : MonoBehaviour
         wallList = _wallManager.wallList;
 
         mainButtonsList[0].transform.localPosition = new Vector3(-1.6f, 1.2f, 0);
-        mainButtonsList[1].transform.localPosition = new Vector3(-1.7f, 1.2f, 0);
+        mainButtonsList[1].transform.localPosition = new Vector3(-0.7f, 1.2f, 0);
+        mainButtonsList[3].transform.localPosition = new Vector3(0.2f, 1.2f, 0);
         mainButtonsList[4].transform.localPosition = new Vector3(0, -100f, 0);
         hideWorldMenu();
+
+        Rigidbody playerRigidbody = _playerManager.GetComponent<Rigidbody>();
+        playerRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
 
         _playerManager.state = PlayerState.isFree;
     }

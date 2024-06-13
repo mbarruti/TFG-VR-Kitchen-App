@@ -36,13 +36,12 @@ public class BuildingWall : MonoBehaviour
     {
         // Limit the minimum height of the wall to 2.5 meters and maximum to 6 meters
         float heightOffset = Mathf.Clamp(startPole.transform.localScale.y + (padValue * 0.05f), 2.5f, 6f);
-        Debug.Log(heightOffset);
 
         startPole.transform.localScale = new Vector3(startPole.transform.localScale.x, heightOffset, startPole.transform.localScale.z);
         endPole.transform.localScale = new Vector3(endPole.transform.localScale.x, heightOffset, endPole.transform.localScale.z);
 
         // TO-DO: probar sin esta ultima linea
-        transform.localScale = new Vector3(transform.localScale.x, startPole.transform.localScale.y, transform.localScale.z);
+        //transform.localScale = new Vector3(transform.localScale.x, startPole.transform.localScale.y, transform.localScale.z);
     }
 
     public void SetRotation(float rotationValue)
