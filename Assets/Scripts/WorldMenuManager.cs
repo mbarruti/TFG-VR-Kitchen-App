@@ -114,7 +114,11 @@ public class WorldMenuManager : MonoBehaviour
 
         wallList = _wallManager.wallList;
 
+        mainButtonsList[0].transform.localPosition = new Vector3(0, 0f, 0);
+        mainButtonsList[1].transform.localPosition = new Vector3(0, 0f, 0);
+        mainButtonsList[4].transform.localPosition = new Vector3(0, -100f, 0);
         hideWorldMenu();
+
         _playerManager.state = PlayerState.isFree;
     }
 
