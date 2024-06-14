@@ -46,6 +46,7 @@ public class WorldMenuManager : MonoBehaviour
     public List<Material> wallMaterials = new List<Material>();
 
     public List<Material> floorMaterials = new List<Material>();
+    public GameObject floor;
 
     public BuildingManager buildingManager;
 
@@ -201,6 +202,17 @@ public class WorldMenuManager : MonoBehaviour
 
             wall.wallRenderer.material.mainTextureScale = new Vector2(wall.transform.localScale.z / 2f, wall.transform.localScale.y / 2f);
         }
+    }
+
+    public void SelectFloorMaterial(int index)
+    {
+        Material floorMaterial = floorMaterials[index];
+
+        var floorRenderer = floor.GetComponent<Renderer>();
+
+        floorRenderer.material = floorMaterial;
+
+        floorRenderer.material.mainTextureScale = new Vector2(floor.transform.localScale.x / 2f, floor.transform.localScale.z / 2f);
     }
 
     /// <summary>

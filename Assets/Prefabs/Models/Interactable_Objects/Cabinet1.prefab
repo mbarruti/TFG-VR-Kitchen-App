@@ -775,6 +775,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outline: {fileID: 0}
   collisionMaterials: []
+  twoAxisScalling: 0
   surfaceObject: {fileID: 0}
   surfaceNormal: {x: 0, y: 0, z: 0}
   rotationLocked: 0
@@ -794,9 +795,16 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  interactables: []
+  interactables:
+  - {fileID: 3877158329075732702}
+  - {fileID: 3877158329075732703}
+  - {fileID: 3877158329075732696}
+  - {fileID: 3877158329075732697}
+  - {fileID: 3877158329075732698}
+  - {fileID: 3877158329536952396}
   _buildingManager: {fileID: 0}
   canPlace: 0
+  canBePlaced: 0
   meshRenderer: {fileID: 0}
   boxCollider: {fileID: 8316206783973165353}
   colliderList:

@@ -639,7 +639,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1092161458}
         m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: SelectWallMaterial
+        m_MethodName: SelectFloorMaterial
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1266,7 +1266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1.101, y: 0}
+  m_AnchoredPosition: {x: 0.001000002, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &59339781
@@ -1879,7 +1879,7 @@ Camera:
   m_GameObject: {fileID: 123105545}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -3169,7 +3169,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5641,7 +5641,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1092161458}
         m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: SelectWallMaterial
+        m_MethodName: SelectFloorMaterial
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13351,7 +13351,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -16058,7 +16058,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 5
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -16273,6 +16273,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: c7d39c488c171a84f90c19721e91e2e6, type: 2}
   - {fileID: 2100000, guid: 12417300201dd084fa9e0322ca9eb966, type: 2}
   - {fileID: 2100000, guid: 037737f0a6662f444884e47d803d9b38, type: 2}
+  floor: {fileID: 1019668964}
   buildingManager: {fileID: 2100674399}
 --- !u!1 &1103167545
 GameObject:
@@ -18798,7 +18799,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1338761590
 RectTransform:
   m_ObjectHideFlags: 0
@@ -20197,7 +20198,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1.104, y: 0.6500015}
+  m_AnchoredPosition: {x: -0.063999176, y: 0.6500015}
   m_SizeDelta: {x: -99.6, y: -99.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1422187142
@@ -20282,7 +20283,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1092161458}
         m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: SelectWallMaterial
+        m_MethodName: SelectFloorMaterial
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21626,10 +21627,16 @@ MonoBehaviour:
   rightController: {fileID: 1758346702}
   leftController: {fileID: 1264172314}
   leftTriggerPressed: 0
-  state: 0
+  state: 3
   mainController: {fileID: 1758346702}
   rightGripPressed: 0
   leftGripPressed: 0
+  newLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  actualLayerMask:
+    serializedVersion: 2
+    m_Bits: 571
   selectedInteractable: {fileID: 0}
 --- !u!1 &1576721573
 GameObject:
@@ -23520,7 +23527,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 123
+    m_Bits: 59
   m_RaycastTriggerInteraction: 1
   m_RaycastSnapVolumeInteraction: 1
   m_HitClosestOnly: 0
@@ -24822,7 +24829,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.546, y: 0}
+  m_AnchoredPosition: {x: -0.002000004, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1885270798
@@ -25019,7 +25026,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1925298033
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25877,7 +25884,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1.104, y: 0.6500015}
+  m_AnchoredPosition: {x: -0.5810013, y: 0.6500015}
   m_SizeDelta: {x: -99.6, y: -99.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1976050651
@@ -25962,7 +25969,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1092161458}
         m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: SelectWallMaterial
+        m_MethodName: SelectFloorMaterial
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26845,7 +26852,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.001000002, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2027704784
@@ -27603,7 +27610,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.133, y: -0.133}
+  m_AnchoredPosition: {x: 0.131, y: -0.133}
   m_SizeDelta: {x: -0.006000027, y: -0.006000012}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &675961955055191014

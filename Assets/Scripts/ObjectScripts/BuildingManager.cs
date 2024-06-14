@@ -593,25 +593,38 @@ public class BuildingManager : MonoBehaviour
         
         //if (selectedBuildingObject.canBePlaced) // Por ahora este if solo es para el estado withTrigger
         //{
-            // Change the layer to Default so the Raycast can interact with the object
-            selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Default");
+        // Change the layer to Default so the Raycast can interact with the object
+        selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Default");
 
-            // Change to kinematic rigidbody so OnCollisionStay isn't called
-            selectedBuildingObject.objectRigidbody.isKinematic = true;
-            selectedBuildingObject.isPlaced = true;
+        // Change to kinematic rigidbody so OnCollisionStay isn't called
+        selectedBuildingObject.objectRigidbody.isKinematic = true;
+        selectedBuildingObject.isPlaced = true;
 
-            if (worldMenuManager.buildingState == BuildingState.withPhysics)
-                selectedBuildingObject.objectRigidbody.constraints = RigidbodyConstraints.FreezePosition;
+        if (worldMenuManager.buildingState == BuildingState.withPhysics)
+            selectedBuildingObject.objectRigidbody.constraints = RigidbodyConstraints.FreezePosition;
 
-            // "Soltamos" el objeto seleccionado
-            selectedBuildingObject = null;
-            //}
+        selectedBuildingObject.boxCollider.enabled = false;
 
-            pendingObject = null;
-            //offset = new Vector3(0, 0, 0);
+        foreach (BoxCollider boxColl in selectedBuildingObject.colliderList)
+        {
+            boxColl.enabled = true;
+            boxColl.gameObject.layer = LayerMask.NameToLayer("Default");
+        }
 
-            // Reset the transform of the collision manager
-            parentObject.Reset();
+        foreach (BoxCollider inter in selectedBuildingObject.interactables)
+        {
+            inter.gameObject.layer = LayerMask.NameToLayer("Interactable");
+        }
+
+        // "Soltamos" el objeto seleccionado
+        selectedBuildingObject = null;
+        //}
+
+        pendingObject = null;
+        //offset = new Vector3(0, 0, 0);
+
+        // Reset the transform of the collision manager
+        parentObject.Reset();
         //}
     }
 

@@ -52,12 +52,17 @@ public class PlayerManager : MonoBehaviour
     public bool rightGripPressed;
     public bool leftGripPressed;
 
+    public LayerMask newLayerMask;
+    public LayerMask actualLayerMask;
+
     public Interactable selectedInteractable;
 
     void Awake()
     {
         rightControllerRay = rightController.GetComponent<XRRayInteractor>();
         leftControllerRay = leftController.GetComponent<XRRayInteractor>();
+
+        mainController = rightController;
 
         if (rightHandedControls == true)
         {
@@ -336,9 +341,12 @@ public class PlayerManager : MonoBehaviour
             // TO-DO: cuando se quiera interactuar con objetos, el raycast ignore los colliders que no tengan component Interactable
             if (state == PlayerState.isFree && mainController.Equals(rightController))
             {
+                rightControllerRay.raycastMask = newLayerMask;
+                Debug.Log("entra 1");
                 // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
                 if (selectedInteractable == null && rightControllerRay.TryGetCurrent3DRaycastHit(out RaycastHit hit) && hit.collider.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
                 {
+                    Debug.Log("entra 2");
                     selectedInteractable = interactable;
                     selectedInteractable.interactingControllerPosition = rightController.transform.localPosition;
                 }
@@ -347,10 +355,12 @@ public class PlayerManager : MonoBehaviour
         else if (rightGripPressed == true && selectedInteractable != null)
         {
             selectedInteractable = null;
+            rightControllerRay.raycastMask = actualLayerMask;
             rightGripPressed = false;
         }
         else
         {
+            rightControllerRay.raycastMask = actualLayerMask;
             rightGripPressed = false;
         }
     }
