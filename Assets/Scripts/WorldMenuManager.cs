@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WorldMenuManager : MonoBehaviour
 {
@@ -22,6 +23,10 @@ public class WorldMenuManager : MonoBehaviour
     [SerializeField] List<ButtonAnimationToggler> viewsButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<GameObject> secondaryButtonsSections = new List<GameObject>();
 
+    [SerializeField] List<GameObject> toggleList = new ();
+    [SerializeField] List<GameObject> wallToggleList = new();
+    [SerializeField] List<GameObject> floorToggleList = new();
+
     // -------------------------------------------
 
     public BuildingState buildingState;
@@ -39,6 +44,8 @@ public class WorldMenuManager : MonoBehaviour
 
     // List of all wall materials
     public List<Material> wallMaterials = new List<Material>();
+
+    public List<Material> floorMaterials = new List<Material>();
 
     public BuildingManager buildingManager;
 
@@ -67,7 +74,45 @@ public class WorldMenuManager : MonoBehaviour
         //DeselectAllObjects();
     }
 
-    // Sin terminar, igual hay que hacerlo con tags o algo
+    public void ChangeActiveToggle(GameObject toggle)
+    {
+        toggle.SetActive(true);
+        if (toggleList.Count > 0)
+        {
+            foreach (GameObject thisToggle in toggleList)
+            {
+                if (toggle != thisToggle) thisToggle.SetActive(false);
+            }
+        }
+        if (!toggleList.Contains(toggle)) toggleList.Add(toggle);
+    }
+
+    public void ChangeActiveWallToggle(GameObject toggle)
+    {
+        toggle.SetActive(true);
+        if (wallToggleList.Count > 0)
+        {
+            foreach (GameObject thisToggle in wallToggleList)
+            {
+                if (toggle != thisToggle) thisToggle.SetActive(false);
+            }
+        }
+        if (!wallToggleList.Contains(toggle)) wallToggleList.Add(toggle);
+    }
+
+    public void ChangeActiveFloorToggle(GameObject toggle)
+    {
+        toggle.SetActive(true);
+        if (floorToggleList.Count > 0)
+        {
+            foreach (GameObject thisToggle in floorToggleList)
+            {
+                if (toggle != thisToggle) thisToggle.SetActive(false);
+            }
+        }
+        if (!floorToggleList.Contains(toggle)) floorToggleList.Add(toggle);
+    }
+
     public void SelectObjectFromMenu(int index)
     {
         // Deseleccionar todos los objetos
