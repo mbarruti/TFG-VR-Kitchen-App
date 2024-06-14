@@ -472,7 +472,6 @@ public class WallManager : MonoBehaviour
 
             if (!Physics.Raycast(wallRay, out RaycastHit currentHit, 100f))
             {
-                Debug.Log("entra");
                 currentWall.transform.rotation *= Quaternion.Euler(0, 180f, 0);
             }
         }

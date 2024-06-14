@@ -300,7 +300,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (state == PlayerState.isBuildingWalls)
         {
-            if (_wallManager.wallList.Count == 0)
+            if (_wallManager.wallList.Count == 0 && _wallManager.wall.startPole != null)
             {
                 _wallManager.wall.SetHeight(context.action.ReadValue<Vector2>().y);
 
