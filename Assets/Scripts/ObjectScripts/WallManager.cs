@@ -73,7 +73,7 @@ public class WallManager : MonoBehaviour
     {
         if (rightRay.TryGetCurrent3DRaycastHit(out hit))
         {
-            //if (hit.collider.gameObject.CompareTag("Floor")) _hitPos = hit.point;
+            if (hit.collider.gameObject.CompareTag("Floor")) _hitPos = hit.point;
 
             // Update position for endPole while finish is true
             if (finish == true)
@@ -158,14 +158,14 @@ public class WallManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
+    //private void FixedUpdate()
+    //{
 
-        if (rightRay.TryGetCurrent3DRaycastHit(out hit))
-        {
-            _hitPos = hit.point;
-        }
-    }
+    //    if (rightRay.TryGetCurrent3DRaycastHit(out hit))
+    //    {
+    //        _hitPos = hit.point;
+    //    }
+    //}
 
     public void SetStartPole()
     {
@@ -328,6 +328,9 @@ public class WallManager : MonoBehaviour
         {
             finish = false;
 
+            startPole.transform.eulerAngles = Vector3.zero;
+            endPole.transform.eulerAngles = Vector3.zero;
+
             if (startPole.adjacentPoles.Count == 1)
             {
                 Pole auxStartPole = startPole;
@@ -453,6 +456,25 @@ public class WallManager : MonoBehaviour
             wallList.Remove(buildingWall);
 
             //planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
+        }
+    }
+
+    /// <summary>
+    /// Sets the X direction of all walls correctly
+    /// </summary>
+    public void SetWallsDirections()
+    {
+        Ray wallRay;
+
+        foreach (BuildingWall currentWall in wallList)
+        {
+            wallRay = new Ray(currentWall.transform.position, currentWall.transform.right);
+
+            if (!Physics.Raycast(wallRay, out RaycastHit currentHit, 100f))
+            {
+                Debug.Log("entra");
+                currentWall.transform.rotation *= Quaternion.Euler(0, 180f, 0);
+            }
         }
     }
 
