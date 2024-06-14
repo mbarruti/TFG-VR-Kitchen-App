@@ -745,7 +745,7 @@ GameObject:
   - component: {fileID: 77157410}
   - component: {fileID: 77157412}
   - component: {fileID: 77157411}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bumper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1486,7 +1486,7 @@ Camera:
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 288
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -2432,7 +2432,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 294275309}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: XRController_LT_Thumbstick_Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2709,7 +2709,7 @@ GameObject:
   - component: {fileID: 331594169}
   - component: {fileID: 331594171}
   - component: {fileID: 331594170}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4946,7 +4946,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1738578411}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: XR Controller Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4962,7 +4962,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 572095619}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: XRController_LT_Thumbstick_Buttons
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5151,7 +5151,7 @@ GameObject:
   - component: {fileID: 582723898}
   - component: {fileID: 582723900}
   - component: {fileID: 582723899}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5268,7 +5268,7 @@ GameObject:
   - component: {fileID: 590981662}
   - component: {fileID: 590981664}
   - component: {fileID: 590981663}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ThumbStick_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5503,7 +5503,7 @@ GameObject:
   - component: {fileID: 612679693}
   - component: {fileID: 612679695}
   - component: {fileID: 612679694}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Controller_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6118,7 +6118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1376982123}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: XR Controller Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8214,7 +8214,7 @@ GameObject:
   - component: {fileID: 879636721}
   - component: {fileID: 879636723}
   - component: {fileID: 879636722}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8297,7 +8297,7 @@ GameObject:
   - component: {fileID: 893103196}
   - component: {fileID: 893103198}
   - component: {fileID: 893103197}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bumper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9333,7 +9333,7 @@ GameObject:
   - component: {fileID: 1002163438}
   - component: {fileID: 1002163440}
   - component: {fileID: 1002163439}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button_Home
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10056,6 +10056,7 @@ MonoBehaviour:
   _playerManager: {fileID: 1556188438}
   _wallManager: {fileID: 2032544278}
   layerCamera: {fileID: 163544278}
+  finishButtonObject: {fileID: 1338761589}
   mainButtonsList:
   - {fileID: 371575076}
   - {fileID: 1991756809}
@@ -10109,7 +10110,7 @@ GameObject:
   - component: {fileID: 1103167546}
   - component: {fileID: 1103167548}
   - component: {fileID: 1103167547}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10466,14 +10467,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1181183512}
-  m_LocalRotation: {x: 0, y: 0.39418256, z: 0, w: 0.9190322}
+  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
   m_LocalPosition: {x: 5.4300003, y: 2.05, z: 2.61}
   m_LocalScale: {x: 0.1, y: 4, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 31
-  m_LocalEulerAnglesHint: {x: 0, y: 46.43, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
 --- !u!1 &1193989771
 GameObject:
   m_ObjectHideFlags: 0
@@ -10667,7 +10668,7 @@ GameObject:
   - component: {fileID: 1264172318}
   - component: {fileID: 1264172317}
   - component: {fileID: 1264172316}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LeftHand Controller
   m_TagString: GameController
   m_Icon: {fileID: 0}
@@ -11242,7 +11243,7 @@ GameObject:
   - component: {fileID: 1292916083}
   - component: {fileID: 1292916085}
   - component: {fileID: 1292916084}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button_Home
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11790,30 +11791,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1338761589}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1092161458}
-        m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: DeselectMainButtons
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
 --- !u!114 &1338761592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12108,7 +12085,7 @@ GameObject:
   - component: {fileID: 1399196588}
   - component: {fileID: 1399196590}
   - component: {fileID: 1399196589}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ThumbStick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13931,7 +13908,7 @@ GameObject:
   - component: {fileID: 1638434170}
   - component: {fileID: 1638434172}
   - component: {fileID: 1638434171}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TouchPad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14230,7 +14207,7 @@ GameObject:
   - component: {fileID: 1709745213}
   - component: {fileID: 1709745215}
   - component: {fileID: 1709745214}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14666,7 +14643,7 @@ GameObject:
   - component: {fileID: 1758346706}
   - component: {fileID: 1758346705}
   - component: {fileID: 1758346704}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RightHand Controller
   m_TagString: GameController
   m_Icon: {fileID: 0}
@@ -15393,7 +15370,7 @@ GameObject:
   - component: {fileID: 1817034958}
   - component: {fileID: 1817034960}
   - component: {fileID: 1817034959}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ThumbStick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15476,7 +15453,7 @@ GameObject:
   - component: {fileID: 1817065625}
   - component: {fileID: 1817065627}
   - component: {fileID: 1817065626}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TouchPad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15948,7 +15925,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1846049967
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -16043,7 +16020,7 @@ GameObject:
   - component: {fileID: 1858018245}
   - component: {fileID: 1858018247}
   - component: {fileID: 1858018246}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ThumbStick_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17855,7 +17832,7 @@ GameObject:
   - component: {fileID: 2025137728}
   - component: {fileID: 2025137730}
   - component: {fileID: 2025137729}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Controller_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18359,7 +18336,7 @@ GameObject:
   - component: {fileID: 2139978819}
   - component: {fileID: 2139978821}
   - component: {fileID: 2139978820}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Button_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}

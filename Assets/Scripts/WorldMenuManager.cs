@@ -12,6 +12,8 @@ public class WorldMenuManager : MonoBehaviour
 
     [SerializeField] GameObject layerCamera;
 
+    [SerializeField] GameObject finishButtonObject;
+
     [SerializeField] List<ButtonAnimationToggler> mainButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<ButtonAnimationToggler> modelsButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<ButtonAnimationToggler> wallsButtonsList = new List<ButtonAnimationToggler>();
@@ -133,6 +135,9 @@ public class WorldMenuManager : MonoBehaviour
 
             Rigidbody playerRigidbody = _playerManager.GetComponent<Rigidbody>();
             playerRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
+
+            DeselectMainButtons();
+            finishButtonObject.SetActive(false);
 
             _playerManager.state = PlayerState.isFree;
         }
