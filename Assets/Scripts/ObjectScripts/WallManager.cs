@@ -73,7 +73,7 @@ public class WallManager : MonoBehaviour
     {
         if (rightRay.TryGetCurrent3DRaycastHit(out hit))
         {
-            if (hit.collider.gameObject.CompareTag("Floor")) _hitPos = hit.point;
+            //if (hit.collider.gameObject.CompareTag("Floor")) _hitPos = hit.point;
 
             // Update position for endPole while finish is true
             if (finish == true)
@@ -158,14 +158,14 @@ public class WallManager : MonoBehaviour
         }
     }
 
-    //private void FixedUpdate()
-    //{
+    private void FixedUpdate()
+    {
 
-    //    if (rightRay.TryGetCurrent3DRaycastHit(out hit))
-    //    {
-    //        _hitPos = hit.point;
-    //    }
-    //}
+        if (rightRay.TryGetCurrent3DRaycastHit(out hit))
+        {
+            _hitPos = hit.point;
+        }
+    }
 
     public void SetStartPole()
     {
@@ -282,6 +282,9 @@ public class WallManager : MonoBehaviour
 
         //startPole.transform.SetParent(null, true);
         //endPole.transform.SetParent(null, true);
+
+        startPole.transform.eulerAngles = Vector3.zero;
+        endPole.transform.eulerAngles = Vector3.zero;
 
         wallList.Add(wall);
     }

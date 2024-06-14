@@ -10,6 +10,8 @@ public class WorldMenuManager : MonoBehaviour
     //[SerializeField] BuildingManager _buildingManager;
     [SerializeField] WallManager _wallManager;
 
+    [SerializeField] GameObject layerCamera;
+
     [SerializeField] List<ButtonAnimationToggler> mainButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<ButtonAnimationToggler> modelsButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<ButtonAnimationToggler> wallsButtonsList = new List<ButtonAnimationToggler>();
@@ -92,7 +94,12 @@ public class WorldMenuManager : MonoBehaviour
     public void showWorldMenu()
     {
         //gameObject.SetActive(true);
-        transform.position = new Vector3(0f, 1.9f, 0f);
+
+        //transform.position = new Vector3(0f, 1.9f, 0f);
+
+        layerCamera.SetActive(true);
+        transform.localPosition = new Vector3(0f, 0.75f, 4f);
+
         isOpened = true;
     }
 
@@ -100,6 +107,7 @@ public class WorldMenuManager : MonoBehaviour
     public void hideWorldMenu()
     {
         //gameObject.SetActive(false);
+        layerCamera.SetActive(false);
         transform.position = new Vector3(0f, -30f, 0f);
         isOpened = false;
     }
@@ -107,24 +115,27 @@ public class WorldMenuManager : MonoBehaviour
     // Finish the process of building every wall in the scene
     public void FinishBuildingWalls()
     {
-        _wallManager.SetCeilingAndFloor();
-        _wallManager.DeleteAllPoles();
-        _wallManager.gameObject.SetActive(false);
+        if (_wallManager.wallList.Count >= 4)
+        {
+            _wallManager.SetCeilingAndFloor();
+            _wallManager.DeleteAllPoles();
+            _wallManager.gameObject.SetActive(false);
 
-        buildingManager.gameObject.SetActive(true);
+            buildingManager.gameObject.SetActive(true);
 
-        wallList = _wallManager.wallList;
+            wallList = _wallManager.wallList;
 
-        mainButtonsList[0].transform.localPosition = new Vector3(-1.6f, 1.2f, 0);
-        mainButtonsList[1].transform.localPosition = new Vector3(-0.7f, 1.2f, 0);
-        mainButtonsList[3].transform.localPosition = new Vector3(0.2f, 1.2f, 0);
-        mainButtonsList[4].transform.localPosition = new Vector3(0, -100f, 0);
-        hideWorldMenu();
+            mainButtonsList[0].transform.localPosition = new Vector3(-1.6f, 1.2f, 0);
+            mainButtonsList[1].transform.localPosition = new Vector3(-0.7f, 1.2f, 0);
+            mainButtonsList[3].transform.localPosition = new Vector3(0.2f, 1.2f, 0);
+            mainButtonsList[4].transform.localPosition = new Vector3(0, -100f, 0);
+            hideWorldMenu();
 
-        Rigidbody playerRigidbody = _playerManager.GetComponent<Rigidbody>();
-        playerRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
+            Rigidbody playerRigidbody = _playerManager.GetComponent<Rigidbody>();
+            playerRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
 
-        _playerManager.state = PlayerState.isFree;
+            _playerManager.state = PlayerState.isFree;
+        }
     }
 
     public void SelectWallMaterial(int index)
