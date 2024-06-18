@@ -17290,7 +17290,7 @@ GameObject:
   - component: {fileID: 1201833062}
   - component: {fileID: 1201833061}
   - component: {fileID: 1201833060}
-  m_Layer: 7
+  m_Layer: 9
   m_Name: Ceiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}

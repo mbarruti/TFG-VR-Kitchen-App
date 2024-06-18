@@ -332,6 +332,8 @@ public class BuildingManager : MonoBehaviour
                 //if (Physics.BoxCast(selectedBuildingObject.transform.position, parentObject.boxCollider.bounds.extents, dir, out var hitt))
                 //if (Physics.Raycast(selectedBuildingObject.transform.position, dir, out var planeHit))
                 Ray ray = new Ray(selectedBuildingObject.transform.position, dir);
+                //ray.direction = ray.direction.normalized;
+
                 if (collider.Raycast(ray, out RaycastHit planeHit, 100f))
                 {
                     Debug.DrawRay(closestPoint, planeHit.normal, Color.blue);
@@ -540,7 +542,7 @@ public class BuildingManager : MonoBehaviour
         //if (pendingObject != null) Destroy(pendingObject);
 
         // Instancia para el objeto indicador que se proyecta en el mundo
-        pendingObject = Instantiate(selectedModel, _hitPos, selectedModel.transform.rotation);
+        pendingObject = Instantiate(selectedModel, new Vector3(0, -100, 0), selectedModel.transform.rotation);
         //pendingObject = Instantiate(selectedModel, Vector3.zero, transform.rotation, parentObject.transform);
 
         selectedBuildingObject = pendingObject.GetComponent<BuildingObject>();
