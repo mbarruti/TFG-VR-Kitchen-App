@@ -607,12 +607,15 @@ public class BuildingManager : MonoBehaviour
         if (worldMenuManager.buildingState == BuildingState.withPhysics)
             selectedBuildingObject.objectRigidbody.constraints = RigidbodyConstraints.FreezePosition;
 
-        selectedBuildingObject.boxCollider.enabled = false;
-
-        foreach (BoxCollider boxColl in selectedBuildingObject.colliderList)
+        if (selectedBuildingObject.colliderList.Count > 0)
         {
-            boxColl.enabled = true;
-            boxColl.gameObject.layer = LayerMask.NameToLayer("Default");
+            selectedBuildingObject.boxCollider.enabled = false;
+
+            foreach (BoxCollider boxColl in selectedBuildingObject.colliderList)
+            {
+                boxColl.enabled = true;
+                boxColl.gameObject.layer = LayerMask.NameToLayer("Default");
+            }
         }
 
         foreach (BoxCollider inter in selectedBuildingObject.interactables)
