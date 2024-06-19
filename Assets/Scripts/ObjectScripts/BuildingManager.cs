@@ -34,6 +34,7 @@ public class BuildingManager : MonoBehaviour
     public Vector3 movementDirection;
 
     public RaycastHit hit;
+    public GameObject objectHit;
 
     // Objeto instanciado que indica donde se colocara el modelo seleccionado
     public GameObject pendingObject;
@@ -231,6 +232,7 @@ public class BuildingManager : MonoBehaviour
 
         if (ray.TryGetCurrent3DRaycastHit(out hit))
         {
+            //objectHit = hit.collider.gameObject;
             //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
             _hitPos = hit.point;
 
@@ -318,7 +320,7 @@ public class BuildingManager : MonoBehaviour
         foreach (Collider collider in colliderList)
         //foreach (Collider collider in parentObject.detectedColliders)
         {
-            if (/*collider != hit.collider &&   If not ignored, doesn't work in small angles*/ collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
+            if (/*collider != hit.collider  &&If not ignored, doesn't work in small angles*/ collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
             {
                 //Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
                 //Vector3 diff = closestPoint - selectedBuildingObject.transform.position;

@@ -17290,7 +17290,7 @@ GameObject:
   - component: {fileID: 1201833062}
   - component: {fileID: 1201833061}
   - component: {fileID: 1201833060}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: Ceiling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17766,7 +17766,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 51
+    m_Bits: 123
   m_RaycastTriggerInteraction: 1
   m_RaycastSnapVolumeInteraction: 1
   m_HitClosestOnly: 0
@@ -21372,8 +21372,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 5ce52a1c9bff8834bbb6c4df32ea3977, type: 2}
     - target: {fileID: 3429215769117897165, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
+      propertyPath: m_Size.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429215769117897165, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3429215769117897165, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
+      propertyPath: m_Center.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3429215769117897166, guid: c60436fbfdebb6a4aaeced0f6ad8ac08, type: 3}
       propertyPath: m_RootOrder
@@ -21636,7 +21644,7 @@ MonoBehaviour:
     m_Bits: 8
   actualLayerMask:
     serializedVersion: 2
-    m_Bits: 571
+    m_Bits: 123
   selectedInteractable: {fileID: 0}
 --- !u!1 &1576721573
 GameObject:
@@ -23527,7 +23535,7 @@ MonoBehaviour:
   m_SphereCastRadius: 0.1
   m_RaycastMask:
     serializedVersion: 2
-    m_Bits: 59
+    m_Bits: 123
   m_RaycastTriggerInteraction: 1
   m_RaycastSnapVolumeInteraction: 1
   m_HitClosestOnly: 0

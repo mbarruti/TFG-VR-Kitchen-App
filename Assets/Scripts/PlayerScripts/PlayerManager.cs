@@ -338,15 +338,13 @@ public class PlayerManager : MonoBehaviour
         {
             rightGripPressed = true;
 
-            // TO-DO: cuando se quiera interactuar con objetos, el raycast ignore los colliders que no tengan component Interactable
             if (state == PlayerState.isFree && mainController.Equals(rightController))
             {
                 rightControllerRay.raycastMask = newLayerMask;
-                Debug.Log("entra 1");
+
                 // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
                 if (selectedInteractable == null && rightControllerRay.TryGetCurrent3DRaycastHit(out RaycastHit hit) && hit.collider.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
                 {
-                    Debug.Log("entra 2");
                     selectedInteractable = interactable;
                     selectedInteractable.interactingControllerPosition = rightController.transform.localPosition;
                 }
