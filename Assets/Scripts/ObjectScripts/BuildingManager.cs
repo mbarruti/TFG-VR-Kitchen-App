@@ -8,9 +8,6 @@ public class BuildingManager : MonoBehaviour
     // Posicion donde ray colisiona con un objeto de la escena
     public Vector3 _hitPos;
 
-    // Raycast from right controller
-    private XRRayInteractor ray;
-
     // Hit object from raycast
     // private RaycastHit hit;
 
@@ -53,6 +50,9 @@ public class BuildingManager : MonoBehaviour
 
     public Vector3 offset = Vector3.zero;
     public Vector3 newPosition;
+
+    // Raycast from main controller
+    public XRRayInteractor ray;
 
     private void Start()
     {

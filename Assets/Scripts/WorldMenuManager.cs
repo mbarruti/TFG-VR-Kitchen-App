@@ -27,9 +27,18 @@ public class WorldMenuManager : MonoBehaviour
     [SerializeField] List<GameObject> wallToggleList = new();
     [SerializeField] List<GameObject> floorToggleList = new();
     [SerializeField] List<GameObject> rotationTypeToggleList = new();
+    [SerializeField] List<GameObject> placementTypeToggleList = new();
+    [SerializeField] List<GameObject> mainControllerToggleList = new();
 
     [SerializeField] GameObject continuousRotationToggle;
     [SerializeField] GameObject staticRotationToggle;
+
+    [SerializeField] GameObject offsetPlacementToggle;
+    [SerializeField] GameObject physicsPlacementToggle;
+    [SerializeField] GameObject noCollisionPlacementToggle;
+
+    [SerializeField] GameObject leftControllerToggle;
+    [SerializeField] GameObject rightControllerToggle;
 
     // -------------------------------------------
 
@@ -81,6 +90,16 @@ public class WorldMenuManager : MonoBehaviour
 
         if (continuousRotation) ChangeActiveRotationTypeToggle(continuousRotationToggle);
         else ChangeActiveRotationTypeToggle(staticRotationToggle);
+
+        if (buildingState == BuildingState.withOffset) ChangeActivePlacementToggle(offsetPlacementToggle);
+        else if (buildingState == BuildingState.withPhysics) ChangeActivePlacementToggle(physicsPlacementToggle);
+        else if (buildingState == BuildingState.withTrigger) ChangeActivePlacementToggle(noCollisionPlacementToggle);
+
+        if (continuousRotation) ChangeActiveRotationTypeToggle(continuousRotationToggle);
+        else ChangeActiveRotationTypeToggle(staticRotationToggle);
+
+        if (_playerManager.mainController = _playerManager.rightController) ChangeActiveControllerToggle(rightControllerToggle);
+        else ChangeActiveControllerToggle(leftControllerToggle);
 
         // Deseleccionar todos los objetos en el inicio
         //DeselectAllObjects();
@@ -138,9 +157,51 @@ public class WorldMenuManager : MonoBehaviour
         if (!floorToggleList.Contains(toggle)) floorToggleList.Add(toggle);
     }
 
+    public void ChangeActivePlacementToggle(GameObject toggle)
+    {
+        toggle.SetActive(true);
+        if (placementTypeToggleList.Count > 0)
+        {
+            foreach (GameObject thisToggle in placementTypeToggleList)
+            {
+                if (toggle != thisToggle) thisToggle.SetActive(false);
+            }
+        }
+        if (!placementTypeToggleList.Contains(toggle)) placementTypeToggleList.Add(toggle);
+    }
+
+    public void ChangeActiveControllerToggle(GameObject toggle)
+    {
+        toggle.SetActive(true);
+        if (mainControllerToggleList.Count > 0)
+        {
+            foreach (GameObject thisToggle in mainControllerToggleList)
+            {
+                if (toggle != thisToggle) thisToggle.SetActive(false);
+            }
+        }
+        if (!mainControllerToggleList.Contains(toggle)) mainControllerToggleList.Add(toggle);
+    }
+
     public void ChangeRotationType(bool value)
     {
         continuousRotation = value;
+    }
+
+    public void ChangePlacementType(int number)
+    {
+        switch (number)
+        {
+            case 1:
+                buildingState = BuildingState.withOffset;
+                break;
+            case 2:
+                buildingState = BuildingState.withPhysics;
+                break;
+            case 3:
+                buildingState = BuildingState.withTrigger;
+                break;
+        }
     }
 
     public void SelectObjectFromMenu(int index)

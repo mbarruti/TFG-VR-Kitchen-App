@@ -9,9 +9,6 @@ public class WallManager : MonoBehaviour
 
     Vector3 _hitPos;
 
-    // Raycast from right controller
-    XRRayInteractor rightRay;
-
     [SerializeField] GameObject auxiliarLight;
 
     [SerializeField] GameObject ceiling;
@@ -62,16 +59,19 @@ public class WallManager : MonoBehaviour
     public GameObject rightController;
     public GameObject leftController;
 
+    // Raycast from main controller
+    public XRRayInteractor mainRay;
+
     // Start is called before the first frame update
     void Start()
     {
-        rightRay = rightController.GetComponent<XRRayInteractor>();
+        mainRay = playerManager.mainController.GetComponent<XRRayInteractor>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (rightRay.TryGetCurrent3DRaycastHit(out hit))
+        if (mainRay.TryGetCurrent3DRaycastHit(out hit))
         {
             if (hit.collider.gameObject.CompareTag("Floor")) _hitPos = hit.point;
 

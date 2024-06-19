@@ -2142,7 +2142,7 @@
                     "id": "c3e0dafb-4d4a-41e4-b2cb-2b6fcb85ddc2",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(behavior=2)",
+                    "interactions": "",
                     "initialStateCheck": false
                 },
                 {
@@ -2198,6 +2198,33 @@
                     "processors": "",
                     "interactions": "Press(pressPoint=0.8,behavior=2)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Left Touchpad Action",
+                    "type": "Value",
+                    "id": "1d151e68-f362-4167-a06e-9f6ea6923c17",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Left Trigger Pressed",
+                    "type": "Button",
+                    "id": "060b4b53-49c5-479f-8143-735018d19ec1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Right Trigger Pressed",
+                    "type": "Button",
+                    "id": "74a02b67-59b9-4626-b3d5-04554e9b582f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2236,9 +2263,9 @@
                 },
                 {
                     "name": "",
-                    "id": "563d1180-bb12-4eb7-8beb-277fec6558ce",
+                    "id": "cf5b83fe-3bdc-4249-a7df-ee8939711883",
                     "path": "<XRController>{LeftHand}/triggerPressed",
-                    "interactions": "Press(behavior=2)",
+                    "interactions": "",
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "Left Trigger Action",
@@ -2308,6 +2335,39 @@
                     "processors": "",
                     "groups": "Generic XR Controller",
                     "action": "Left Grip Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6edb2b57-42c6-4020-936d-ca7320386c14",
+                    "path": "<XRController>{LeftHand}/primary2DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Left Touchpad Action",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "21917c2b-44a6-470a-b8ca-27afeac625c7",
+                    "path": "<XRController>{LeftHand}/triggerPressed",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Left Trigger Pressed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8ac4b42e-541d-4be1-a530-9fb8f7474974",
+                    "path": "<XRController>{RightHand}/triggerPressed",
+                    "interactions": "Press(behavior=2)",
+                    "processors": "",
+                    "groups": "Generic XR Controller",
+                    "action": "Right Trigger Pressed",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
