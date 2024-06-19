@@ -112,9 +112,9 @@ public class WallManager : MonoBehaviour
                 // If wall will be rotated
                 else
                 {
-                    //endPole.transform.position = _hitPos + hit.normal * endPole.boxCollider.bounds.extents.y;
-                    if (playerManager.rightGripPressed == true) wall.SetRotation(1f);
-                    else wall.SetRotation(-1f);
+                    // If rotation will be continuous
+                    if (worldMenuManager.continuousRotation && playerManager.rightGripPressed == true) wall.SetRotation(0.5f);
+                    else if (worldMenuManager.continuousRotation) wall.SetRotation(-0.5f);
 
                     // Set the same rotation for the object acting as the plane
                     planeHit.transform.eulerAngles = startPole.transform.eulerAngles;

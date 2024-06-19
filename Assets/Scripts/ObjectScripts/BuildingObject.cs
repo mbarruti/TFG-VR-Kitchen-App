@@ -410,7 +410,6 @@ public class BuildingObject : MonoBehaviour
     /// </summary>
     public void RotateObject(float value)
     {
-        //Debug.Log(transform.TransformPoint(boxCollider.bounds.extents));
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + value, transform.eulerAngles.z);
         _buildingManager.parentObject.RotateObject(value);
     }

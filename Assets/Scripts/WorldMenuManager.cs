@@ -26,6 +26,10 @@ public class WorldMenuManager : MonoBehaviour
     [SerializeField] List<GameObject> toggleList = new ();
     [SerializeField] List<GameObject> wallToggleList = new();
     [SerializeField] List<GameObject> floorToggleList = new();
+    [SerializeField] List<GameObject> rotationTypeToggleList = new();
+
+    [SerializeField] GameObject continuousRotationToggle;
+    [SerializeField] GameObject staticRotationToggle;
 
     // -------------------------------------------
 
@@ -50,6 +54,9 @@ public class WorldMenuManager : MonoBehaviour
 
     public BuildingManager buildingManager;
 
+    public bool continuousRotation;
+    public float staticRotationValue;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,6 +78,10 @@ public class WorldMenuManager : MonoBehaviour
 
             buildingModel._buildingManager = buildingManager;
         }
+
+        if (continuousRotation) ChangeActiveRotationTypeToggle(continuousRotationToggle);
+        else ChangeActiveRotationTypeToggle(staticRotationToggle);
+
         // Deseleccionar todos los objetos en el inicio
         //DeselectAllObjects();
     }
@@ -101,6 +112,19 @@ public class WorldMenuManager : MonoBehaviour
         if (!wallToggleList.Contains(toggle)) wallToggleList.Add(toggle);
     }
 
+    public void ChangeActiveRotationTypeToggle(GameObject toggle)
+    {
+        toggle.SetActive(true);
+        if (rotationTypeToggleList.Count > 0)
+        {
+            foreach (GameObject thisToggle in rotationTypeToggleList)
+            {
+                if (toggle != thisToggle) thisToggle.SetActive(false);
+            }
+        }
+        if (!rotationTypeToggleList.Contains(toggle)) rotationTypeToggleList.Add(toggle);
+    }
+
     public void ChangeActiveFloorToggle(GameObject toggle)
     {
         toggle.SetActive(true);
@@ -112,6 +136,11 @@ public class WorldMenuManager : MonoBehaviour
             }
         }
         if (!floorToggleList.Contains(toggle)) floorToggleList.Add(toggle);
+    }
+
+    public void ChangeRotationType(bool value)
+    {
+        continuousRotation = value;
     }
 
     public void SelectObjectFromMenu(int index)

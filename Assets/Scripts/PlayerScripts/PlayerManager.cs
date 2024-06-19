@@ -349,6 +349,11 @@ public class PlayerManager : MonoBehaviour
                     selectedInteractable.interactingControllerPosition = rightController.transform.localPosition;
                 }
             }
+            else if (_worldMenuManager.continuousRotation == false)
+            {
+                if (state == PlayerState.isBuilding) _buildingManager.selectedBuildingObject.RotateObject(-_worldMenuManager.staticRotationValue);
+                else if (state == PlayerState.isBuildingWalls) _wallManager.wall.SetRotation(-_worldMenuManager.staticRotationValue);
+            }
         }
         else if (rightGripPressed == true && selectedInteractable != null)
         {
@@ -369,7 +374,6 @@ public class PlayerManager : MonoBehaviour
         {
             leftGripPressed = true;
 
-            // TO-DO: cuando se quiera interactuar con objetos, el raycast ignore los colliders que no tengan component Interactable
             if (state == PlayerState.isFree && mainController.Equals(leftController))
             {
                 // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
@@ -378,6 +382,11 @@ public class PlayerManager : MonoBehaviour
                     selectedInteractable = interactable;
                     selectedInteractable.interactingControllerPosition = leftController.transform.localPosition;
                 }
+            }
+            else if (_worldMenuManager.continuousRotation == false)
+            {
+                if (state == PlayerState.isBuilding) _buildingManager.selectedBuildingObject.RotateObject(_worldMenuManager.staticRotationValue);
+                else if (state == PlayerState.isBuildingWalls && _wallManager.wall != null) _wallManager.wall.SetRotation(_worldMenuManager.staticRotationValue);
             }
         }
         else if (leftGripPressed == true && selectedInteractable != null)
