@@ -7895,6 +7895,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100674399}
     - target: {fileID: 1033946554576336791, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
+      propertyPath: modelsList.Array.data[13]
+      value: 
+      objectReference: {fileID: 1770437148503673939, guid: 57d207d63b8e20c43999f1f3720b0ba2, type: 3}
+    - target: {fileID: 1033946554576336791, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
       propertyPath: configButtonsList.Array.size
       value: 2
       objectReference: {fileID: 0}

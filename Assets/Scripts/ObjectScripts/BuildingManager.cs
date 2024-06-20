@@ -119,10 +119,10 @@ public class BuildingManager : MonoBehaviour
             DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
 
             // Check for rotations if not locked
-            if (selectedBuildingObject.rotationLocked == false)
+            if (selectedBuildingObject.rotationLocked == false && worldMenuManager.continuousRotation == true)
             {
-                if (playerManager.rightGripPressed == true) selectedBuildingObject.RotateObject(-1f);
-                else if (playerManager.leftGripPressed == true) selectedBuildingObject.RotateObject(1f);
+                if (playerManager.rightGripPressed == true) selectedBuildingObject.RotateObject(-0.5f);
+                else if (playerManager.leftGripPressed == true) selectedBuildingObject.RotateObject(0.5f);
             }
 
             if (worldMenuManager.buildingState == BuildingState.withOffset)
