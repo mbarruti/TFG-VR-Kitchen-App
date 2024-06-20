@@ -65,8 +65,8 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
-        //rightControllerRay = rightController.GetComponent<XRRayInteractor>();
-        //leftControllerRay = leftController.GetComponent<XRRayInteractor>();
+        rightControllerRay = rightController.GetComponent<XRRayInteractor>();
+        leftControllerRay = leftController.GetComponent<XRRayInteractor>();
 
         //// Left Controller
         //_startAction.action.performed += OnStartAction;
@@ -99,7 +99,7 @@ public class PlayerManager : MonoBehaviour
         //    _worldMenuManager.ChangeAssistedControlToggle(_worldMenuManager.noControlToggle);
         //}
 
-                _wallManager.mainRay = mainController.GetComponent<XRRayInteractor>();
+        _wallManager.mainRay = mainController.GetComponent<XRRayInteractor>();
         _buildingManager.ray = mainController.GetComponent<XRRayInteractor>();
 
         if (mainController == rightController)
