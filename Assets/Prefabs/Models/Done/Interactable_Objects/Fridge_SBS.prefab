@@ -331,8 +331,13 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   interactables:
-  - {fileID: 7959806468523762482}
-  - {fileID: 7968419218530525886}
+  - {fileID: 8948223627709216509}
+  - {fileID: 8948223628369539264}
+  - {fileID: 8948223628450068414}
+  - {fileID: 8948223627555141258}
+  - {fileID: 8948223626932241553}
+  - {fileID: 8948223627284457698}
+  - {fileID: 8948223628574894250}
   _buildingManager: {fileID: 0}
   canPlace: 0
   canBePlaced: 0
