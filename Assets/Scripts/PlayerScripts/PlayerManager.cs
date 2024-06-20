@@ -108,6 +108,8 @@ public class PlayerManager : MonoBehaviour
             rightMoveProvider.enabled = false;
 
             // Left Controller
+            _startAction.action.performed += OnStartAction;
+
             _leftTriggerAction.action.performed -= OnRightTriggerAction;
             _leftTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
 
