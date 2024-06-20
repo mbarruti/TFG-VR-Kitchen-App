@@ -23,13 +23,7 @@ public class Views : MonoBehaviour
 
     // ----------------------------------
 
-    public Vector3 wallsCenterPoint;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Vector3 wallsCenterPoint = Vector3.zero;
 
     // Update is called once per frame
     void Update()
@@ -39,6 +33,8 @@ public class Views : MonoBehaviour
 
     public void TopView()
     {
+        if (wallsCenterPoint == Vector3.zero) wallsCenterPoint = menu.GetWallsCenterPoint();
+
         transform.position = new Vector3(wallsCenterPoint.x, 30f, wallsCenterPoint.z);
         transform.eulerAngles = new Vector3(90f, 0, 0);
 
@@ -64,6 +60,8 @@ public class Views : MonoBehaviour
 
     public void RightView()
     {
+        if (wallsCenterPoint == Vector3.zero) wallsCenterPoint = menu.GetWallsCenterPoint();
+
         transform.position = new Vector3(30f, wallsCenterPoint.y, wallsCenterPoint.z);
 
         FilterWalls();
@@ -92,6 +90,8 @@ public class Views : MonoBehaviour
 
     public void LeftView()
     {
+        if (wallsCenterPoint == Vector3.zero) wallsCenterPoint = menu.GetWallsCenterPoint();
+
         transform.position = new Vector3(-30f, wallsCenterPoint.y, wallsCenterPoint.z);
 
         FilterWalls();
@@ -120,6 +120,8 @@ public class Views : MonoBehaviour
 
     public void FrontView()
     {
+        if (wallsCenterPoint == Vector3.zero) wallsCenterPoint = menu.GetWallsCenterPoint();
+
         transform.position = new Vector3(wallsCenterPoint.x, wallsCenterPoint.y, 30f);
 
         FilterWalls();

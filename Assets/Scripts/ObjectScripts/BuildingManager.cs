@@ -13,6 +13,8 @@ public class BuildingManager : MonoBehaviour
 
     //private Collider _hitCollider;
 
+    [SerializeField] DataManager dataManager;
+
     [SerializeField] GameObject localPlaneHit;
 
     [SerializeField] PlayerManager playerManager;
@@ -626,6 +628,8 @@ public class BuildingManager : MonoBehaviour
         // "Soltamos" el objeto seleccionado
         selectedBuildingObject = null;
         //}
+
+        dataManager.SaveObjectsData(pendingObject, worldMenuManager.modelsList[worldMenuManager.modelIndex]);
 
         pendingObject = null;
         //offset = new Vector3(0, 0, 0);

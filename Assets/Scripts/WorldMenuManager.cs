@@ -7,6 +7,12 @@ public class WorldMenuManager : MonoBehaviour
 {
     private BuildingObject buildingModel;
 
+    private List<RoomData> roomDataList;
+
+    [SerializeField] List<bool> roomList;
+
+    [SerializeField] DataManager dataManager;
+
     [SerializeField] PlayerManager _playerManager;
     //[SerializeField] BuildingManager _buildingManager;
     [SerializeField] WallManager _wallManager;
@@ -21,6 +27,7 @@ public class WorldMenuManager : MonoBehaviour
     [SerializeField] List<ButtonAnimationToggler> modelsButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<ButtonAnimationToggler> wallsButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<ButtonAnimationToggler> viewsButtonsList = new List<ButtonAnimationToggler>();
+    [SerializeField] List<ButtonAnimationToggler> configButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<GameObject> secondaryButtonsSections = new List<GameObject>();
 
     [SerializeField] List<GameObject> toggleList = new ();
@@ -29,6 +36,7 @@ public class WorldMenuManager : MonoBehaviour
     [SerializeField] List<GameObject> rotationTypeToggleList = new();
     [SerializeField] List<GameObject> placementTypeToggleList = new();
     [SerializeField] List<GameObject> mainControllerToggleList = new();
+    [SerializeField] List<GameObject> assistedControlToggleList = new();
 
     [SerializeField] GameObject continuousRotationToggle;
     [SerializeField] GameObject staticRotationToggle;
@@ -42,12 +50,17 @@ public class WorldMenuManager : MonoBehaviour
 
     // -------------------------------------------
 
+    public GameObject yesControlToggle;
+    public GameObject noControlToggle;
+
     public BuildingState buildingState;
 
     public bool isOpened;
 
     // Objeto seleccionado a generar
     public GameObject selectedModel;
+
+    public GameObject wallPrefab;
 
     // Lista de todos los modelos que se pueden utilizar
     public List<GameObject> modelsList = new List<GameObject>();
@@ -61,13 +74,19 @@ public class WorldMenuManager : MonoBehaviour
     public List<Material> floorMaterials = new List<Material>();
     public GameObject floor;
 
+    public GameObject ceiling;
+
     public BuildingManager buildingManager;
+
+    public int modelIndex;
+
+    public bool assistedControl;
 
     public bool continuousRotation;
     public float staticRotationValue;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         if (_playerManager.state == PlayerState.isBuildingWalls)
         {
@@ -103,6 +122,19 @@ public class WorldMenuManager : MonoBehaviour
 
         // Deseleccionar todos los objetos en el inicio
         //DeselectAllObjects();
+    }
+
+    public void CheckIfRoomEmpty(int index)
+    {
+        if (!roomList[index])
+        {
+            GenerateRoom(index);
+        }
+    }
+
+    public void GenerateRoom(int index)
+    {
+        dataManager.SaveRoomData();
     }
 
     public void ChangeActiveToggle(GameObject toggle)
@@ -183,9 +215,27 @@ public class WorldMenuManager : MonoBehaviour
         if (!mainControllerToggleList.Contains(toggle)) mainControllerToggleList.Add(toggle);
     }
 
+    public void ChangeAssistedControlToggle(GameObject toggle)
+    {
+        toggle.SetActive(true);
+        if (assistedControlToggleList.Count > 0)
+        {
+            foreach (GameObject thisToggle in assistedControlToggleList)
+            {
+                if (toggle != thisToggle) thisToggle.SetActive(false);
+            }
+        }
+        if (!assistedControlToggleList.Contains(toggle)) assistedControlToggleList.Add(toggle);
+    }
+
     public void ChangeRotationType(bool value)
     {
         continuousRotation = value;
+    }
+
+    public void ChangeAssistedControlValye(bool value)
+    {
+        assistedControl = value;
     }
 
     public void ChangePlacementType(int number)
@@ -211,6 +261,7 @@ public class WorldMenuManager : MonoBehaviour
 
         // Seleccionar el objeto actual
         selectedModel = modelsList[index];
+        modelIndex = index;
 
         // (Optional, just for organization) If there is a pending object and another model is selected, the placement of the current selected object is cancelled
         if (buildingManager.pendingObject != null) buildingManager.CancelObjectPlacement();
@@ -252,6 +303,31 @@ public class WorldMenuManager : MonoBehaviour
         isOpened = false;
     }
 
+    public Vector3 GetWallsCenterPoint()
+    {
+        Vector3 bottomLeftFront = wallList[0].transform.position;
+        Vector3 topRightBack = wallList[0].transform.position;
+
+        foreach (BuildingWall currentWall in wallList)
+        {
+            Vector3 wallPosition = currentWall.transform.position;
+
+            // Calculate the first two corners
+            bottomLeftFront = Vector3.Min(bottomLeftFront, wallPosition);
+            topRightBack = Vector3.Max(topRightBack, wallPosition);
+        }
+
+        // Calculate the other two corners
+        Vector3 bottomRightFront = new Vector3(topRightBack.x, bottomLeftFront.y, bottomLeftFront.z);
+        Vector3 topLeftBack = new Vector3(bottomLeftFront.x, topRightBack.y, topRightBack.z);
+
+        // Calculate the center point of the four corners
+        //Vector3 centerPoint = Vector3.zero;
+        Vector3 centerPoint = (bottomLeftFront + topRightBack + bottomRightFront + topLeftBack) / 4f;
+
+        return centerPoint;
+    }
+
     // Finish the process of building every wall in the scene
     public void FinishBuildingWalls()
     {
@@ -265,6 +341,13 @@ public class WorldMenuManager : MonoBehaviour
             buildingManager.gameObject.SetActive(true);
 
             wallList = _wallManager.wallList;
+
+            dataManager.SaveWallsData(floor, floor.GetComponent<Renderer>().material);
+            dataManager.SaveWallsData(ceiling, ceiling.GetComponent<Renderer>().material);
+            foreach (BuildingWall wall in wallList)
+            {
+                dataManager.SaveWallsData(wall.gameObject, wall.wallRenderer.material);
+            }
 
             mainButtonsList[0].transform.localPosition = new Vector3(-1.6f, 1.2f, 0);
             mainButtonsList[1].transform.localPosition = new Vector3(-0.7f, 1.2f, 0);
@@ -343,6 +426,12 @@ public class WorldMenuManager : MonoBehaviour
                     button.DeactivateIsSelected();
                 }
                 break;
+            case 4:
+                foreach (ButtonAnimationToggler button in viewsButtonsList)
+                {
+                    button.DeactivateIsSelected();
+                }
+                break;
         }
     }
 
@@ -357,24 +446,28 @@ public class WorldMenuManager : MonoBehaviour
                 secondaryButtonsSections[0].transform.localPosition = new Vector3(0f, 0f, 0f);
                 secondaryButtonsSections[1].transform.localPosition = new Vector3(0f, -30f, 0f);
                 secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[3].transform.localPosition = new Vector3(0f, -30f, 0f);
                 break;
 
             case 1:
                 secondaryButtonsSections[0].transform.localPosition = new Vector3(0f, -30f, 0f);
                 secondaryButtonsSections[1].transform.localPosition = new Vector3(0f, 0f, 0f);
                 secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[3].transform.localPosition = new Vector3(0f, -30f, 0f);
                 break;
 
             case 2:
                 secondaryButtonsSections[0].transform.localPosition = new Vector3(0f, -30f, 0f);
                 secondaryButtonsSections[1].transform.localPosition = new Vector3(0f, -30f, 0f);
                 secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, 0f, 0f);
+                secondaryButtonsSections[3].transform.localPosition = new Vector3(0f, -30f, 0f);
                 break;
 
             case 3:
                 secondaryButtonsSections[0].transform.localPosition = new Vector3(0f, -30f, 0f);
                 secondaryButtonsSections[1].transform.localPosition = new Vector3(0f, -30f, 0f);
                 secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[3].transform.localPosition = new Vector3(0f, 0f, 0f);
                 break;
 
         }

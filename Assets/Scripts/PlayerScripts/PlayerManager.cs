@@ -37,6 +37,8 @@ public class PlayerManager : MonoBehaviour
 
     public bool leftTriggerPressed = false;
 
+    public bool isAssistedControl;
+
     //private PlayerState previousState;
 
     // Mandos de realidad virtual
@@ -66,59 +68,88 @@ public class PlayerManager : MonoBehaviour
         rightControllerRay = rightController.GetComponent<XRRayInteractor>();
         leftControllerRay = leftController.GetComponent<XRRayInteractor>();
 
+        // Left Controller
+        _startAction.action.performed += OnStartAction;
+        _xAction.action.performed += OnXAction;
+        _yAction.action.performed += OnYAction;
+        _leftGripAction.action.performed += OnLeftGripAction;
+
+        // Right Controller
+        _bAction.action.performed += OnBAction;
+        _aAction.action.performed += OnAAction;
+        _rightGripAction.action.performed += OnRightGripAction;
+
         if (mainController == rightController)
         {
-            //moveProvider.leftHandMoveAction.reference.Set(leftHandActionReference);
-            //moveProvider.rightHandMoveAction.reference.Set(rightHandActionReference);
-
-            leftMoveProvider.enabled = true;
-            rightMoveProvider.enabled = false;
-
-            // Left Controller
-            _startAction.action.performed += OnStartAction;
-
-            _leftTriggerAction.action.performed -= OnRightTriggerAction;
-            _leftTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
-
-            _xAction.action.performed += OnXAction;
-            _yAction.action.performed += OnYAction;
-            _leftTouchpadAction.action.performed -= OnRightTouchpadAction;
-            _leftGripAction.action.performed += OnLeftGripAction;
-
-            // Right Controller
-            _rightTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
-            _rightTriggerAction.action.performed += OnRightTriggerAction;
-
-            _bAction.action.performed += OnBAction;
-            _aAction.action.performed += OnAAction;
-            _rightTouchpadAction.action.performed += OnRightTouchpadAction;
-            _rightGripAction.action.performed += OnRightGripAction;
+            ChangeToRightMainController();
         }
         else if (mainController == leftController)
         {
-            leftMoveProvider.enabled = false;
-            rightMoveProvider.enabled = true;
-
-            // Left Controller
-            _startAction.action.performed += OnStartAction;
-
-            _leftTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
-            _leftTriggerAction.action.performed += OnRightTriggerAction;
-
-            _xAction.action.performed += OnXAction;
-            _yAction.action.performed += OnYAction;
-            _leftTouchpadAction.action.performed += OnRightTouchpadAction;
-            _leftGripAction.action.performed += OnLeftGripAction;
-
-            // Right Controller
-            _rightTriggerAction.action.performed -= OnRightTriggerAction;
-            _rightTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
-
-            _bAction.action.performed += OnBAction;
-            _aAction.action.performed += OnAAction;
-            _rightTouchpadAction.action.performed -= OnRightTouchpadAction;
-            _rightGripAction.action.performed += OnRightGripAction;
+            ChangeToLeftMainController();
         }
+
+        if (isAssistedControl)
+        {
+            ChangeToAssistedControl();
+
+            _worldMenuManager.ChangeAssistedControlToggle(_worldMenuManager.yesControlToggle);
+        }
+        else
+        {
+            _worldMenuManager.ChangeAssistedControlToggle(_worldMenuManager.noControlToggle);
+        }
+
+        //if (mainController == rightController)
+        //{
+        //    //moveProvider.leftHandMoveAction.reference.Set(leftHandActionReference);
+        //    //moveProvider.rightHandMoveAction.reference.Set(rightHandActionReference);
+
+        //    leftMoveProvider.enabled = true;
+        //    rightMoveProvider.enabled = false;
+
+        //    // Left Controller
+        //    _leftTriggerAction.action.performed -= OnRightTriggerAction;
+        //    _leftTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
+
+        //    _xAction.action.performed += OnXAction;
+        //    _yAction.action.performed += OnYAction;
+        //    _leftTouchpadAction.action.performed -= OnRightTouchpadAction;
+        //    _leftGripAction.action.performed += OnLeftGripAction;
+
+        //    // Right Controller
+        //    _rightTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
+        //    _rightTriggerAction.action.performed += OnRightTriggerAction;
+
+        //    _bAction.action.performed += OnBAction;
+        //    _aAction.action.performed += OnAAction;
+        //    _rightTouchpadAction.action.performed += OnRightTouchpadAction;
+        //    _rightGripAction.action.performed += OnRightGripAction;
+        //}
+        //else if (mainController == leftController)
+        //{
+        //    leftMoveProvider.enabled = false;
+        //    rightMoveProvider.enabled = true;
+
+        //    // Left Controller
+        //    _startAction.action.performed += OnStartAction;
+
+        //    _leftTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
+        //    _leftTriggerAction.action.performed += OnRightTriggerAction;
+
+        //    _xAction.action.performed += OnXAction;
+        //    _yAction.action.performed += OnYAction;
+        //    _leftTouchpadAction.action.performed += OnRightTouchpadAction;
+        //    _leftGripAction.action.performed += OnLeftGripAction;
+
+        //    // Right Controller
+        //    _rightTriggerAction.action.performed -= OnRightTriggerAction;
+        //    _rightTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
+
+        //    _bAction.action.performed += OnBAction;
+        //    _aAction.action.performed += OnAAction;
+        //    _rightTouchpadAction.action.performed -= OnRightTouchpadAction;
+        //    _rightGripAction.action.performed += OnRightGripAction;
+        //}
     }
 
     private void Update()
@@ -173,16 +204,25 @@ public class PlayerManager : MonoBehaviour
         rightMoveProvider.enabled = true;
 
         // Left Controller
-        _leftTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
         _leftTriggerAction.action.performed += OnRightTriggerAction;
-
         _leftTouchpadAction.action.performed += OnRightTouchpadAction;
 
         // Right Controller
         _rightTriggerAction.action.performed -= OnRightTriggerAction;
-        _rightTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
-
         _rightTouchpadAction.action.performed -= OnRightTouchpadAction;
+
+        if (isAssistedControl)
+        {
+            ChangeToAssistedControl();
+        }
+        else
+        {
+            // Left Controller
+            _leftTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
+
+            // Right Controler
+            _rightTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
+        }
     }
 
     public void ChangeToRightMainController()
@@ -192,17 +232,97 @@ public class PlayerManager : MonoBehaviour
         _wallManager.mainRay = mainController.GetComponent<XRRayInteractor>();
         _buildingManager.ray = mainController.GetComponent<XRRayInteractor>();
 
+        leftMoveProvider.enabled = true;
+        rightMoveProvider.enabled = false;
+
         // Left Controller
         _leftTriggerAction.action.performed -= OnRightTriggerAction;
-        _leftTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
-
         _leftTouchpadAction.action.performed -= OnRightTouchpadAction;
 
         // Right Controller
-        _rightTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
         _rightTriggerAction.action.performed += OnRightTriggerAction;
-
         _rightTouchpadAction.action.performed += OnRightTouchpadAction;
+
+        if (isAssistedControl)
+        {
+            ChangeToAssistedControl();
+        }
+        else
+        {
+            // Left Controller
+            _leftTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
+
+            // Right Controler
+            _rightTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
+        }
+    }
+
+    // Change to assisted control
+
+    public void ChangeToAssistedControl()
+    {
+        isAssistedControl = true;
+
+        if (mainController == rightController)
+        {
+            // Left Controller
+            _leftTriggerAction.action.performed -= OnAAction;
+            _leftTriggerAction.action.performed += OnBAction;
+            _leftTriggerAction.action.performed += OnXAction;
+            _leftTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
+
+            // Right Controller
+            _rightTriggerAction.action.performed += OnAAction;
+            _rightTriggerAction.action.performed -= OnBAction;
+            _rightTriggerAction.action.performed -= OnXAction;
+        }
+        else if (mainController == leftController)
+        {
+            // Left Controller
+            _leftTriggerAction.action.performed += OnAAction;
+            _leftTriggerAction.action.performed -= OnBAction;
+            _leftTriggerAction.action.performed -= OnXAction;
+
+            // Right Controller
+            _rightTriggerAction.action.performed -= OnAAction;
+            _rightTriggerAction.action.performed += OnBAction;
+            _rightTriggerAction.action.performed += OnXAction;
+            _rightTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
+        }
+    }
+
+
+
+    public void ChangeFromAssistedControl()
+    {
+        isAssistedControl = false;
+
+        if (mainController == rightController)
+        {
+            // Left Controller
+            _leftTriggerAction.action.performed -= OnAAction;
+            _leftTriggerAction.action.performed -= OnBAction;
+            _leftTriggerAction.action.performed -= OnXAction;
+            _leftTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
+
+            // Right Controller
+            _rightTriggerAction.action.performed -= OnAAction;
+            _rightTriggerAction.action.performed -= OnBAction;
+            _rightTriggerAction.action.performed -= OnXAction;
+        }
+        else if (mainController == leftController)
+        {
+            // Left Controller
+            _leftTriggerAction.action.performed -= OnAAction;
+            _leftTriggerAction.action.performed -= OnBAction;
+            _leftTriggerAction.action.performed -= OnXAction;
+
+            // Right Controller
+            _rightTriggerAction.action.performed -= OnAAction;
+            _rightTriggerAction.action.performed -= OnBAction;
+            _rightTriggerAction.action.performed -= OnXAction;
+            _rightTriggerPressedAction.action.performed += OnLeftTriggerPressedAction;
+        }
     }
 
     // Funcion de cada boton
@@ -315,13 +435,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (state == PlayerState.isBuildingWalls)
         {
-            if (_wallManager.poleList.Count == 0)
-            {
-                //_wallManager.wall.axisX = true;
-                //_wallManager.wall.axisZ = false;
-                _wallManager.planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
-            }
-            else if (_wallManager.hit.collider.tag == "Wall")
+            if (_wallManager.hit.collider.tag == "Wall")
             {
                 _wallManager.DestroyWall(_wallManager.hit.collider.GetComponent<BuildingWall>());
             }
@@ -337,19 +451,6 @@ public class PlayerManager : MonoBehaviour
         if (state == PlayerState.isFree)
         {
             _buildingManager.SelectObject();
-        }
-        else if (state == PlayerState.isBuildingWalls)
-        {
-            //if (_wallManager.poleList.Count > 0)
-            //{
-            //    Debug.Log("TO-DO");
-            //}
-            /*else*/ if (_wallManager.poleList.Count <= 0)
-            {
-                //_wallManager.wall.axisX = false;
-                //_wallManager.wall.axisZ = true;
-                _wallManager.planeHit.transform.eulerAngles = new Vector3(0f, 0f, 0f);
-            }
         }
     }
 
@@ -423,7 +524,7 @@ public class PlayerManager : MonoBehaviour
                     selectedInteractable.interactingControllerPosition = rightController.transform.localPosition;
                 }
             }
-            else if (_worldMenuManager.continuousRotation == false)
+            else if (_worldMenuManager.continuousRotation == false && _worldMenuManager.buildingState != BuildingState.withTrigger)
             {
                 if (state == PlayerState.isBuilding) _buildingManager.selectedBuildingObject.RotateObject(-_worldMenuManager.staticRotationValue);
                 else if (state == PlayerState.isBuildingWalls) _wallManager.wall.SetRotation(-_worldMenuManager.staticRotationValue);

@@ -511,7 +511,7 @@ public class WallManager : MonoBehaviour
             Mathf.Abs(topRightBack.z - bottomLeftFront.z)
         );
 
-        ceiling.SetActive(true);
+        //ceiling.SetActive(true);
         auxiliarLight.SetActive(false);
 
         // Set the ceiling position with the height of the walls and the center point X and Z coordinates, also the dimensions
