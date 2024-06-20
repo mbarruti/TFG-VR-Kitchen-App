@@ -427,7 +427,6 @@ public class BuildingObject : MonoBehaviour
             // Y axis scaling depends on Y value of the touchpad
             if (value.y >= 0.8f || value.y <= -0.8f)
             {
-                Debug.Log(value.y);
                 //if (transform.localScale.y - scaleAmount.y >= 0.15f) scaleAmount.y = value.y * Time.deltaTime;
                 //else scaleAmount.y += 0.15f - transform.localScale.y;
                 scaleAmount.y = value.y * Time.deltaTime;

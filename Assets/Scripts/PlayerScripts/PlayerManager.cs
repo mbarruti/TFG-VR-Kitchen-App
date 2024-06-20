@@ -309,6 +309,7 @@ public class PlayerManager : MonoBehaviour
             _rightTriggerAction.action.performed -= OnAAction;
             _rightTriggerAction.action.performed -= OnBAction;
             _rightTriggerAction.action.performed -= OnXAction;
+            _rightTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
         }
         else if (mainController == leftController)
         {
@@ -316,6 +317,7 @@ public class PlayerManager : MonoBehaviour
             _leftTriggerAction.action.performed -= OnAAction;
             _leftTriggerAction.action.performed -= OnBAction;
             _leftTriggerAction.action.performed -= OnXAction;
+            _leftTriggerPressedAction.action.performed -= OnLeftTriggerPressedAction;
 
             // Right Controller
             _rightTriggerAction.action.performed -= OnAAction;

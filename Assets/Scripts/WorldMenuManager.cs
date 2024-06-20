@@ -93,7 +93,7 @@ public class WorldMenuManager : MonoBehaviour
             mainButtonsList[0].transform.localPosition = new Vector3(0, -100f, 0);
             mainButtonsList[1].transform.localPosition = new Vector3(0, -100f, 0);
             mainButtonsList[2].transform.localPosition = new Vector3(0, -100f, 0);
-            ShowSecondaryButtons(3);
+            ShowSecondaryButtons(4);
         }
         else
         {
@@ -119,9 +119,6 @@ public class WorldMenuManager : MonoBehaviour
 
         if (_playerManager.mainController = _playerManager.rightController) ChangeActiveControllerToggle(rightControllerToggle);
         else ChangeActiveControllerToggle(leftControllerToggle);
-
-        // Deseleccionar todos los objetos en el inicio
-        //DeselectAllObjects();
     }
 
     public void CheckIfRoomEmpty(int index)
@@ -426,8 +423,9 @@ public class WorldMenuManager : MonoBehaviour
                     button.DeactivateIsSelected();
                 }
                 break;
+
             case 4:
-                foreach (ButtonAnimationToggler button in viewsButtonsList)
+                foreach (ButtonAnimationToggler button in configButtonsList)
                 {
                     button.DeactivateIsSelected();
                 }
@@ -470,6 +468,12 @@ public class WorldMenuManager : MonoBehaviour
                 secondaryButtonsSections[3].transform.localPosition = new Vector3(0f, 0f, 0f);
                 break;
 
+            case 4:
+                secondaryButtonsSections[0].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[1].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, -30f, 0f);
+                secondaryButtonsSections[3].transform.localPosition = new Vector3(0f, -30f, 0f);
+                break;
         }
     }
 }
