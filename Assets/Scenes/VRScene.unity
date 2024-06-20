@@ -1230,7 +1230,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &365688156
 Transform:
   m_ObjectHideFlags: 0
@@ -4826,7 +4826,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 46c2daf16d21070449122d9ed65c1b06, type: 2}
+  - {fileID: 2100000, guid: 3b26ba69e08dc3145bbc938057c85aa5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7428,6 +7428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   auxiliarLight: {fileID: 705507993}
+  ceilingLight: {fileID: 365688155}
   ceiling: {fileID: 1201833058}
   floor: {fileID: 1019668964}
   playerManager: {fileID: 1556188438}
