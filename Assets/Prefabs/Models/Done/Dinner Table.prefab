@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7018316313527082483}
   - component: {fileID: 4851960717043434405}
   - component: {fileID: 7655538019848012853}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Dinner Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 4843234597840230620}
   - component: {fileID: 5576733228941661350}
   - component: {fileID: 6408171844196001134}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Dinner Table
   m_TagString: Untagged
   m_Icon: {fileID: 0}
