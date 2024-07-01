@@ -32,8 +32,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] ActionBasedContinuousMoveProvider leftMoveProvider;
     [SerializeField] ActionBasedContinuousMoveProvider rightMoveProvider;
 
-    XRRayInteractor rightControllerRay;
-    XRRayInteractor leftControllerRay;
+    public XRRayInteractor rightControllerRay;
+    public XRRayInteractor leftControllerRay;
 
     public bool leftTriggerPressed = false;
 
@@ -510,18 +510,7 @@ public class PlayerManager : MonoBehaviour
         {
             rightGripPressed = true;
 
-            if (state == PlayerState.isFree && mainController.Equals(rightController))
-            {
-                rightControllerRay.raycastMask = newLayerMask;
-
-                // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
-                if (selectedInteractable == null && rightControllerRay.TryGetCurrent3DRaycastHit(out RaycastHit hit) && hit.collider.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
-                {
-                    selectedInteractable = interactable;
-                    selectedInteractable.interactingControllerPosition = rightController.transform.localPosition;
-                }
-            }
-            else if (_worldMenuManager.continuousRotation == false && _worldMenuManager.buildingState != BuildingState.withTrigger)
+            if (_worldMenuManager.continuousRotation == false /*&& _worldMenuManager.buildingState != BuildingState.withTrigger*/)
             {
                 if (state == PlayerState.isBuilding) _buildingManager.selectedBuildingObject.RotateObject(-_worldMenuManager.staticRotationValue);
                 else if (state == PlayerState.isBuildingWalls) _wallManager.wall.SetRotation(-_worldMenuManager.staticRotationValue);
@@ -546,16 +535,7 @@ public class PlayerManager : MonoBehaviour
         {
             leftGripPressed = true;
 
-            if (state == PlayerState.isFree && mainController.Equals(leftController))
-            {
-                // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
-                if (selectedInteractable == null && leftControllerRay.TryGetCurrent3DRaycastHit(out RaycastHit hit) && hit.collider.gameObject.TryGetComponent<Interactable>(out Interactable interactable))
-                {
-                    selectedInteractable = interactable;
-                    selectedInteractable.interactingControllerPosition = leftController.transform.localPosition;
-                }
-            }
-            else if (_worldMenuManager.continuousRotation == false)
+            if (_worldMenuManager.continuousRotation == false)
             {
                 if (state == PlayerState.isBuilding) _buildingManager.selectedBuildingObject.RotateObject(_worldMenuManager.staticRotationValue);
                 else if (state == PlayerState.isBuildingWalls && _wallManager.wall != null) _wallManager.wall.SetRotation(_worldMenuManager.staticRotationValue);
@@ -564,10 +544,12 @@ public class PlayerManager : MonoBehaviour
         else if (leftGripPressed == true && selectedInteractable != null)
         {
             selectedInteractable = null;
+            leftControllerRay.raycastMask = actualLayerMask;
             leftGripPressed = false;
         }
         else
         {
+            leftControllerRay.raycastMask = actualLayerMask;
             leftGripPressed = false;
         }
     }

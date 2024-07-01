@@ -176,6 +176,29 @@ public class BuildingManager : MonoBehaviour
 
         if (playerManager.state == PlayerState.isFree)
         {
+            if (playerManager.rightGripPressed && playerManager.mainController.Equals(rightController))
+            {
+                playerManager.rightControllerRay.raycastMask = playerManager.newLayerMask;
+
+                // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
+                if (playerManager.selectedInteractable == null && playerManager.rightControllerRay.TryGetCurrent3DRaycastHit(out RaycastHit auxHit))
+                {
+                    auxHit.collider.gameObject.TryGetComponent<Interactable>(out playerManager.selectedInteractable);
+                    if (playerManager.selectedInteractable != null) playerManager.selectedInteractable.interactingControllerPosition = rightController.transform.localPosition;
+                }
+            }
+            else if (playerManager.leftGripPressed && playerManager.mainController.Equals(leftController))
+            {
+                playerManager.leftControllerRay.raycastMask = playerManager.newLayerMask;
+
+                // If there is not an interactable selected and one is hit while the grip is pressed, it is selected
+                if (playerManager.selectedInteractable == null && playerManager.leftControllerRay.TryGetCurrent3DRaycastHit(out RaycastHit auxHit))
+                {
+                    auxHit.collider.gameObject.TryGetComponent<Interactable>(out playerManager.selectedInteractable);
+                    if (playerManager.selectedInteractable != null) playerManager.selectedInteractable.interactingControllerPosition = leftController.transform.localPosition;
+                }
+            }
+
             // If there is an interactable selected, the interaction happens
             if (playerManager.selectedInteractable != null)
             {
@@ -603,7 +626,7 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Default");
 
         // Change to kinematic rigidbody so OnCollisionStay isn't called
-        selectedBuildingObject.objectRigidbody.isKinematic = true;
+        //selectedBuildingObject.objectRigidbody.isKinematic = true;
         selectedBuildingObject.isPlaced = true;
 
         if (worldMenuManager.buildingState == BuildingState.withPhysics)
