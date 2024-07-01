@@ -5,76 +5,71 @@ using UnityEngine;
 [System.Serializable]
 public class RoomData
 {
-    public List<ObjectData> objectDataList;
-    public List<WallData> wallDataList;
+    public List<ObjectData> objects;
+    public List<WallData> walls;
 
     public RoomData(List<ObjectData> objectDataList, List<WallData> wallDataList)
     {
-        this.objectDataList = objectDataList;
-        this.wallDataList = wallDataList;
+        this.objects = objectDataList;
+        this.walls = wallDataList;
     }
 }
 
 [System.Serializable]
 public class ObjectData
 {
-    public TransformData transform;
-    //public MaterialData material;
-    public string prefabId;
-    public int layer;
-
-    public ObjectData(Transform transform, string prefabId, int layer)
-    {
-        this.transform = new TransformData(transform);
-        //this.material = new MaterialData(material);
-        this.prefabId = prefabId;
-        this.layer = layer;
-    }
+    public List<double> position { get; set; }
+    public List<double> rotation { get; set; }
+    public List<double> scale { get; set; }
+    public string prefabId { get; set; }
+    public int layer { get; set; }
 }
 
+[System.Serializable]
 public class WallData
 {
-    public TransformData transform;
-    public MaterialData material;
-    //public string prefabId;
-    public int layer;
+    public List<double> position { get; set; }
+    public List<double> rotation { get; set; }
+    public List<double> scale { get; set; }
+    public string shader { get; set; }
+    public string texture { get; set; }
+    public int layer { get; set; }
 
-    public WallData(Transform transform, Material material, /*string prefabId,*/ int layer)
-    {
-        this.transform = new TransformData(transform);
-        this.material = new MaterialData(material);
-        //this.prefabId = prefabId;
-        this.layer = layer;
-    }
 }
 
 [System.Serializable]
 public class TransformData
 {
-    public Vector3Data position;
-    public Vector3Data rotation;
-    public Vector3Data scale;
+    public float[] position = new float[3];
+    public float[] rotation = new float[3];
+    public float[] scale = new float[3];
 
     public TransformData(Transform transform)
     {
-        position = new Vector3Data(transform.position);
-        rotation = new Vector3Data(transform.eulerAngles);
-        scale = new Vector3Data(transform.localScale);
+        position[0] = transform.position.x;
+        position[1] = transform.position.y;
+        position[2] = transform.position.z;
+
+        rotation[0] = transform.eulerAngles.x;
+        rotation[1] = transform.eulerAngles.y;
+        rotation[2] = transform.eulerAngles.z;
+
+        scale[0] = transform.localScale.x;
+        scale[1] = transform.localScale.y;
+        scale[2] = transform.localScale.z;
     }
 }
 
 [System.Serializable]
 public class Vector3Data
 {
-    public float x;
-    public float y;
-    public float z;
+    public float[] values = new float[3];
 
     public Vector3Data(Vector3 vector)
     {
-        x = vector.x;
-        y = vector.y;
-        z = vector.z;
+        values[0] = vector.x;
+        values[1] = vector.y;
+        values[2] = vector.z;
     }
 }
 

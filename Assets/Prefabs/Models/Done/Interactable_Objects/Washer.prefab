@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 1482099959385412697}
   - component: {fileID: 8637021861626150887}
   - component: {fileID: 6078792533037111380}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Washer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

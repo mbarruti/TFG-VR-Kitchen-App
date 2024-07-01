@@ -9,10 +9,9 @@ public class DataManager : MonoBehaviour
     // -----------------------------------
 
     private GeneralData generalData;
-    private RoomData roomData;
-    private List<ObjectData> objectDataList = new List<ObjectData>();
-    private List<WallData> wallDataList = new List<WallData>();
-    private SaveSystem saveSystem;
+    private List<ObjectData> objectDataList = new();
+    private List<WallData> wallDataList = new();
+    public SaveSystem saveSystem;
 
     [SerializeField] WorldMenuManager menu;
     [SerializeField] PlayerManager user;
@@ -42,42 +41,64 @@ public class DataManager : MonoBehaviour
 
     public void SaveObjectsData(GameObject obj, GameObject prefab)
     {
-        ObjectData objectData = new ObjectData(obj.transform, prefab.name, obj.layer);
+        ObjectData objectData = new ObjectData();
+
+        objectData.position.Add(obj.transform.position.x);
+        objectData.position.Add(obj.transform.position.y);
+        objectData.position.Add(obj.transform.position.z);
+
+        objectData.rotation.Add(obj.transform.eulerAngles.x);
+        objectData.rotation.Add(obj.transform.eulerAngles.y);
+        objectData.rotation.Add(obj.transform.eulerAngles.z);
+
+        objectData.scale.Add(obj.transform.localScale.x);
+        objectData.scale.Add(obj.transform.localScale.y);
+        objectData.scale.Add(obj.transform.localScale.z);
+
+        objectData.prefabId = prefab.name;
+        objectData.layer = obj.layer;
         objectDataList.Add(objectData);
     }
 
-    private void SaveObjectsDataInFile()
+    public void SaveRoom(string fileName)
     {
-        var dataToSave = new { objects = objectDataList };
-        saveSystem.SaveData(dataToSave);
+        Dictionary<string, object> dataToSave = new Dictionary<string, object>();
+        dataToSave.Add("walls", wallDataList);
+        dataToSave.Add("objects", objectDataList);
+        saveSystem.SaveData(dataToSave, fileName);
     }
 
     public void SaveWallsData(GameObject obj, Material material)
     {
-        WallData wallData = new WallData(obj.transform, material, obj.layer);
+        WallData wallData = new WallData();
+        wallData.position.Add(obj.transform.position.x);
+        wallData.position.Add(obj.transform.position.y);
+        wallData.position.Add(obj.transform.position.z);
+
+        wallData.rotation.Add(obj.transform.eulerAngles.x);
+        wallData.rotation.Add(obj.transform.eulerAngles.y);
+        wallData.rotation.Add(obj.transform.eulerAngles.z);
+
+        wallData.scale.Add(obj.transform.localScale.x);
+        wallData.scale.Add(obj.transform.localScale.y);
+        wallData.scale.Add(obj.transform.localScale.z);
+
+        wallData.shader = material.name;
+        wallData.layer = obj.layer;
+
+
         wallDataList.Add(wallData);
     }
 
-    private void SaveWallsDataInFile()
-    {
-        var dataToSave = new { walls = wallDataList };
-        saveSystem.SaveData(dataToSave);
-    }
-
-    public void SaveRoomData()
-    {
-
-    }
-
-    private void SaveGeneralDataInFile(PlayerState playerState, BuildingState buildingState, bool continuousRotation, string controllerName, bool assistedControl)
+    private void SaveGeneralDataInFile(PlayerState playerState, BuildingState buildingState, bool continuousRotation, string controllerName, bool assistedControl, string fileName)
     {
         var dataToSave = new { user = generalData };
-        saveSystem.SaveData(dataToSave);
+        saveSystem.SaveData(dataToSave, fileName);
     }
 
-    private void LoadGeneralData()
+    private void LoadGeneralData(string fileName)
     {
-        var loadedData = saveSystem.LoadData<Dictionary<string, GeneralData>>();
+        var loadedData = saveSystem.LoadData<Dictionary<string, GeneralData>>(fileName);
         if (loadedData != null && loadedData.ContainsKey("general"))
         {
             generalData = loadedData["general"];
@@ -90,52 +111,54 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    private void LoadObjectsData()
+    public void LoadObjectsData(string fileName)
     {
-        var loadedData = saveSystem.LoadData<Dictionary<string, List<ObjectData>>>();
-        if (loadedData != null && loadedData.ContainsKey("objects"))
+        //var loadedData = saveSystem.LoadData<Dictionary<string, List<ObjectData>>>(fileName);
+        var loadedData = saveSystem.LoadData<RoomData>(fileName);
+        if (loadedData != null)
         {
-            objectDataList = loadedData["objects"];
+            objectDataList = loadedData.objects;
             foreach (var data in objectDataList)
             {
+                Debug.Log(data.prefabId);
                 GameObject prefab = GetPrefabByName(data.prefabId);
                 if (prefab != null)
                 {
-                    GameObject obj = Instantiate(prefab, data.transform.position.ToVector3(), Quaternion.Euler(data.transform.rotation.ToVector3()));
-                    obj.transform.localScale = data.transform.scale.ToVector3();
+                    GameObject obj = Instantiate(prefab, new Vector3((float)data.position[0], (float)data.position[1], (float)data.position[2]), Quaternion.Euler(new Vector3((float)data.rotation[0], (float)data.rotation[1], (float)data.rotation[2])));
+                    obj.transform.localScale = new Vector3((float)data.scale[0], (float)data.scale[1], (float)data.scale[2]);
                     obj.layer = data.layer;
                 }
             }
         }
     }
 
-    private void LoadWallsData()
+    public void LoadWallsData(string fileName)
     {
         WallData data;
-        var loadedData = saveSystem.LoadData<Dictionary<string, List<WallData>>>();
-        if (loadedData != null && loadedData.ContainsKey("walls"))
+        var loadedData = saveSystem.LoadData<RoomData>(fileName);
+        if (loadedData != null)
         {
-            wallDataList = loadedData["walls"];
+            menu.wallList.Clear();
+
+            wallDataList = loadedData.walls;
             for (int i = 0; i < wallDataList.Count; i++)
             {
                 data = wallDataList[i];
-
                 if (i == 0)
                 {
-                    menu.floor.transform.position = data.transform.position.ToVector3();
-                    menu.floor.transform.rotation = Quaternion.Euler(data.transform.rotation.ToVector3());
-                    menu.floor.transform.localScale = data.transform.scale.ToVector3();
+                    menu.floor.transform.position = new Vector3((float)data.position[0], (float)data.position[1], (float)data.position[2]);
+                    menu.floor.transform.rotation = Quaternion.Euler(new Vector3((float)data.rotation[0], (float)data.rotation[1], (float)data.rotation[2]));
+                    menu.floor.transform.localScale = new Vector3((float)data.scale[0], (float)data.scale[1], (float)data.scale[2]);
                     menu.floor.layer = data.layer;
 
                     Renderer renderer = menu.floor.GetComponent<Renderer>();
                     if (renderer != null && renderer.material != null)
                     {
                         Material material = renderer.material;
-                        material.shader = Shader.Find(data.material.shader);
-                        material.color = new Color(data.material.color.r, data.material.color.g, data.material.color.b, data.material.color.a);
-                        if (!string.IsNullOrEmpty(data.material.texture))
+                        material.shader = Shader.Find(data.shader);
+                        if (!string.IsNullOrEmpty(data.texture))
                         {
-                            Texture texture = Resources.Load<Texture>(data.material.texture);
+                            Texture texture = Resources.Load<Texture>(data.texture);
                             material.mainTexture = texture;
 
                             renderer.material.mainTextureScale = new Vector2(menu.floor.transform.localScale.z / 2f, menu.floor.transform.localScale.y / 2f);
@@ -144,20 +167,19 @@ public class DataManager : MonoBehaviour
                 }
                 else if (i == 1)
                 {
-                    menu.ceiling.transform.position = data.transform.position.ToVector3();
-                    menu.ceiling.transform.rotation = Quaternion.Euler(data.transform.rotation.ToVector3());
-                    menu.ceiling.transform.localScale = data.transform.scale.ToVector3();
+                    menu.ceiling.transform.position = new Vector3((float)data.position[0], (float)data.position[1], (float)data.position[2]);
+                    menu.ceiling.transform.rotation = Quaternion.Euler(new Vector3((float)data.rotation[0], (float)data.rotation[1], (float)data.rotation[2]));
+                    menu.ceiling.transform.localScale = new Vector3((float)data.scale[0], (float)data.scale[1], (float)data.scale[2]);
                     menu.ceiling.layer = data.layer;
 
                     Renderer renderer = menu.floor.GetComponent<Renderer>();
                     if (renderer != null && renderer.material != null)
                     {
                         Material material = renderer.material;
-                        material.shader = Shader.Find(data.material.shader);
-                        material.color = new Color(data.material.color.r, data.material.color.g, data.material.color.b, data.material.color.a);
-                        if (!string.IsNullOrEmpty(data.material.texture))
+                        material.shader = Shader.Find(data.shader);
+                        if (!string.IsNullOrEmpty(data.texture))
                         {
-                            Texture texture = Resources.Load<Texture>(data.material.texture);
+                            Texture texture = Resources.Load<Texture>(data.texture);
                             material.mainTexture = texture;
 
                             renderer.material.mainTextureScale = new Vector2(menu.floor.transform.localScale.z / 2f, menu.floor.transform.localScale.y / 2f);
@@ -166,24 +188,25 @@ public class DataManager : MonoBehaviour
                 }
                 else
                 {
-                    GameObject obj = Instantiate(menu.wallPrefab, data.transform.position.ToVector3(), Quaternion.Euler(data.transform.rotation.ToVector3()));
-                    obj.transform.localScale = data.transform.scale.ToVector3();
+                    GameObject obj = Instantiate(menu.wallPrefab, new Vector3((float)data.position[0], (float)data.position[1], (float)data.position[2]), Quaternion.Euler(new Vector3((float)data.rotation[0], (float)data.rotation[1], (float)data.rotation[2])));
+                    obj.transform.localScale = new Vector3((float)data.scale[0], (float)data.scale[1], (float)data.scale[2]);
                     obj.layer = data.layer;
 
                     Renderer renderer = obj.GetComponent<Renderer>();
                     if (renderer != null && renderer.material != null)
                     {
                         Material material = renderer.material;
-                        material.shader = Shader.Find(data.material.shader);
-                        material.color = new Color(data.material.color.r, data.material.color.g, data.material.color.b, data.material.color.a);
-                        if (!string.IsNullOrEmpty(data.material.texture))
+                        material.shader = Shader.Find(data.shader);
+                        if (!string.IsNullOrEmpty(data.texture))
                         {
-                            Texture texture = Resources.Load<Texture>(data.material.texture);
+                            Texture texture = Resources.Load<Texture>(data.texture);
                             material.mainTexture = texture;
 
                             renderer.material.mainTextureScale = new Vector2(obj.transform.localScale.z / 2f, obj.transform.localScale.y / 2f);
                         }
                     }
+
+                    menu.wallList.Add(obj.GetComponent<BuildingWall>());
                 }
             }
         }
@@ -191,8 +214,10 @@ public class DataManager : MonoBehaviour
 
     private GameObject GetPrefabByName(string name)
     {
-        foreach (var prefab in prefabs)
+        Debug.Log("BUSCANDO " + name);
+        foreach (var prefab in menu.modelsList)
         {
+            Debug.Log("checkeando en " + prefab.name);
             if (prefab.name == name)
             {
                 return prefab;
@@ -206,6 +231,6 @@ public static class Extensions
 {
     public static Vector3 ToVector3(this Vector3Data vectorData)
     {
-        return new Vector3(vectorData.x, vectorData.y, vectorData.z);
+        return new Vector3(vectorData.values[0], vectorData.values[1], vectorData.values[2]);
     }
 }

@@ -579,7 +579,7 @@ GameObject:
   - component: {fileID: 3888614512635856991}
   - component: {fileID: 3888614512635856985}
   - component: {fileID: 3888614512635856984}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Stove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -959,8 +959,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f61ae8184e7ff449422da39b616519, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: 1
-  limit: 5
+  offset: 0.1
+  limit: 0.25
   rotationInteractable: 0
   axis: 2
   sign: 1

@@ -177,7 +177,7 @@ public class PlayerManager : MonoBehaviour
     // Actualiza el estado del jugador, dependiendo de la situacion
     public void UpdateStates()
     {
-        if (state != PlayerState.isBuildingWalls)
+        if (/*state != PlayerState.isBuildingWalls*/ _worldMenuManager.wallList.Count != 0)
         {
             if (_worldMenuManager.isOpened)
             {
@@ -471,8 +471,8 @@ public class PlayerManager : MonoBehaviour
             }
             else if (_worldMenuManager.buildingState == BuildingState.withOffset)
             {
-                _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>(), leftTriggerPressed);
-                _buildingManager.parentObject.SetScale(_buildingManager.selectedBuildingObject);
+                if (_buildingManager.selectedBuildingObject != null) _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>(), leftTriggerPressed);
+                if (_buildingManager.selectedBuildingObject != null) _buildingManager.parentObject.SetScale(_buildingManager.selectedBuildingObject);
             }
         }
         else if (state == PlayerState.isBuildingWalls)

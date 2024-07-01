@@ -48,6 +48,9 @@ public class WorldMenuManager : MonoBehaviour
     [SerializeField] GameObject leftControllerToggle;
     [SerializeField] GameObject rightControllerToggle;
 
+    [SerializeField] List<GameObject> saveButtonList = new();
+    [SerializeField] List<GameObject> loadButtonList = new();
+
     // -------------------------------------------
 
     public GameObject yesControlToggle;
@@ -121,18 +124,18 @@ public class WorldMenuManager : MonoBehaviour
         else ChangeActiveControllerToggle(leftControllerToggle);
     }
 
-    public void CheckIfRoomEmpty(int index)
-    {
-        if (!roomList[index])
-        {
-            GenerateRoom(index);
-        }
-    }
+    //public void CheckIfRoomEmpty(int index)
+    //{
+    //    if (!roomList[index])
+    //    {
+    //        GenerateRoom(index);
+    //    }
+    //}
 
-    public void GenerateRoom(int index)
-    {
-        dataManager.SaveRoomData();
-    }
+    //public void GenerateRoom(int index)
+    //{
+    //    dataManager.Save
+    //}
 
     public void ChangeActiveToggle(GameObject toggle)
     {
@@ -474,6 +477,20 @@ public class WorldMenuManager : MonoBehaviour
                 secondaryButtonsSections[2].transform.localPosition = new Vector3(0f, -30f, 0f);
                 secondaryButtonsSections[3].transform.localPosition = new Vector3(0f, -30f, 0f);
                 break;
+        }
+    }
+
+    public void showSaveAndLoadButtons(int number)
+    {
+        for (int i = 0; i < saveButtonList.Count; i++)
+        {
+            if (number - 1 == i) saveButtonList[i].SetActive(true);
+            else saveButtonList[i].SetActive(false);
+        }
+        for (int i = 0; i < loadButtonList.Count; i++)
+        {
+            if (number - 1 == i) loadButtonList[i].SetActive(true);
+            else loadButtonList[i].SetActive(false);
         }
     }
 }
