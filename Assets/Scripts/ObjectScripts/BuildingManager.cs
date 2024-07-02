@@ -419,7 +419,7 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Default");
 
         // Change to kinematic rigidbody so OnCollisionStay isn't called
-        //selectedBuildingObject.objectRigidbody.isKinematic = true;
+        selectedBuildingObject.objectRigidbody.isKinematic = true;
         selectedBuildingObject.isPlaced = true;
 
         if (worldMenuManager.buildingState == BuildingState.withPhysics)

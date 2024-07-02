@@ -191,7 +191,7 @@ MonoBehaviour:
   colliderList:
   - {fileID: 241230211497331505}
   - {fileID: 3112247743036854123}
-  objectRigidbody: {fileID: 0}
+  objectRigidbody: {fileID: 6381686478904197367}
   isInteractable: 1
   isPlaced: 0
   isInLimit: 1
