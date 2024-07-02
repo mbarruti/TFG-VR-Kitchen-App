@@ -7787,6 +7787,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100674399}
     - target: {fileID: 1033946554576336791, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
+      propertyPath: staticRotationValue
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1033946554576336791, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
       propertyPath: modelsList.Array.data[11]
       value: 
       objectReference: {fileID: 6934528761708054486, guid: ed4cb5d47c72af748aa7514b1c54bfa1, type: 3}
