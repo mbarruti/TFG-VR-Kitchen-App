@@ -2701,6 +2701,10 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1687116405}
+    - target: {fileID: 1033946554576336788, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 1033946554576336791, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
       propertyPath: floor
       value: 
