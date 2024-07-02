@@ -761,7 +761,7 @@ MonoBehaviour:
   - {fileID: 1395996370678516536}
   - {fileID: 4472059497196568514}
   - {fileID: 1859307267069616602}
-  objectRigidbody: {fileID: 0}
+  objectRigidbody: {fileID: 6934528761708054483}
   isInteractable: 1
   isPlaced: 0
   isInLimit: 1
