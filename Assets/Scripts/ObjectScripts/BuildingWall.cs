@@ -14,6 +14,8 @@ public class BuildingWall : MonoBehaviour
     public bool axisX;
     public bool axisZ;
 
+    public int dataIndex;
+
     // TO-DO: guardar los Poles conectados a esta pared
 
     /// <summary>

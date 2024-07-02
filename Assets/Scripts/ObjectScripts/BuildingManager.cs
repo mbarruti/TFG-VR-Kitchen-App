@@ -128,40 +128,11 @@ public class BuildingManager : MonoBehaviour
             if (worldMenuManager.buildingState == BuildingState.withOffset)
             {
                 parentObject.transform.position = _hitPos;
-                //parentObject.transform.position = SetFirstObjectPosition();
+
                 parentObject.transform.position = UpdateOffset(SetHitObjectOffset(hit), 0f);
 
-                //if (selectedBuildingObject.canPlace == true)
-                //{
                 if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-                //}
 
-                //if (parentObject.canPlace == true)
-                //{
-                //    if (selectedBuildingObject.canPlace == true)
-                //    {
-                //        selectedBuildingObject.transform.position = parentObject.transform.position;
-                //    }
-                //    //Debug.Log("entra");
-                //    parentObject.transform.position = _hitPos;
-                //    parentObject.transform.position = SetFirstObjectPosition();
-                //    parentObject.transform.position = UpdateOffset(hit.point);
-                //}
-                //else
-                //{
-                //    //Debug.Log("entra");
-                //    if (parentObject.detectedColliders.Contains(hit.collider)) SetFirstObjectPosition();
-                //    parentObject.transform.position = UpdateOffset(hit.point);
-                //}
-
-                //UpdateOffset(hit.point);
-                //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
-                //if (newPosition == Vector3.zero) selectedBuildingObject.transform.position = parentObject.transform.position;
-                //else selectedBuildingObject.transform.position = newPosition;
-                //if (parentObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-
-                //UpdateOffset();
-                //selectedBuildingObject.transform.position = parentObject.transform.position + offset;
             }
             else if (worldMenuManager.buildingState == BuildingState.withTrigger)
             {
@@ -169,9 +140,6 @@ public class BuildingManager : MonoBehaviour
 
                 selectedBuildingObject.transform.position = SetHitObjectOffset(hit);
             }
-
-            // Actualizar materiales de colision
-            //UpdateMaterials();
         }
 
         if (playerManager.state == PlayerState.isFree)
@@ -214,47 +182,8 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    // Try with mouse
-    //private void Update()
-    //{
-    //    if (playerManager.state == PlayerState.isBuilding)
-    //    {
-    //        DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
-    //        if (worldMenuManager.buildingState == BuildingState.withOffset)
-    //        {
-    //            if (Input.GetMouseButton(0))
-    //            {
-    //                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //                RaycastHit mouseHit;
-
-    //                if (Physics.Raycast(ray, out mouseHit))
-    //                {
-    //                    parentObject.transform.position = mouseHit.point;
-    //                    //parentObject.transform.position = SetFirstObjectPosition(mouseHit);
-    //                    parentObject.transform.position = UpdateOffset(SetFirstObjectPosition(mouseHit), 0f);
-
-    //                    if (selectedBuildingObject.canPlace == true) selectedBuildingObject.transform.position = parentObject.transform.position;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-
     private void FixedUpdate()
     {
-        //RaycastHit hit;
-
-        //parentObject.detectedColliders2 = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
-
-        // parentObject.transform.position = new Vector3(10f, 10f, 0f);
-        //parentObject.detectedColliders2 = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
-        //if (parentObject.detectedColliders2.Length == 2) Debug.Log(parentObject.detectedColliders2.Length);
-        //parentObject.transform.position = new Vector3(10f, 10f, 0f);
-
-        //Debug.Log(parentObject.detectedColliders2.Length);
-
-        //Collider[] lista = 
-
         if (ray.TryGetCurrent3DRaycastHit(out hit))
         {
             //objectHit = hit.collider.gameObject;
@@ -263,14 +192,19 @@ public class BuildingManager : MonoBehaviour
 
             // Activar el outline del objeto si esta siendo apuntado con el mando
             // If a BuildingObject is hit, we can select it
-            if (playerManager.state == PlayerState.isFree && hit.collider.gameObject.TryGetComponent<BuildingObject>(out var auxObj))
+            if (playerManager.state == PlayerState.isFree && hit.collider != null)
             {
-                if (hitObject != auxObj)
+                BuildingObject auxObj = FindBuildingObject(hit.collider.transform);
+
+                if (auxObj != null)
                 {
-                    //Debug.Log("Apunta a obj");
-                    //if (hitObject != null) hitObject.switchOutline(false);
-                    hitObject = auxObj;
-                    //hitObject.switchOutline(true);
+                    if (hitObject != auxObj)
+                    {
+                        //Debug.Log("Apunta a obj");
+                        //if (hitObject != null) hitObject.switchOutline(false);
+                        hitObject = auxObj;
+                        //hitObject.switchOutline(true);
+                    }
                 }
             }
             else
@@ -286,44 +220,6 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    //public Vector3 UpdateOffset2(Vector3 parentPos, float counter)
-    //{
-    //    // Limit of the amount of callings of this recursive function
-    //    if (counter > 40) return parentPos; //40 empieza a lagear, 45 lagea un poco, 50 lagea un poco mas, 60 lagea mucho
-
-    //    // Set the first position
-    //    parentObject.transform.position = parentPos;
-
-    //    List<Vector3> directionsList;
-
-    //    // Get the colliders colliding with the object in its position;
-    //    Collider[] colliderList;
-    //    colliderList = Physics.OverlapBox(parentObject.transform.position, parentObject.transform.localScale / 2, parentObject.transform.rotation);
-
-    //    foreach (Collider collider in colliderList)
-    //    {
-    //        if (/*collider != hit.collider && */collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
-    //        {
-    //            Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
-    //            Vector3 diff = closestPoint - selectedBuildingObject.transform.position;
-    //            Vector3 dir = diff.normalized;
-
-    //            if (Physics.Raycast(selectedBuildingObject.transform.position, dir, out var planeHit))
-    //            {
-    //                Debug.DrawRay(planeHit.point, planeHit.normal, Color.blue);
-
-    //                localPlaneHit.transform.position = planeHit.point;
-    //                Quaternion targetRotation = Quaternion.LookRotation(planeHit.normal, Vector3.up);
-    //                localPlaneHit.transform.rotation = targetRotation;
-
-    //                directionsList.Add(localPlaneHit);
-    //            }
-    //        }
-    //    }
-
-    //    return parentObject.transform.position;
-    //}
-
     public Vector3 UpdateOffset(Vector3 parentPos, float counter)
     {
         // Limit of the amount of callings of this recursive function
@@ -331,33 +227,19 @@ public class BuildingManager : MonoBehaviour
 
         parentObject.transform.position = parentPos;
 
-        //Vector3 firstPosition = SetFirstObjectPosition();
-
         offset = Vector3.zero;
-        Vector3 nextLocalObjectPosition = parentObject.transform.position;
-        //Vector3 nextLocalObjectPosition = Vector3.zero;
 
-        List<(Vector3, Vector3)> planesNormals = new List<(Vector3, Vector3)>(); // (Normal of the plane, Offset in the direction of the normal)
-
-        //parentObject.transform.position = SetFirstObjectPosition();
         Collider[] colliderList;
         colliderList = Physics.OverlapBox(parentObject.transform.position, parentObject.globalColliderSize / 2, parentObject.transform.rotation);
         foreach (Collider collider in colliderList)
-        //foreach (Collider collider in parentObject.detectedColliders)
         {
             if (/*collider != hit.collider  &&If not ignored, doesn't work in small angles*/ collider.gameObject != selectedBuildingObject.boxCollider.gameObject && collider.gameObject != parentObject.gameObject)
             {
-                //Vector3 closestPoint = collider.ClosestPoint(selectedBuildingObject.transform.position);
-                //Vector3 diff = closestPoint - selectedBuildingObject.transform.position;
-                //Vector3 dir = diff.normalized;
-
                 Vector3 objectCenter = selectedBuildingObject.transform.TransformPoint(selectedBuildingObject.boxCollider.center);
                 Vector3 closestPoint = collider.ClosestPoint(objectCenter);
                 Vector3 diff = closestPoint - objectCenter;
                 Vector3 dir = diff.normalized;
 
-                //if (Physics.BoxCast(selectedBuildingObject.transform.position, parentObject.boxCollider.bounds.extents, dir, out var hitt))
-                //if (Physics.Raycast(selectedBuildingObject.transform.position, dir, out var planeHit))
                 Ray ray = new Ray(selectedBuildingObject.transform.position, dir);
                 //ray.direction = ray.direction.normalized;
 
@@ -365,7 +247,6 @@ public class BuildingManager : MonoBehaviour
                 {
                     Debug.DrawRay(closestPoint, planeHit.normal, Color.blue);
 
-                    //if (planeHit.normal == -hit.normal) return parentObject.transform.position;
 
                     localPlaneHit.transform.position = closestPoint;
                     Quaternion targetRotation = Quaternion.LookRotation(planeHit.normal, Vector3.up);
@@ -375,41 +256,11 @@ public class BuildingManager : MonoBehaviour
                     //Vector3 nextLocalPlanePosition = GetNextPosition(localPlaneHit);
                     Vector3 localPlaneOffset = GetNextPosition(localPlaneHit);
 
-                    //(Vector3, Vector3) planeInfo = HasCorrectVertices(planesNormals, planeHit.normal, localPlaneOffset);
-
-                    //if (planeInfo.Item1 != Vector3.zero && planeInfo.Item2 != Vector3.zero)
-                    ////if (/*localPlaneOffset != Vector3.zero &&*/ planesNormals.Count > 0)
-                    ////if (parentObject.detectedColliders.Count > 3)
-                    //{
-                    //    Debug.Log("entra");
-                    //    planesNormals.Remove((planeInfo.Item1, planeInfo.Item2));
-                    //    planesNormals.Add((planeHit.normal, localPlaneOffset));
-
-                    //    // Collision manager position in the local coordinates of the plane
-                    //    Vector3 localPlaneObjectPosition = localPlaneHit.transform.InverseTransformPoint(parentObject.transform.position);
-                    //    // Sum the offset of the distance between vertex and plane point in the Z axis to the collision manager position
-                    //    Vector3 nextLocalPlanePosition = localPlaneObjectPosition + new Vector3(0f, 0f, Mathf.Abs(localPlaneOffset.z));
-                    //    // Next position in world coordinates
-                    //    Vector3 worldPosition = localPlaneHit.transform.TransformPoint(nextLocalPlanePosition);
-                    //    // Change world position to the collision manager coordinates
-                    //    // This way we get the offset needed to add in world coordinates through the collision manager coordinates
-                    //    nextLocalObjectPosition += parentObject.transform.InverseTransformPoint(worldPosition);
-
-                    //}
-                    //else if (planeInfo.Item1 == Vector3.zero)
-                    //{
-                    //if (localPlaneOffset.z < 0f)
                     if (Mathf.Abs(localPlaneOffset.z) > 0.0001f)
-                    //if (!Mathf.Approximately(localPlaneOffset.z, 0f))
-                    //if (localPlaneOffset != Vector3.zero)
-                    //if (localPlaneOffset.z + 0f < 0)
-                    //if (localPlaneOffset.z * localPlaneOffset.y < 0f)
                     {
-                        //Debug.Log(localPlaneOffset.z * localPlaneOffset.y);
                         selectedBuildingObject.canPlace = false;
                         parentObject.canPlace = false;
 
-                        //planesNormals.Add((planeHit.normal, localPlaneOffset));
                         // Collision manager position in the local coordinates of the plane
                         Vector3 localPlaneObjectPosition = localPlaneHit.transform.InverseTransformPoint(parentObject.transform.position);
                         // Sum the offset of the distance between vertex and plane point in the Z axis to the collision manager position
@@ -418,9 +269,6 @@ public class BuildingManager : MonoBehaviour
                         Vector3 worldPosition = localPlaneHit.transform.TransformPoint(nextLocalPlanePosition);
                         // Change world position to the collision manager coordinates
                         // This way we get the offset needed to add in world coordinates through the collision manager coordinates
-                        //nextLocalObjectPosition += parentObject.transform.InverseTransformPoint(worldPosition);
-                        //nextLocalObjectPosition = worldPosition;
-                        //parentObject.transform.position = worldPosition;
                         parentObject.transform.position = UpdateOffset(worldPosition, counter+1);
                         return parentObject.transform.position;
                     }
@@ -513,61 +361,8 @@ public class BuildingManager : MonoBehaviour
         return new Vector3(0f, positiveLocalVertex, selectedLocalVertex);
     }
 
-    private (Vector3, Vector3) HasCorrectVertices(List<(Vector3, Vector3)> planesNormals, Vector3 planeHitNormal, Vector3 localPlaneOffset)
-    {
-        if (planesNormals.Count == 0) return (Vector3.zero, Vector3.zero);
-
-        foreach ((Vector3 planeNormal, Vector3 planeOffset) in planesNormals)
-        {
-            if (planeHitNormal == planeNormal)
-            {
-                if (localPlaneOffset.z > planeOffset.z) return (planeNormal, planeOffset);
-                if (localPlaneOffset.z < planeOffset.z) return (planeNormal, Vector3.zero);
-            }
-        }
-        return (Vector3.zero, Vector3.zero);
-    }
-
-    /// <summary>
-    /// Si el objeto colisiona se le asigna un material rojo, si no se le asigna uno verde
-    /// </summary>
-    void UpdateMaterials()
-    {
-        if (selectedBuildingObject.canPlace)
-        {
-            selectedBuildingObject.AssignMaterial(collisionMaterials[0]);
-        }
-        else
-        {
-            selectedBuildingObject.AssignMaterial(collisionMaterials[1]);
-        }
-    }
-
-    private float GetAxis(Vector3 normal, Vector3 vector)
-    {
-        // Encontrar el eje dominante de la normal
-        float maxAxis = Mathf.Max(Mathf.Abs(normal.x), Mathf.Abs(normal.y), Mathf.Abs(normal.z));
-
-        if (Mathf.Abs(normal.x) == maxAxis)
-        {
-            return vector.x;
-        }
-        else if (Mathf.Abs(normal.y) == maxAxis)
-        {
-            return vector.y;
-        }
-        else if (Mathf.Abs(normal.z) == maxAxis)
-        {
-            return vector.z;
-        }
-
-        return 0;
-    }
-
     public void InstantiateModel(GameObject selectedModel)
     {
-        //if (pendingObject != null) Destroy(pendingObject);
-
         // Instancia para el objeto indicador que se proyecta en el mundo
         pendingObject = Instantiate(selectedModel, _hitPos, selectedModel.transform.rotation);
         //pendingObject = Instantiate(selectedModel, Vector3.zero, transform.rotation, parentObject.transform);
@@ -578,11 +373,18 @@ public class BuildingManager : MonoBehaviour
 
         if (worldMenuManager.buildingState == BuildingState.withOffset)
         {
+            // Set the rotation of the object so its local Z axis points at the same direction as the normal hit
+            selectedBuildingObject.surfaceNormal = hit.normal;
+            selectedBuildingObject.surfaceObject = hit.collider.gameObject;
+            selectedBuildingObject.SetForwardAxisDirection();
             selectedBuildingObject.DisableColliders();
         }
         else if (worldMenuManager.buildingState == BuildingState.withTrigger)
         {
-            //selectedBuildingObject.boxCollider.isTrigger = true;
+            // Set the rotation of the object so its local Z axis points at the same direction as the normal hit
+            selectedBuildingObject.surfaceNormal = hit.normal;
+            selectedBuildingObject.surfaceObject = hit.collider.gameObject;
+            selectedBuildingObject.SetForwardAxisDirection();
             selectedBuildingObject.DisableColliders();
         }
         else if (worldMenuManager.buildingState == BuildingState.withPhysics)
@@ -595,8 +397,30 @@ public class BuildingManager : MonoBehaviour
             selectedBuildingObject.objectRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
         }
 
-        // Guardamos su material en la lista de materiales de colision
-        //collisionMaterials[2] = selectedBuildingObject.meshRenderer.material;
+        // Match the scale of the colliders
+        parentObject.SetScale(selectedBuildingObject);
+        parentObject.SetRotation(selectedBuildingObject);
+    }
+
+    public void InstantiateWorldObject()
+    {
+        pendingObject = Instantiate(hitObject.gameObject, SetHitObjectOffset(hit), hitObject.transform.rotation);
+
+        selectedBuildingObject = pendingObject.GetComponent<BuildingObject>();
+        selectedBuildingObject._buildingManager = this;
+
+        if (worldMenuManager.buildingState == BuildingState.withOffset)
+        {
+            selectedBuildingObject.DisableColliders();
+        }
+        else if (worldMenuManager.buildingState == BuildingState.withTrigger)
+        {
+            selectedBuildingObject.DisableColliders();
+        }
+        else if (worldMenuManager.buildingState == BuildingState.withPhysics)
+        {
+            selectedBuildingObject.objectRigidbody.constraints = ~RigidbodyConstraints.FreezePosition;
+        }
 
         // Match the scale of the colliders
         parentObject.SetScale(selectedBuildingObject);
@@ -606,22 +430,6 @@ public class BuildingManager : MonoBehaviour
     // Colocar el objeto pendiente en la posicion indicada
     public void PlaceObject()
     {
-        // Volvemos a asignarle su material original
-        //selectedBuildingObject.assignMaterial(collisionMaterials[2]);
-
-        //// Instanciamos el objeto pendiente de colocacion
-        //if (pendingObject != null)
-        //{
-        //    GameObject obj = Instantiate(pendingObject, _hitPos, transform.rotation);
-
-        //    obj.GetComponent<BoxCollider>().isTrigger = false;
-        //}
-        //else 
-        //{
-        //selectedBuildingObject.boxCollider.isTrigger = false;
-        
-        //if (selectedBuildingObject.canBePlaced) // Por ahora este if solo es para el estado withTrigger
-        //{
         // Change the layer to Default so the Raycast can interact with the object
         selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Default");
 
@@ -632,34 +440,38 @@ public class BuildingManager : MonoBehaviour
         if (worldMenuManager.buildingState == BuildingState.withPhysics)
             selectedBuildingObject.objectRigidbody.constraints = RigidbodyConstraints.FreezePosition;
 
-        if (selectedBuildingObject.colliderList.Count > 0)
-        {
-            selectedBuildingObject.boxCollider.enabled = false;
+        selectedBuildingObject.ChangeObjectLayer();
 
-            foreach (BoxCollider boxColl in selectedBuildingObject.colliderList)
-            {
-                boxColl.enabled = true;
-                boxColl.gameObject.layer = LayerMask.NameToLayer("Default");
-            }
+        if (!dataManager.currentObjects.Contains(pendingObject))
+        {
+            dataManager.SaveObjectsData(pendingObject, worldMenuManager.modelsList[worldMenuManager.modelIndex]);
+            dataManager.currentObjects.Add(pendingObject);
+            selectedBuildingObject.dataIndex = dataManager.currentObjects.IndexOf(pendingObject);
         }
 
-        foreach (BoxCollider inter in selectedBuildingObject.interactables)
-        {
-            inter.gameObject.layer = LayerMask.NameToLayer("Interactable");
-        }
 
         // "Soltamos" el objeto seleccionado
         selectedBuildingObject = null;
-        //}
-
-        dataManager.SaveObjectsData(pendingObject, worldMenuManager.modelsList[worldMenuManager.modelIndex]);
-
         pendingObject = null;
         //offset = new Vector3(0, 0, 0);
 
         // Reset the transform of the collision manager
         parentObject.Reset();
         //}
+    }
+
+    public BuildingObject FindBuildingObject(Transform transform)
+    {
+        while (transform != null)
+        {
+            BuildingObject bObj = transform.GetComponent<BuildingObject>();
+            if (bObj != null)
+            {
+                return bObj;
+            }
+            transform = transform.parent;
+        }
+        return null;
     }
 
     // Cancelar la colocacion del objeto pendiente
@@ -674,12 +486,24 @@ public class BuildingManager : MonoBehaviour
         parentObject.Reset();
     }
 
-    // Parar la colocacion del objeto pendiente
-    //public void StopObjectPlacement()
-    //{
-    //    //pendingObject = null;
-    //    selectedBuildingObject.gameObject.SetActive(false);
-    //}
+    void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (null == obj)
+        {
+            return;
+        }
+
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            if (null == child)
+            {
+                continue;
+            }
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
 
     // Seleccion de objeto en el mundo
     public void SelectObject()
@@ -697,6 +521,7 @@ public class BuildingManager : MonoBehaviour
 
             // Change the layer to Ignore Raycast so the Raycast can't interact with the object
             selectedBuildingObject.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+            SetLayerRecursively(selectedBuildingObject.gameObject, LayerMask.NameToLayer("Ignore Raycast"));
 
             // Change to non-kinematic rigidbody so OnCollisionStay is called
             selectedBuildingObject.objectRigidbody.isKinematic = false;
@@ -744,17 +569,13 @@ public class BuildingManager : MonoBehaviour
         selectedBuildingObject = null;
 
         // Change the layer to Default so the Raycast can interact with the object
-        auxObj.gameObject.layer = LayerMask.NameToLayer("Default");
+        auxObj.ChangeObjectLayer();
 
         // Change to kinematic rigidbody so OnCollisionStay isn't called
         auxObj.objectRigidbody.isKinematic = true;
         auxObj.isPlaced = true;
 
         auxObj.SetPreviousTransform();
-        // Volvemos a asignarle su material original
-        //auxObj.assignMaterial(collisionMaterials[2]);
-        // Desactivamos isTrigger para que no haya conflicto con el Raycast
-        //auxObj.boxCollider.isTrigger = false;
 
         // Reset the transform of the collision manager
         parentObject.Reset();
@@ -765,6 +586,12 @@ public class BuildingManager : MonoBehaviour
     /// </summary>
     public void DestroyObject()
     {
+        if (dataManager.currentObjects.Contains(hitObject.gameObject))
+        {
+            dataManager.currentObjects.Remove(hitObject.gameObject);
+            dataManager.RemoveObjectData(hitObject.dataIndex);
+        }
+
         if (hitObject != null)
         {
             Destroy(hitObject.gameObject);

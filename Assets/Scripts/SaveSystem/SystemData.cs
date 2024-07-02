@@ -18,9 +18,15 @@ public class RoomData
 [System.Serializable]
 public class ObjectData
 {
-    public List<double> position { get; set; }
-    public List<double> rotation { get; set; }
-    public List<double> scale { get; set; }
+    //public List<double> position { get; set; }
+    //public List<double> rotation { get; set; }
+    //public List<double> scale { get; set; }
+    //public string prefabId { get; set; }
+    //public int layer { get; set; }
+
+    public List<double> position = new();
+    public List<double> rotation = new();
+    public List<double> scale = new();
     public string prefabId { get; set; }
     public int layer { get; set; }
 }
@@ -28,11 +34,20 @@ public class ObjectData
 [System.Serializable]
 public class WallData
 {
-    public List<double> position { get; set; }
-    public List<double> rotation { get; set; }
-    public List<double> scale { get; set; }
-    public string shader { get; set; }
-    public string texture { get; set; }
+    //public List<double> position { get; set; }
+    //public List<double> rotation { get; set; }
+    //public List<double> scale { get; set; }
+    //public string shader { get; set; }
+    //public string texture { get; set; }
+    //public int layer { get; set; }
+
+    public List<double> position = new();
+    public List<double> rotation = new();
+    public List<double> scale = new();
+    //public string shader { get; set; }
+    //public string texture { get; set; }
+    public string materialIndex { get; set; }
+    public string tag { get; set; }
     public int layer { get; set; }
 
 }

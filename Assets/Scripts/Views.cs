@@ -7,6 +7,13 @@ public class Views : MonoBehaviour
 {
     [SerializeField] WorldMenuManager menu;
 
+    Vector3 defaultPosCam;
+
+    Vector3 defaultPosX;
+    Vector3 defaultPosY;
+    Vector3 defaultPosZ;
+    Vector3 defaultPosZ2;
+
     [SerializeField] GameObject axisXLine;
     [SerializeField] GameObject axisYLine;
     [SerializeField] GameObject axisZLine;
@@ -25,10 +32,33 @@ public class Views : MonoBehaviour
 
     public Vector3 wallsCenterPoint = Vector3.zero;
 
-    // Update is called once per frame
-    void Update()
+    private void Awake()
     {
-        
+        SetDefault();
+    }
+
+    private void SetDefault()
+    {
+        defaultPosCam = new Vector3 (0, 100f, 0);
+
+        defaultPosX = new Vector3(0, 100, 5f);
+        defaultPosY = new Vector3(0, 100, 5f);
+        defaultPosZ = new Vector3(0, 100, 5f);
+        defaultPosZ2 = new Vector3(0, 100, 5f);
+    }
+
+    public void ResetCamera()
+    {
+        transform.position = defaultPosCam;
+
+        transform.rotation = Quaternion.Euler(Vector3.zero);
+
+        axisXLine.transform.position = new Vector3(0, 100, 5f);
+        axisYLine.transform.position = new Vector3(0, 100, 5f);
+        axisZLine.transform.position = new Vector3(0, 100, 5f);
+        axisZLine2.transform.position = new Vector3(0, 100, 5f);
+
+        filteredWalls.Clear();
     }
 
     public void TopView()
@@ -153,7 +183,7 @@ public class Views : MonoBehaviour
         if (filteredWalls.Count > 0)
         {
             ResetWallLayers();
-            filteredWalls = new List<BuildingWall>();
+            filteredWalls.Clear();
         }
 
         foreach (BuildingWall wall in menu.wallList)

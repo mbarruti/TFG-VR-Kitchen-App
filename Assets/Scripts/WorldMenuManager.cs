@@ -7,8 +7,6 @@ public class WorldMenuManager : MonoBehaviour
 {
     private BuildingObject buildingModel;
 
-    private List<RoomData> roomDataList;
-
     [SerializeField] List<bool> roomList;
 
     [SerializeField] DataManager dataManager;
@@ -23,7 +21,7 @@ public class WorldMenuManager : MonoBehaviour
 
     [SerializeField] GameObject finishButtonObject;
 
-    [SerializeField] List<ButtonAnimationToggler> mainButtonsList = new List<ButtonAnimationToggler>();
+    public List<ButtonAnimationToggler> mainButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<ButtonAnimationToggler> modelsButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<ButtonAnimationToggler> wallsButtonsList = new List<ButtonAnimationToggler>();
     [SerializeField] List<ButtonAnimationToggler> viewsButtonsList = new List<ButtonAnimationToggler>();
@@ -88,6 +86,9 @@ public class WorldMenuManager : MonoBehaviour
     public bool continuousRotation;
     public float staticRotationValue;
 
+    public int floorDataIndex;
+    public int ceilingDataIndex;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -123,19 +124,6 @@ public class WorldMenuManager : MonoBehaviour
         if (_playerManager.mainController = _playerManager.rightController) ChangeActiveControllerToggle(rightControllerToggle);
         else ChangeActiveControllerToggle(leftControllerToggle);
     }
-
-    //public void CheckIfRoomEmpty(int index)
-    //{
-    //    if (!roomList[index])
-    //    {
-    //        GenerateRoom(index);
-    //    }
-    //}
-
-    //public void GenerateRoom(int index)
-    //{
-    //    dataManager.Save
-    //}
 
     public void ChangeActiveToggle(GameObject toggle)
     {
@@ -342,11 +330,14 @@ public class WorldMenuManager : MonoBehaviour
 
             wallList = _wallManager.wallList;
 
-            dataManager.SaveWallsData(floor, floor.GetComponent<Renderer>().material);
-            dataManager.SaveWallsData(ceiling, ceiling.GetComponent<Renderer>().material);
+            floor.GetComponent<Renderer>().material = floorMaterials[4];
+            dataManager.SaveWallsData(floor, floor.GetComponent<Renderer>().sharedMaterial);
+            dataManager.SaveWallsData(ceiling, ceiling.GetComponent<Renderer>().sharedMaterial);
             foreach (BuildingWall wall in wallList)
             {
-                dataManager.SaveWallsData(wall.gameObject, wall.wallRenderer.material);
+                wall.wallRenderer.material = wallMaterials[2];
+                dataManager.SaveWallsData(wall.gameObject, wall.wallRenderer.sharedMaterial);
+                wall.dataIndex = wallList.IndexOf(wall) + 2;
             }
 
             mainButtonsList[0].transform.localPosition = new Vector3(-1.6f, 1.2f, 0);
@@ -374,6 +365,9 @@ public class WorldMenuManager : MonoBehaviour
             wall.wallRenderer.material = wallMaterial;
 
             wall.wallRenderer.material.mainTextureScale = new Vector2(wall.transform.localScale.z / 2f, wall.transform.localScale.y / 2f);
+
+            dataManager.UpdateWallMaterialData(index, wall.dataIndex);
+           // dataManager.SaveWallsData(wall.gameObject, wall.wallRenderer.material);
         }
     }
 
@@ -386,6 +380,10 @@ public class WorldMenuManager : MonoBehaviour
         floorRenderer.material = floorMaterial;
 
         floorRenderer.material.mainTextureScale = new Vector2(floor.transform.localScale.x / 2f, floor.transform.localScale.z / 2f);
+
+        dataManager.UpdateWallMaterialData(index, 0);
+        //dataManager.SaveWallsData(ceiling, ceiling.GetComponent<Renderer>().material);
+        //dataManager.SaveWallsData(floor, floorRenderer.material);
     }
 
     /// <summary>

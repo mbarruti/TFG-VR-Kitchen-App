@@ -159,21 +159,6 @@ public class PlayerManager : MonoBehaviour
         UpdateStates();
     }
 
-    //private void OnDestroy()
-    //{
-    //    _startAction.action.performed -= OnStartAction;
-    //    _leftTriggerAction.action.performed -= OnLeftTriggerAction;
-    //    _xAction.action.performed += OnXAction;
-    //    _yAction.action.performed -= OnYAction;
-    //    _leftGripAction.action.performed -= OnLeftGripAction;
-
-    //    _rightTriggerAction.action.performed -= OnRightTriggerAction;
-    //    _bAction.action.performed -= OnBAction;
-    //    _aAction.action.performed -= OnAAction;
-    //    _rightTouchpadAction.action.performed -= OnRightTouchpadAction;
-    //    _rightGripAction.action.performed -= OnRightGripAction;
-    //}
-
     // Actualiza el estado del jugador, dependiendo de la situacion
     public void UpdateStates()
     {
@@ -192,6 +177,7 @@ public class PlayerManager : MonoBehaviour
                 state = PlayerState.isFree;
             }
         }
+        else state = PlayerState.isBuildingWalls;
     }
 
     // Change main controller
@@ -439,7 +425,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (state == PlayerState.isFree)
         {
-            _buildingManager.DestroyObject();
+            if (_buildingManager.hitObject != null) _buildingManager.DestroyObject();
         }
     }
 
@@ -447,7 +433,8 @@ public class PlayerManager : MonoBehaviour
     {
         if (state == PlayerState.isFree)
         {
-            _buildingManager.SelectObject();
+            //_buildingManager.SelectObject();
+            if (_buildingManager.hitObject != null) _buildingManager.InstantiateWorldObject();
         }
     }
 
@@ -469,7 +456,7 @@ public class PlayerManager : MonoBehaviour
                     _buildingManager.selectedBuildingObject.MoveWithTouchpad();
                 }
             }
-            else if (_worldMenuManager.buildingState == BuildingState.withOffset)
+            else if (_worldMenuManager.buildingState == BuildingState.withOffset || _worldMenuManager.buildingState == BuildingState.withTrigger)
             {
                 if (_buildingManager.selectedBuildingObject != null) _buildingManager.selectedBuildingObject.ScaleObject(context.action.ReadValue<Vector2>(), leftTriggerPressed);
                 if (_buildingManager.selectedBuildingObject != null) _buildingManager.parentObject.SetScale(_buildingManager.selectedBuildingObject);

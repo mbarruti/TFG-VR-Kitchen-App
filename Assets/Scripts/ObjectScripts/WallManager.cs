@@ -9,8 +9,8 @@ public class WallManager : MonoBehaviour
 
     Vector3 _hitPos;
 
-    [SerializeField] GameObject auxiliarLight;
-    [SerializeField] GameObject ceilingLight;
+    public GameObject auxiliarLight;
+    public GameObject ceilingLight;
 
     [SerializeField] GameObject ceiling;
     [SerializeField] GameObject floor;
@@ -67,6 +67,12 @@ public class WallManager : MonoBehaviour
     void Start()
     {
         mainRay = playerManager.mainController.GetComponent<XRRayInteractor>();
+    }
+
+    private void OnEnable()
+    {
+        mainRay = playerManager.mainController.GetComponent<XRRayInteractor>();
+        wall = null;
     }
 
     // Update is called once per frame
@@ -185,8 +191,8 @@ public class WallManager : MonoBehaviour
             endPole.adjacentPoles.Add(startPole);
 
             // Instantiate the wall in the world
-            //GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
-            //wall = auxWall.GetComponent<BuildingWall>();
+            GameObject auxWall = Instantiate(wallPrefab, startPole.transform.position, Quaternion.identity);
+            wall = auxWall.GetComponent<BuildingWall>();
             wall.startPole = startPole;
             wall.endPole = endPole;
 
@@ -347,17 +353,17 @@ public class WallManager : MonoBehaviour
 
             wallList.Remove(wall);
 
-            if (poleList.Count == 0)
-            {
-                wall.transform.position = new Vector3(0, -20f, 0);
-                wall.transform.localScale = new Vector3(0.1f, 4f, 0.1f);
-            }
-            else
-            {
+            //if (poleList.Count == 0)
+            //{
+            //    wall.transform.position = new Vector3(0, -20f, 0);
+            //    wall.transform.localScale = new Vector3(0.1f, 4f, 0.1f);
+            //}
+            //else
+            //{
                 BuildingWall auxWall = wall;
                 wall = null;
                 Destroy(auxWall.gameObject);
-            }
+            //}
 
             // Destroy every preview pole
             foreach (GameObject pole in previewPoleList)
@@ -437,26 +443,27 @@ public class WallManager : MonoBehaviour
             {
                 Destroy(auxEndPole);
             }
-
-            // Destroy the wall
-            if (wallList.Count > 1)
-                Destroy(buildingWall.gameObject);
-            else
-            {
-                buildingWall.startPole = null;
-                buildingWall.endPole = null;
-
-                buildingWall.transform.position = new Vector3(0, -20f, 0);
-                buildingWall.transform.localScale = new Vector3(0.1f, 4f, 0.1f);
-                buildingWall.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-
-                wall = buildingWall;
-
-                planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
-            }
             wallList.Remove(buildingWall);
+            // Destroy the wall
+            //if (wallList.Count > 1)
+            Destroy(buildingWall.gameObject);
 
-            //planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
+            //else
+            //{
+            //    buildingWall.startPole = null;
+            //    buildingWall.endPole = null;
+
+            //    buildingWall.transform.position = new Vector3(0, -20f, 0);
+            //    buildingWall.transform.localScale = new Vector3(0.1f, 4f, 0.1f);
+            //    buildingWall.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+            //    wall = buildingWall;
+
+            //    planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
+            //}
+            //wallList.Remove(buildingWall);
+
+            planeHit.transform.eulerAngles = new Vector3(0f, 90f, 0f);
         }
     }
 
@@ -500,7 +507,6 @@ public class WallManager : MonoBehaviour
         Vector3 topLeftBack = new Vector3(bottomLeftFront.x, topRightBack.y, topRightBack.z);
 
         // Calculate the center point of the four corners
-        //Vector3 centerPoint = Vector3.zero;
         Vector3 centerPoint = (bottomLeftFront + topRightBack + bottomRightFront + topLeftBack) / 4f;
 
         // Add the value to the menu variable

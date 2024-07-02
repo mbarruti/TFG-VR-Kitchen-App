@@ -23,12 +23,6 @@ public class BuildingObject : MonoBehaviour
     private float touchpadValueX;
     private float touchpadValueY;
 
-    //private Collider hitCollider;
-
-    //private Vector3[] vertices = new Vector3[8]; // List of vertices of the box collider
-
-    //private Vector3 boxColliderCenter;
-
     // ------------------------------------------------
 
     public GameObject surfaceObject;
@@ -63,6 +57,8 @@ public class BuildingObject : MonoBehaviour
 
     public bool isInLimit;
 
+    public int dataIndex;
+
     //public Vector3 offset;
 
     public List<Collider> detectedColliders;
@@ -74,236 +70,6 @@ public class BuildingObject : MonoBehaviour
         //transform.position = new Vector3(0, 0, 0);
 
         SetBoxVertices();
-    }
-
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    if (collision.collider != _buildingManager.hit.collider)
-    //    {
-    //        //Debug.Log("No se puede");
-    //        canBePlaced = false;
-    //    }
-    //}
-
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    if (collision.collider != _buildingManager.hit.collider)
-    //    {
-    //        canBePlaced = true;
-    //    }
-    //}
-
-    //private void Update()
-    //{
-    //    if (_buildingManager.selectedBuildingObject != null && this == _buildingManager.selectedBuildingObject)
-    //    {
-    //        _buildingManager.cubos[0].transform.position = transform.TransformPoint(vertices[0]);
-    //        _buildingManager.cubos[1].transform.position = transform.TransformPoint(vertices[1]);
-    //        _buildingManager.cubos[2].transform.position = transform.TransformPoint(vertices[2]);
-    //        _buildingManager.cubos[3].transform.position = transform.TransformPoint(vertices[3]);
-    //        _buildingManager.cubos[4].transform.position = transform.TransformPoint(vertices[4]);
-    //        _buildingManager.cubos[5].transform.position = transform.TransformPoint(vertices[5]);
-    //        _buildingManager.cubos[6].transform.position = transform.TransformPoint(vertices[6]);
-    //        _buildingManager.cubos[7].transform.position = transform.TransformPoint(vertices[7]);
-    //    }
-    //}
-
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    Collider collider = collision.collider;
-    //    if (/*collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.selectedBuildingObject.boxCollider.gameObject && */!detectedColliders.Contains(collider))
-    //    {
-    //        detectedColliders.Add(collider);
-    //    }
-
-    //}
-
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    Collider collider = collision.collider;
-    //    if (detectedColliders.Contains(collider))
-    //    {
-    //        detectedColliders.Remove(collider);
-    //    }
-    //}
-
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    Collider collider = collision.collider;
-    //    if (/*collision.collider != _buildingManager.hit.collider && */!detectedColliders.Contains(collider))
-    //    {
-    //        detectedColliders.Add(collider);
-    //    }
-
-    //}
-
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    Collider collider = collision.collider;
-    //    Debug.Log("sale");
-    //    if (detectedColliders.Contains(collider))
-    //    {
-    //        detectedColliders.Remove(collider);
-    //    }
-    //}
-
-    //public bool IsInLimit(Collider collider)
-    //{
-    //    //bool allSameSide = false;
-
-    //    Vector3 auxVertex;
-    //    //BoxCollider auxCollider = collider as BoxCollider;
-    //    //auxCollider.center = 
-    //    //Vector3[] directions = { Vector3.up };
-
-    //    //Vector3[] vertices = GetBoxVertices();
-
-    //    foreach (Vector3 vertex in vertices)
-    //    {
-    //        //auxVertex = transform.TransformPoint(vertex);
-    //        //distance = Vector3.Dot(auxVertex - collider.transform.position + new Vector3(0, 0, 0.05f), Vector3.up);
-
-    //        // (A, B, C) vector perpendicular al plano del objeto que esta quieto
-    //        Vector3 up = Vector3.up;
-    //        // (x, y, z) un punto del plano del objeto que esta quieto
-    //        Vector3 point;
-    //        point.x = collider.transform.position.x;
-    //        point.y = collider.transform.position.y + collider.bounds.extents.y;
-    //        point.z = collider.transform.position.z;
-    //        // (x2, y2, z2) punto del vertice del objeto que pretendes mover
-    //        auxVertex = transform.TransformPoint(vertex);
-    //        // A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
-    //        // D = -A*x - B*y - C*z Calculo la D de esta forma
-    //        float d = Vector3.Dot(-up, point);
-    //        // A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
-    //        float num = Vector3.Dot(up, auxVertex) + d;
-    //        //auxVertex = collider.transform.InverseTransformPoint(vertex);
-    //        //distance = Vector3.Dot(auxVertex, Vector3.up);
-    //        //if (distance < 0)
-    //        if (num < 0)
-    //        {
-    //            // (A, B, C) vector perpendicular al plano del objeto que esta quieto
-    //            // (x, y, z) un punto del plano del objeto que esta quieto
-    //            // (x2, y2, z2) punto del vertice del objeto que pretendes mover
-    //            // A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
-    //            // D = -A*x - B*y - C*z Calculo la D de esta forma
-    //            // A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
-    //            Debug.Log(vertex);
-    //            return false;
-    //        }
-    //    }
-
-    //    return true;
-    //}
-
-    //private void OnCollisionStay(Collision collision)
-    //{
-    //    //for (int i = 0; i < collision.contactCount; i++)
-    //    //{
-    //    //    _buildingManager.cubos[i].transform.position = collision.GetContact(i).point;
-    //    //}
-
-    //    if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.parentObject.gameObject)
-    //    {
-    //        canPlace = IsInLimit(collision.collider, collision.GetContact(0));
-    //        //if (canPlace == false)
-    //        //{
-    //        //    AssignMaterial(collisionMaterials[0]);
-    //        //}
-    //        //else
-    //        //{
-    //        //    AssignMaterial(collisionMaterials[1]);
-    //        //}
-    //    }
-    //}
-
-    //private void OnCollisionExit(Collision collision)
-    //{
-    //    if (collision.collider != _buildingManager.hit.collider && collision.collider.gameObject != _buildingManager.parentObject.gameObject)
-    //    {
-    //        canPlace = true;
-    //    }
-    //}
-
-    public bool IsInLimit(Collider collider, ContactPoint contactPoint)
-    {
-        //bool allSameSide = false;
-
-        Vector3 auxVertex;
-        //BoxCollider auxCollider = collider as BoxCollider;
-        //auxCollider.center = 
-        //Vector3[] directions = { Vector3.up };
-
-        //Vector3[] vertices = GetBoxVertices();
-        float previousNum = 0;
-        float num = 0;
-        foreach (Vector3 vertex in vertices)
-        {
-            Vector3 closestPoint = collider.ClosestPoint(transform.position);
-            Vector3 diff = closestPoint - transform.position;
-            Vector3 dir = diff.normalized;
-
-            if (Physics.Raycast(transform.position, dir, out var planeHit))
-            {
-                // (A, B, C) vector perpendicular al plano del objeto que esta quieto
-                //Vector3 normal = contactPoint.normal;
-                Vector3 normal = planeHit.normal;
-
-                // (x, y, z) un punto del plano del objeto que esta quieto /*+ Vector3.Dot(planeHit.normal, collider.bounds.extents);*/
-                //Vector3 point = contactPoint.point;
-                Vector3 offset = Vector3.Scale(planeHit.normal, collider.bounds.extents);
-                Vector3 point = collider.transform.position + offset;
-                Debug.DrawRay(point, normal, Color.blue);
-
-                // (x2, y2, z2) punto del vertice del objeto que pretendes mover
-                auxVertex = transform.TransformPoint(vertex);
-
-                // A*x + B*y + C*z + D = 0 ecuacion del plano del objeto que esta quieto
-                // D = -A*x - B*y - C*z Calculo la D de esta forma
-                float d = Vector3.Dot(-normal, point);
-
-                // A*x2 + B*y2 + C*z2 + D Es un numero con el que puedo saber si todos los vertices estan en un mismo lado del plano
-                num = Vector3.Dot(normal, auxVertex) + d;
-                if (num != 0 && previousNum == 0) previousNum = num;
-
-                Debug.Log(num * previousNum);
-                // Si la siguiente operacion es negativa, significa que el vertice asociado al valor num esta al otro lado del plano
-                if (num * previousNum < 0) return false;
-
-                // Si algun valor tiene signo distinto a los demas, esta al otro lado del plano
-                //if (num > 0 && previousNum < 0)
-                //{
-                //    //Debug.Log(vertex);
-                //    return false;
-                //}
-                //if (num < 0 && previousNum > 0)
-                //{
-                //    //Debug.Log(vertex);
-                //    return false;
-                //}
-            }
-        }
-        return true;
-    }
-
-    // Get the collider vertices
-    Vector3[] GetBoxVertices()
-    {
-        Vector3 center = boxCollider.center;
-        Vector3 size = boxCollider.size * 0.5f; // Divide to get half of the collider
-
-        //Vector3[] vertices = new Vector3[8];
-        for (int i = 0; i < 8; i++)
-        {
-            float x = ((i & 1) == 0) ? size.x : -size.x;
-            float y = ((i & 2) == 0) ? size.y : -size.y;
-            float z = ((i & 4) == 0) ? size.z : -size.z;
-
-            vertices[i] = center + new Vector3(x, y, z);
-            //Debug.Log(vertices[i]);
-        }
-
-        return vertices;
     }
 
     // Set the collider vertices
@@ -322,30 +88,6 @@ public class BuildingObject : MonoBehaviour
             vertices[i] = center + new Vector3(x, y, z);
             //Debug.Log(vertices[i]);
         }
-    }
-
-    void SetBoxFaces()
-    {
-        Vector3 centerTop = GetFaceMidpoint(vertices[0], vertices[1], vertices[2], vertices[3]);
-        faces[0] = centerTop;
-        Vector3 centerBottom = GetFaceMidpoint(vertices[4], vertices[5], vertices[6], vertices[7]);
-        faces[1] = centerBottom;
-        Vector3 centerFront = GetFaceMidpoint(vertices[0], vertices[1], vertices[5], vertices[4]);
-        faces[2] = centerFront;
-        Vector3 centerBack = GetFaceMidpoint(vertices[2], vertices[3], vertices[7], vertices[6]);
-        faces[3] = centerBack;
-        Vector3 centerLeft = GetFaceMidpoint(vertices[0], vertices[3], vertices[7], vertices[4]);
-        faces[4] = centerLeft;
-        Vector3 centerRight = GetFaceMidpoint(vertices[1], vertices[2], vertices[6], vertices[5]);
-        faces[5] = centerRight;
-    }
-
-    /// <summary>
-    /// Calculate the midpoint of a face given its four vertices
-    /// </summary>
-    Vector3 GetFaceMidpoint(Vector3 v1, Vector3 v2, Vector3 v3, Vector3 v4)
-    {
-        return (v1 + v2 + v3 + v4) / 4.0f;
     }
 
     /// <summary>
@@ -495,6 +237,25 @@ public class BuildingObject : MonoBehaviour
         foreach (BoxCollider subCollider in colliderList)
         {
             subCollider.enabled = true;
+        }
+    }
+
+    public void ChangeObjectLayer()
+    {
+        if (colliderList.Count > 0)
+        {
+            boxCollider.enabled = false;
+
+            foreach (BoxCollider boxColl in colliderList)
+            {
+                boxColl.enabled = true;
+                boxColl.gameObject.layer = LayerMask.NameToLayer("Default");
+            }
+        }
+
+        foreach (BoxCollider inter in interactables)
+        {
+            inter.gameObject.layer = LayerMask.NameToLayer("Interactable");
         }
     }
 }
