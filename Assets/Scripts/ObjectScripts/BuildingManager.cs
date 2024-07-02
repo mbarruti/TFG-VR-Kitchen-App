@@ -61,68 +61,52 @@ public class BuildingManager : MonoBehaviour
         ray = playerManager.mainController.GetComponent<XRRayInteractor>();
     }
 
-    // Para dibujar el bounding box del objeto elegido (o de su collider)
-    void DrawBoundingBox(Bounds bounds)
-    {
-        // Get the center and extents of the bounds
-        Vector3 center = bounds.center;
-        Vector3 extents = bounds.extents;
+    //// Para dibujar el bounding box del objeto elegido (o de su collider)
+    //void DrawBoundingBox(Bounds bounds)
+    //{
+    //    // Get the center and extents of the bounds
+    //    Vector3 center = bounds.center;
+    //    Vector3 extents = bounds.extents;
 
-        // Calculate the corner positions of the bounding box
-        Vector3 frontBottomLeft = center - extents;
-        Vector3 frontBottomRight = new Vector3(center.x + extents.x, center.y - extents.y, center.z - extents.z);
-        Vector3 frontTopLeft = new Vector3(center.x - extents.x, center.y + extents.y, center.z - extents.z);
-        Vector3 frontTopRight = new Vector3(center.x + extents.x, center.y + extents.y, center.z - extents.z);
-        Vector3 backBottomLeft = new Vector3(center.x - extents.x, center.y - extents.y, center.z + extents.z);
-        Vector3 backBottomRight = new Vector3(center.x + extents.x, center.y - extents.y, center.z + extents.z);
-        Vector3 backTopLeft = new Vector3(center.x - extents.x, center.y + extents.y, center.z + extents.z);
-        Vector3 backTopRight = center + extents;
+    //    // Calculate the corner positions of the bounding box
+    //    Vector3 frontBottomLeft = center - extents;
+    //    Vector3 frontBottomRight = new Vector3(center.x + extents.x, center.y - extents.y, center.z - extents.z);
+    //    Vector3 frontTopLeft = new Vector3(center.x - extents.x, center.y + extents.y, center.z - extents.z);
+    //    Vector3 frontTopRight = new Vector3(center.x + extents.x, center.y + extents.y, center.z - extents.z);
+    //    Vector3 backBottomLeft = new Vector3(center.x - extents.x, center.y - extents.y, center.z + extents.z);
+    //    Vector3 backBottomRight = new Vector3(center.x + extents.x, center.y - extents.y, center.z + extents.z);
+    //    Vector3 backTopLeft = new Vector3(center.x - extents.x, center.y + extents.y, center.z + extents.z);
+    //    Vector3 backTopRight = center + extents;
 
-        // Draw the bounding box wireframe
-        Debug.DrawLine(frontBottomLeft, frontBottomRight);
-        Debug.DrawLine(frontBottomRight, frontTopRight);
-        Debug.DrawLine(frontTopRight, frontTopLeft);
-        Debug.DrawLine(frontTopLeft, frontBottomLeft);
+    //    // Draw the bounding box wireframe
+    //    Debug.DrawLine(frontBottomLeft, frontBottomRight);
+    //    Debug.DrawLine(frontBottomRight, frontTopRight);
+    //    Debug.DrawLine(frontTopRight, frontTopLeft);
+    //    Debug.DrawLine(frontTopLeft, frontBottomLeft);
 
-        Debug.DrawLine(backBottomLeft, backBottomRight);
-        Debug.DrawLine(backBottomRight, backTopRight);
-        Debug.DrawLine(backTopRight, backTopLeft);
-        Debug.DrawLine(backTopLeft, backBottomLeft);
+    //    Debug.DrawLine(backBottomLeft, backBottomRight);
+    //    Debug.DrawLine(backBottomRight, backTopRight);
+    //    Debug.DrawLine(backTopRight, backTopLeft);
+    //    Debug.DrawLine(backTopLeft, backBottomLeft);
 
-        Debug.DrawLine(frontBottomLeft, backBottomLeft);
-        Debug.DrawLine(frontBottomRight, backBottomRight);
-        Debug.DrawLine(frontTopLeft, backTopLeft);
-        Debug.DrawLine(frontTopRight, backTopRight);
-    }
+    //    Debug.DrawLine(frontBottomLeft, backBottomLeft);
+    //    Debug.DrawLine(frontBottomRight, backBottomRight);
+    //    Debug.DrawLine(frontTopLeft, backTopLeft);
+    //    Debug.DrawLine(frontTopRight, backTopRight);
+    //}
 
     // Update is called once per frame
     void Update()
     {
-        //parentObject.transform.position = new Vector3(10f, 0f, 0f);
-        //if (Physics.Raycast(new Vector3(0, 1.78f, 0), Vector3.forward, out var auxHit))
-        //{
-        //    Debug.Log(auxHit.collider.gameObject.name);
-        //    //    DrawBoundingBox(auxHit.collider.gameObject.GetComponent<MeshRenderer>().bounds);
-        //    //    //DrawBoundingBox(auxHit.collider.bounds);
-        //    //    //cubos[0].transform.position = new Vector3(auxHit.collider.transform.position.x + auxHit.collider.bounds.extents.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z);
-        //    //    //cubos[1].transform.position = new Vector3(auxHit.collider.transform.position.x, auxHit.collider.transform.position.y, auxHit.collider.transform.position.z + auxHit.collider.bounds.extents.z);
-        //    //}
-        //    //if (selectedBuildingObject != null)
-        //    //if (ray.TryGetCurrent3DRaycastHit(out hit))
-        //    //{
-        //    //    //Debug.Log(hit.collider.gameObject.transform.InverseTransformDirection(hit.normal));
-        //    //    _hitPos = hit.point;
-        //}
-
         if (playerManager.state == PlayerState.isBuilding)
         {
-            DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
+            //DrawBoundingBox(selectedBuildingObject.boxCollider.bounds);
 
             // Check for rotations if not locked
             if (selectedBuildingObject.rotationLocked == false && worldMenuManager.continuousRotation == true)
             {
-                if (playerManager.rightGripPressed == true) selectedBuildingObject.RotateObject(-0.5f);
-                else if (playerManager.leftGripPressed == true) selectedBuildingObject.RotateObject(0.5f);
+                if (playerManager.rightGripPressed == true) selectedBuildingObject.RotateObject(-1f);
+                else if (playerManager.leftGripPressed == true) selectedBuildingObject.RotateObject(1f);
             }
 
             if (worldMenuManager.buildingState == BuildingState.withOffset)
@@ -408,6 +392,7 @@ public class BuildingManager : MonoBehaviour
 
         selectedBuildingObject = pendingObject.GetComponent<BuildingObject>();
         selectedBuildingObject._buildingManager = this;
+        selectedBuildingObject.ChangeObjectLayer();
 
         if (worldMenuManager.buildingState == BuildingState.withOffset)
         {
@@ -479,6 +464,7 @@ public class BuildingManager : MonoBehaviour
     {
         Destroy(pendingObject);
         pendingObject = null;
+
         selectedBuildingObject = null;
 
         //worldMenuManager.selectedModel = null;
@@ -576,6 +562,8 @@ public class BuildingManager : MonoBehaviour
         auxObj.isPlaced = true;
 
         auxObj.SetPreviousTransform();
+
+        auxObj.ChangeObjectLayer();
 
         // Reset the transform of the collision manager
         parentObject.Reset();

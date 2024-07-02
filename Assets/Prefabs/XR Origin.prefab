@@ -2290,7 +2290,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1033946554576336791}
         m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: ChangeActiveFloorToggle
+        m_MethodName: ChangeActiveWallToggle
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1037388015026901853}
@@ -7985,7 +7985,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1033946554576336791}
         m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: ChangeActiveFloorToggle
+        m_MethodName: ChangeActiveWallToggle
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1033946554196312072}
@@ -11005,7 +11005,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1033946554576336791}
         m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: ChangeActiveFloorToggle
+        m_MethodName: ChangeActiveWallToggle
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1033946554112490696}
@@ -35252,7 +35252,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1033946554576336791}
         m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: ChangeActiveFloorToggle
+        m_MethodName: ChangeActiveWallToggle
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1033946554234821863}
@@ -45243,7 +45243,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1033946554576336791}
         m_TargetAssemblyTypeName: WorldMenuManager, Assembly-CSharp
-        m_MethodName: ChangeActiveFloorToggle
+        m_MethodName: ChangeActiveWallToggle
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1033946554678918438}

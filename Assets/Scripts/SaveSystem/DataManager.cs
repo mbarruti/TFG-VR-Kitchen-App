@@ -31,16 +31,6 @@ public class DataManager : MonoBehaviour
     //    else if (user.mainController == user.leftController) SaveGeneralDataInFile(user.state, menu.buildingState, menu.continuousRotation, "LeftHand Controller", menu.assistedControl);
     //}
 
-    //public void InstantiateObject(GameObject prefab, Vector3 position, Quaternion rotation)
-    //{
-    //    GameObject obj = Instantiate(prefab, position, rotation);
-    //    Renderer renderer = obj.GetComponent<Renderer>();
-    //    Material material = renderer != null ? renderer.material : null;
-
-    //    ObjectData objectData = new ObjectData(obj.transform, material, prefab.name, obj.layer);
-    //    objectDataList.Add(objectData);
-    //}
-
     public void RemoveObjectData(int index)
     {
         objectDataList.RemoveAt(index);
@@ -111,8 +101,6 @@ public class DataManager : MonoBehaviour
         if (obj.CompareTag("Floor")) wallData.materialIndex = menu.floorMaterials.IndexOf(material).ToString();
         else if (obj.CompareTag("Ceiling")) wallData.materialIndex = 4.ToString();
         else wallData.materialIndex = menu.wallMaterials.IndexOf(material).ToString();
-
-        Debug.Log(wallData.materialIndex);
 
         wallData.tag = obj.tag;
 

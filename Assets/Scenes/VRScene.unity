@@ -7742,10 +7742,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 123105546}
+    - target: {fileID: 1033946553526592687, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeActiveFloorToggle
+      objectReference: {fileID: 0}
     - target: {fileID: 1033946553597760613, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 123105546}
+    - target: {fileID: 1033946553656311575, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeActiveFloorToggle
+      objectReference: {fileID: 0}
     - target: {fileID: 1033946553746185523, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -7778,6 +7786,10 @@ PrefabInstance:
       propertyPath: buildingManager
       value: 
       objectReference: {fileID: 2100674399}
+    - target: {fileID: 1033946554576336791, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
+      propertyPath: modelsList.Array.data[11]
+      value: 
+      objectReference: {fileID: 6934528761708054486, guid: ed4cb5d47c72af748aa7514b1c54bfa1, type: 3}
     - target: {fileID: 1033946554665956659, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
       propertyPath: _wallManager
       value: 
@@ -7834,10 +7846,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1033946554800480941, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeActiveFloorToggle
+      objectReference: {fileID: 0}
     - target: {fileID: 1033946555001193974, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 1687116405}
+    - target: {fileID: 1033946555319835640, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeActiveFloorToggle
+      objectReference: {fileID: 0}
     - target: {fileID: 1387646623878910032, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -7850,6 +7870,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1157134074}
+    - target: {fileID: 2810133058533386075, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ChangeActiveFloorToggle
+      objectReference: {fileID: 0}
     - target: {fileID: 3050769449803966539, guid: 7c739dfe901640246bdb3ae86395c852, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

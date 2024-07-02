@@ -102,7 +102,7 @@ public class BuildingObject : MonoBehaviour
 
             rotationLocked = true;
         }
-        else if (surfaceObject.CompareTag("Floor") || surfaceObject.CompareTag("Ceiling"))
+        else
         {
             transform.eulerAngles = new Vector3(0f, 180f, 0f);
 
@@ -256,6 +256,21 @@ public class BuildingObject : MonoBehaviour
         foreach (BoxCollider inter in interactables)
         {
             inter.gameObject.layer = LayerMask.NameToLayer("Interactable");
+        }
+    }
+
+    public void ChangeObjectLayerToIgnore()
+    {
+        if (colliderList.Count > 0)
+        {
+            boxCollider.enabled = true;
+
+            gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
+
+            foreach (BoxCollider boxColl in colliderList)
+            {
+                boxColl.enabled = false;
+            }
         }
     }
 }
