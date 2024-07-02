@@ -108,10 +108,12 @@ MonoBehaviour:
   - {fileID: 4843234597840230620}
   - {fileID: 5576733228941661350}
   - {fileID: 6408171844196001134}
+  - {fileID: 2665127970300645840}
   objectRigidbody: {fileID: 7018316313527082483}
   isInteractable: 0
   isPlaced: 0
   isInLimit: 1
+  dataIndex: 0
   detectedColliders: []
 --- !u!1 &8717428043567834950
 GameObject:
@@ -127,6 +129,7 @@ GameObject:
   - component: {fileID: 4843234597840230620}
   - component: {fileID: 5576733228941661350}
   - component: {fileID: 6408171844196001134}
+  - component: {fileID: 2665127970300645840}
   m_Layer: 2
   m_Name: Dinner Table
   m_TagString: Untagged
@@ -236,5 +239,18 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.8235178, y: 0.06880784, z: 0.825535}
-  m_Center: {x: 0.0010085702, y: -0.9882252, z: 0.000000029802322}
+  m_Size: {x: 0.2088725, y: 0.06880784, z: 0.825535}
+  m_Center: {x: -0.0010000728, y: -0.9882252, z: 0.000000029802322}
+--- !u!65 &2665127970300645840
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8717428043567834950}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.82502735, y: 0.06584382, z: 0.20435631}
+  m_Center: {x: -0.0010042936, y: -0.98970735, z: -0.00000011920928}

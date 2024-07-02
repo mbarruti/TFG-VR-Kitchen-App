@@ -389,10 +389,10 @@ public class BuildingManager : MonoBehaviour
     public void InstantiateWorldObject()
     {
         pendingObject = Instantiate(hitObject.gameObject, SetHitObjectOffset(hit), hitObject.transform.rotation);
+        SetLayerRecursively(pendingObject, LayerMask.NameToLayer("Ignore Raycast"));
 
         selectedBuildingObject = pendingObject.GetComponent<BuildingObject>();
         selectedBuildingObject._buildingManager = this;
-        selectedBuildingObject.ChangeObjectLayer();
 
         if (worldMenuManager.buildingState == BuildingState.withOffset)
         {
