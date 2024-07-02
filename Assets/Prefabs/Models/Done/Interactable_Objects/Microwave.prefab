@@ -187,7 +187,7 @@ MonoBehaviour:
   canPlace: 0
   canBePlaced: 0
   meshRenderer: {fileID: 0}
-  boxCollider: {fileID: 0}
+  boxCollider: {fileID: 5464153976636745123}
   colliderList:
   - {fileID: 241230211497331505}
   - {fileID: 3112247743036854123}
